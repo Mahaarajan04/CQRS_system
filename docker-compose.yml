@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: cqrs_events
+
+  postgres:
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: cqrs_read
+      POSTGRES_USER: cqrs
+      POSTGRES_PASSWORD: cqrs_pass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  write-api:
+    build: ./write-api
+    ports:
+      - "8001:8001"
+    environment:
+      MONGO_URL: mongodb://mongodb:27017
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      - mongodb
+      - redis
+    restart: on-failure
+
+  consumer:
+    build: ./consumer
+    environment:
+      MONGO_URL: mongodb://mongodb:27017
+      REDIS_URL: redis://redis:6379
+      POSTGRES_URL: postgresql://cqrs:cqrs_pass@postgres:5432/cqrs_read
+      CONSISTENCY_DELAY: "0"
+    depends_on:
+      - mongodb
+      - redis
+      - postgres
+    restart: on-failure
+
+  read-api:
+    build: ./read-api
+    ports:
+      - "8002:8002"
+    environment:
+      POSTGRES_URL: postgresql://cqrs:cqrs_pass@postgres:5432/cqrs_read
+    depends_on:
+      - postgres
+    restart: on-failure
+
+volumes:
+  mongo_data:
+  postgres_data:

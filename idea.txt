@@ -1,0 +1,51 @@
+What is CQRS, in plain English?
+CQRS stands for Command Query Responsibility Segregation. The name sounds academic but the idea is simple:
+Most systems use one database for everything — you write to it and read from it. This works fine until it doesn't. Writes and reads have completely different needs. A write is "save this order" — it needs to be safe, atomic, and fast. A read might be "show me all orders from this customer, grouped by month, with totals" — that's a complex query that could slow everything down.
+CQRS says: split them. Have a separate system optimised purely for writes, and a separate system optimised purely for reads. They stay in sync via an event bus in the middle.
+
+The three parts, simply
+Write side (MongoDB — the event store)
+Here's the key idea: you never update or delete data. Ever. Instead, every change is recorded as an immutable event.
+Instead of storing "order status = shipped", you store:
+
+OrderPlaced at 10:00am
+PaymentConfirmed at 10:05am
+OrderShipped at 2:00pm
+
+MongoDB is a log of things that happened, not the current state. This is called event sourcing. To know the current state of an order, you replay its events from the beginning. It sounds wasteful but it gives you something incredibly powerful — a complete audit trail and the ability to reconstruct any past state.
+The event bus (Redis Streams)
+Whenever a new event is written to MongoDB, it gets published onto a message bus. Think of it like a conveyor belt — events get placed on it, and whoever is listening picks them up and processes them. The write side doesn't care who's listening. This decoupling is the whole point.
+Read side (PostgreSQL — materialised views)
+A consumer worker listens on the event bus, picks up events, and updates PostgreSQL accordingly. PostgreSQL is shaped purely for fast reads — denormalised tables, materialised views, indexes tuned for your exact query patterns. When your dashboard asks "total revenue by region this week", PostgreSQL answers in milliseconds because it was designed only for that question.
+
+The genuinely hard part — eventual consistency
+There is a delay between writing an event to MongoDB and that event propagating through the bus and updating PostgreSQL. During that window — maybe 50–200ms — your read side has stale data. A user places an order and immediately checks their order history: it might not be there yet.
+This is called eventual consistency — both sides will eventually agree, but not instantly. This project makes you confront that tradeoff directly. You have to decide: is that acceptable? How do you handle it in your UI? Can you show the user their own write immediately (read-your-writes consistency) while the system catches up?
+This is a concept that separates engineers who've built real distributed systems from those who haven't.
+
+The wow factor — event replay
+Because MongoDB is an append-only log of every event that ever happened, you can do something remarkable: wipe PostgreSQL completely and rebuild it from scratch by replaying every event in order. The system reconstructs its entire current state from history.
+This means you can also ask questions like "what did the database look like at 3pm last Tuesday?" — just replay events up to that timestamp. This is called a temporal query and it's something a normal UPDATE-based database literally cannot do.
+
+Is this too hard?
+It's the hardest of the three projects — but not because the code is complex. The code is actually fairly simple (write events to Mongo, publish to Redis Streams, consume and update Postgres). It's hard because the concepts are unfamiliar and the bugs are subtle — a missed event, a duplicate event processed twice, a race condition between two consumers. These are exactly the kinds of problems senior engineers deal with.
+
+Compared to the other two
+Caching projectKubernetes projectThis oneInfrastructure complexityLowHighLowDatabase depthLowMediumVery highConcepts learnedCache patternsk8s opsDistributed systems, consistencyInterview storyLatency numbersChaos demoEvent replay demoDifficultyEasyMedium (k8s curve)Medium-Hard (conceptual)"Most modern stack" labelNoNoYes — CQRS is used at Uber, LinkedIn, etc.
+If your goal is to show database engineering depth specifically, this is the strongest of the three. The event replay demo is genuinely rare at student level and shows you understand why data consistency is hard, not just how to configure a tool that handles it for you.give me a 2 week plan for this...also do you some otheer ideas for the project ...22:212-Week Plan — CQRS Event-Driven System
+Days 1–2: Foundation
+Set up Docker Compose with MongoDB, PostgreSQL, and Redis all running locally. Write your event schema — every event needs event_id, event_type, aggregate_id, timestamp, and payload. Start with a simple domain: an e-commerce order system (OrderPlaced, PaymentConfirmed, OrderShipped, OrderCancelled). Insert a few events manually into MongoDB and make sure you understand what you're storing before writing any app code.
+Days 3–4: Write side API
+Build the command API — POST endpoints that validate incoming commands and append events to MongoDB. The key discipline: the API never overwrites anything, it only appends. POST /orders doesn't create a row, it writes an OrderPlaced event. Implement optimistic concurrency — each aggregate has a version number, and if two writes conflict, the second one fails gracefully. This is your first real distributed systems concept.
+Days 5–6: Event bus with Redis Streams
+When an event is saved to MongoDB, publish it to a Redis Stream. Write a consumer worker that reads from the stream and projects events into PostgreSQL. For example, OrderPlaced creates a row in orders, OrderShipped updates the status column. This is your projection logic. Test what happens when the consumer crashes mid-stream — does it reprocess events? Does it duplicate them? Solving this (idempotent consumers) is the meaty database problem of the whole project.
+Day 7: Buffer day
+The idempotency problem almost always takes longer than expected. Use this day to harden the consumer logic.
+Days 8–9: PostgreSQL read model + materialised views
+Design your read-side schema purely for query performance — denormalised, pre-joined, pre-aggregated. Create materialised views for things like mv_orders_by_customer and mv_daily_revenue. Write the query API that serves your dashboard. Notice how fast these queries are compared to what you'd need on the write side.
+Day 10: Demonstrate eventual consistency
+Add an artificial 2-second delay in your consumer and build a small test that writes an event and immediately reads the read side. Show the stale data, then show it converge. Log the lag. This is your consistency demo — simple but conceptually powerful.
+Days 11–12: Event replay
+Write a replay script that wipes PostgreSQL entirely and rebuilds it from scratch by reading every event in MongoDB in order. Then extend it to support point-in-time replay — "rebuild state as of timestamp X." This is your wow demo. Time how long full replay takes at 10k, 100k, 500k events.
+Days 13–14: Polish + documentation
+Write a clear README with architecture diagrams, consistency lag numbers, replay benchmarks, and a section explaining what breaks if events arrive out of order. Record a short terminal demo of the event replay. This documentation is half the portfolio value.

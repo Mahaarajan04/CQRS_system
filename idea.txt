@@ -1,6 +1,7 @@
 What is CQRS, in plain English?
 CQRS stands for Command Query Responsibility Segregation. The name sounds academic but the idea is simple:
 Most systems use one database for everything — you write to it and read from it. This works fine until it doesn't. Writes and reads have completely different needs. A write is "save this order" — it needs to be safe, atomic, and fast. A read might be "show me all orders from this customer, grouped by month, with totals" — that's a complex query that could slow everything down.
+
 CQRS says: split them. Have a separate system optimised purely for writes, and a separate system optimised purely for reads. They stay in sync via an event bus in the middle.
 
 The three parts, simply

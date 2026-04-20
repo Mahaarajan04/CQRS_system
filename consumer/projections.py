@@ -24,11 +24,7 @@ def _mark_processed(cur, event_id: str):
 
 def project_event(conn, event: dict):
     """
-    Apply a single event to the PostgreSQL read model.
-
-    Idempotent: checks processed_events before writing. Safe to call twice —
-    the second call is a no-op. This protects against double-processing when
-    the consumer crashes after updating Postgres but before ACKing Redis.
+    Apply one event to the 3NF PostgreSQL read model. Idempotent.
     """
     event_id   = event["event_id"]
     event_type = event["event_type"]
@@ -41,26 +37,40 @@ def project_event(conn, event: dict):
         return
 
     with conn.cursor() as cur:
+
         if event_type == "OrderPlaced":
+            # 1. Upsert customer (customer details live in their own table)
             cur.execute(
                 """
-                INSERT INTO orders (
-                    order_id, customer_id, customer_name, customer_email,
-                    status, items, total_amount, region, placed_at, version
-                ) VALUES (%s, %s, %s, %s, 'placed', %s, %s, %s, %s, 1)
+                INSERT INTO customers (customer_id, customer_name, customer_email)
+                VALUES (%s, %s, %s)
+                ON CONFLICT (customer_id) DO UPDATE
+                    SET customer_name  = EXCLUDED.customer_name,
+                        customer_email = EXCLUDED.customer_email
+                """,
+                (payload["customer_id"], payload["customer_name"], payload["customer_email"]),
+            )
+
+            # 2. Insert order (FK → customers)
+            cur.execute(
+                """
+                INSERT INTO orders (order_id, customer_id, status, region, placed_at, version)
+                VALUES (%s, %s, 'placed', %s, %s, 1)
                 ON CONFLICT (order_id) DO NOTHING
                 """,
-                (
-                    order_id,
-                    payload["customer_id"],
-                    payload["customer_name"],
-                    payload["customer_email"],
-                    json.dumps(payload["items"]),
-                    payload["total_amount"],
-                    payload["region"],
-                    ts,
-                ),
+                (order_id, payload["customer_id"], payload["region"], ts),
             )
+
+            # 3. Insert one row per item (composite PK: order_id + product_id)
+            for item in payload["items"]:
+                cur.execute(
+                    """
+                    INSERT INTO order_items (order_id, product_id, name, quantity, unit_price)
+                    VALUES (%s, %s, %s, %s, %s)
+                    ON CONFLICT (order_id, product_id) DO NOTHING
+                    """,
+                    (order_id, item["product_id"], item["name"], item["quantity"], item["price"]),
+                )
 
         elif event_type == "PaymentConfirmed":
             cur.execute(
@@ -68,7 +78,6 @@ def project_event(conn, event: dict):
                 UPDATE orders
                 SET status = 'payment_confirmed',
                     payment_confirmed_at = %s,
-                    last_updated_at = NOW(),
                     version = version + 1
                 WHERE order_id = %s
                 """,
@@ -81,7 +90,6 @@ def project_event(conn, event: dict):
                 UPDATE orders
                 SET status = 'shipped',
                     shipped_at = %s,
-                    last_updated_at = NOW(),
                     version = version + 1
                 WHERE order_id = %s
                 """,
@@ -94,11 +102,34 @@ def project_event(conn, event: dict):
                 UPDATE orders
                 SET status = 'cancelled',
                     cancelled_at = %s,
-                    last_updated_at = NOW(),
                     version = version + 1
                 WHERE order_id = %s
                 """,
                 (ts, order_id),
+            )
+
+        elif event_type == "InventoryReserved":
+            cur.execute(
+                "UPDATE orders SET status = 'inventory_reserved', version = version + 1 WHERE order_id = %s",
+                (order_id,),
+            )
+
+        elif event_type == "InventoryReserveFailed":
+            cur.execute(
+                "UPDATE orders SET status = 'inventory_failed', version = version + 1 WHERE order_id = %s",
+                (order_id,),
+            )
+
+        elif event_type == "PaymentAuthorized":
+            cur.execute(
+                "UPDATE orders SET status = 'payment_authorized', version = version + 1 WHERE order_id = %s",
+                (order_id,),
+            )
+
+        elif event_type == "PaymentAuthorizeFailed":
+            cur.execute(
+                "UPDATE orders SET status = 'payment_failed', version = version + 1 WHERE order_id = %s",
+                (order_id,),
             )
 
         _mark_processed(cur, event_id)

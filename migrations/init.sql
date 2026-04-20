@@ -1,64 +1,105 @@
--- Denormalized orders table — shaped for reads, not writes
-CREATE TABLE IF NOT EXISTS orders (
-    order_id        VARCHAR(36) PRIMARY KEY,
-    customer_id     VARCHAR(36) NOT NULL,
-    customer_name   VARCHAR(255),
-    customer_email  VARCHAR(255),
-    status          VARCHAR(50) NOT NULL DEFAULT 'placed',
-    items           JSONB NOT NULL DEFAULT '[]',
-    total_amount    DECIMAL(10,2) NOT NULL DEFAULT 0,
-    region          VARCHAR(100),
-    placed_at       TIMESTAMPTZ,
-    payment_confirmed_at TIMESTAMPTZ,
-    shipped_at      TIMESTAMPTZ,
-    cancelled_at    TIMESTAMPTZ,
-    last_updated_at TIMESTAMPTZ DEFAULT NOW(),
-    version         INTEGER NOT NULL DEFAULT 0
+-- ─────────────────────────────────────────────────────────────
+-- 3NF Read Model
+-- Every non-key attribute depends on the key, the whole key,
+-- and nothing but the key.
+-- ─────────────────────────────────────────────────────────────
+
+CREATE TABLE IF NOT EXISTS customers (
+    customer_id    VARCHAR(36)  PRIMARY KEY,
+    customer_name  VARCHAR(255) NOT NULL,
+    customer_email VARCHAR(255) NOT NULL
 );
 
--- Idempotency: never process the same event twice even on consumer crash/restart
+CREATE TABLE IF NOT EXISTS orders (
+    order_id             VARCHAR(36) PRIMARY KEY,
+    customer_id          VARCHAR(36) NOT NULL REFERENCES customers(customer_id),
+    status               VARCHAR(50) NOT NULL DEFAULT 'placed',
+    region               VARCHAR(100),
+    placed_at            TIMESTAMPTZ,
+    payment_confirmed_at TIMESTAMPTZ,
+    shipped_at           TIMESTAMPTZ,
+    cancelled_at         TIMESTAMPTZ,
+    version              INTEGER NOT NULL DEFAULT 0
+);
+
+-- unit_price is the price AT ORDER TIME (snapshot), not current product price.
+-- (order_id, product_id) → quantity, name, unit_price — no transitive deps.
+CREATE TABLE IF NOT EXISTS order_items (
+    order_id   VARCHAR(36)    NOT NULL REFERENCES orders(order_id),
+    product_id VARCHAR(36)    NOT NULL,
+    name       VARCHAR(255)   NOT NULL,
+    quantity   INTEGER        NOT NULL,
+    unit_price NUMERIC(10,2)  NOT NULL,
+    PRIMARY KEY (order_id, product_id)
+);
+
+-- Idempotency: never project the same event twice
 CREATE TABLE IF NOT EXISTS processed_events (
     event_id     VARCHAR(36) PRIMARY KEY,
     processed_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Indexes tuned for expected query patterns
+-- ── Indexes ───────────────────────────────────────────────────
+
 CREATE INDEX IF NOT EXISTS idx_orders_customer  ON orders(customer_id);
 CREATE INDEX IF NOT EXISTS idx_orders_status    ON orders(status);
 CREATE INDEX IF NOT EXISTS idx_orders_placed_at ON orders(placed_at);
 CREATE INDEX IF NOT EXISTS idx_orders_region    ON orders(region);
+CREATE INDEX IF NOT EXISTS idx_items_order      ON order_items(order_id);
 
--- Materialized view: per-customer order summary
+-- ── Materialized views (pre-joined for fast reads) ────────────
+
+-- Customer summary: JOINs customers + orders + order_items
 CREATE MATERIALIZED VIEW IF NOT EXISTS mv_orders_by_customer AS
 SELECT
-    customer_id,
-    customer_name,
-    customer_email,
-    COUNT(*)                                            AS total_orders,
-    SUM(total_amount)                                   AS total_spent,
-    COUNT(*) FILTER (WHERE status = 'shipped')          AS completed_orders,
-    COUNT(*) FILTER (WHERE status = 'cancelled')        AS cancelled_orders,
-    MAX(placed_at)                                      AS last_order_at
-FROM orders
-GROUP BY customer_id, customer_name, customer_email;
+    c.customer_id,
+    c.customer_name,
+    c.customer_email,
+    COUNT(DISTINCT o.order_id)                                          AS total_orders,
+    COALESCE(SUM(oi.quantity * oi.unit_price), 0)                       AS total_spent,
+    COUNT(DISTINCT o.order_id) FILTER (WHERE o.status = 'shipped')      AS completed_orders,
+    COUNT(DISTINCT o.order_id) FILTER (WHERE o.status = 'cancelled')    AS cancelled_orders,
+    MAX(o.placed_at)                                                    AS last_order_at
+FROM customers c
+JOIN orders o ON c.customer_id = o.customer_id
+LEFT JOIN order_items oi ON o.order_id = oi.order_id
+GROUP BY c.customer_id, c.customer_name, c.customer_email;
 
--- Unique index required for REFRESH MATERIALIZED VIEW CONCURRENTLY
 CREATE UNIQUE INDEX IF NOT EXISTS idx_mv_customer_id
     ON mv_orders_by_customer(customer_id);
 
--- Materialized view: daily revenue by region
+-- Daily revenue: JOINs orders + order_items
 CREATE MATERIALIZED VIEW IF NOT EXISTS mv_daily_revenue AS
 SELECT
-    DATE(placed_at)                                         AS date,
-    region,
-    COUNT(*)                                                AS total_orders,
-    SUM(total_amount)                                       AS revenue,
-    COUNT(*) FILTER (WHERE status = 'shipped')              AS fulfilled_orders,
-    COUNT(*) FILTER (WHERE status = 'cancelled')            AS cancelled_orders
-FROM orders
-WHERE placed_at IS NOT NULL
-GROUP BY DATE(placed_at), region
+    DATE(o.placed_at)                                                       AS date,
+    o.region,
+    COUNT(DISTINCT o.order_id)                                              AS total_orders,
+    COALESCE(SUM(oi.quantity * oi.unit_price), 0)                           AS revenue,
+    COUNT(DISTINCT o.order_id) FILTER (WHERE o.status = 'shipped')          AS fulfilled_orders,
+    COUNT(DISTINCT o.order_id) FILTER (WHERE o.status = 'cancelled')        AS cancelled_orders
+FROM orders o
+LEFT JOIN order_items oi ON o.order_id = oi.order_id
+WHERE o.placed_at IS NOT NULL
+GROUP BY DATE(o.placed_at), o.region
 ORDER BY date DESC;
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_mv_daily_date_region
     ON mv_daily_revenue(date, region);
+
+-- ── Inventory ─────────────────────────────────────────────────
+-- Managed directly by the saga (not event-sourced).
+-- available = total_qty - reserved_qty (computed at query time).
+
+CREATE TABLE IF NOT EXISTS inventory (
+    product_id   VARCHAR(36)  PRIMARY KEY,
+    name         VARCHAR(255) NOT NULL,
+    total_qty    INTEGER      NOT NULL CHECK (total_qty >= 0),
+    reserved_qty INTEGER      NOT NULL DEFAULT 0 CHECK (reserved_qty >= 0)
+);
+
+INSERT INTO inventory (product_id, name, total_qty) VALUES
+    ('p1', 'Laptop',   5),
+    ('p2', 'Mouse',    20),
+    ('p3', 'Keyboard', 15),
+    ('p4', 'Monitor',  8)
+ON CONFLICT DO NOTHING;

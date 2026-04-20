@@ -18,11 +18,15 @@ echo "[START] Consumer worker"
 cd "$ROOT/consumer"  && python worker.py > /tmp/consumer.log 2>&1 &
 CONSUMER_PID=$!
 
+echo "[START] Saga orchestrator"
+cd "$ROOT/saga"      && python saga_worker.py > /tmp/saga.log 2>&1 &
+SAGA_PID=$!
+
 echo ""
-echo "PIDs: write=$WRITE_PID  read=$READ_PID  consumer=$CONSUMER_PID"
-echo "Logs: /tmp/write-api.log  /tmp/read-api.log  /tmp/consumer.log"
+echo "PIDs: write=$WRITE_PID  read=$READ_PID  consumer=$CONSUMER_PID  saga=$SAGA_PID"
+echo "Logs: /tmp/write-api.log  /tmp/read-api.log  /tmp/consumer.log  /tmp/saga.log"
 echo ""
 echo "Press Ctrl+C to stop all services"
 
-trap "kill $WRITE_PID $READ_PID $CONSUMER_PID 2>/dev/null; echo 'Stopped.'" INT TERM
+trap "kill $WRITE_PID $READ_PID $CONSUMER_PID $SAGA_PID 2>/dev/null; echo 'Stopped.'" INT TERM
 wait

@@ -1,0 +1,19 @@
+127.0.0.1:6379> XREVRANGE order_events + - COUNT 10
+1) 1) "1776705228203-0"
+   2) 1) "data"
+      2) "{\"event_id\": \"f8750cd2-f93a-4740-a39c-c93a91d6c578\", \"event_type\": \"OrderCancelled\", \"aggregate_id\": \"c3b7d0cb-b945-4f64-8b58-9dd56a9d77f4\", \"aggregate_type\": \"Order\", \"version\": 2, \"timestamp\": \"2026-04-20T17:13:48.202528+00:00\", \"payload\": {\"reason\": \"Changed my mind\"}}"
+2) 1) "1776705228198-0"
+   2) 1) "data"
+      2) "{\"event_id\": \"b94cf108-0561-4221-b968-2b6b7aeed35c\", \"event_type\": \"OrderPlaced\", \"aggregate_id\": \"c3b7d0cb-b945-4f64-8b58-9dd56a9d77f4\", \"aggregate_type\": \"Order\", \"version\": 1, \"timestamp\": \"2026-04-20T17:13:48.197956+00:00\", \"payload\": {\"customer_id\": \"cust_bob\", \"customer_name\": \"Bob Jones\", \"customer_email\": \"bob@example.com\", \"region\": \"EU\", \"items\": [{\"product_id\": \"p4\", \"name\": \"Monitor\", \"quantity\": 1, \"price\": 349.99}], \"total_amount\": 349.99}}"
+3) 1) "1776705226668-0"
+   2) 1) "data"
+      2) "{\"event_id\": \"94c27acb-912e-4969-b911-6847f1f3c4bc\", \"event_type\": \"OrderShipped\", \"aggregate_id\": \"cb4a7b95-3501-4d69-9609-7da309534931\", \"aggregate_type\": \"Order\", \"version\": 3, \"timestamp\": \"2026-04-20T17:13:46.667566+00:00\", \"payload\": {\"tracking_number\": \"TRK-2026-XYZ\"}}"
+4) 1) "1776705225143-0"
+   2) 1) "data"
+      2) "{\"event_id\": \"a9eaecb1-8dc7-4ab6-8b75-dfe2a0005a02\", \"event_type\": \"PaymentConfirmed\", \"aggregate_id\": \"cb4a7b95-3501-4d69-9609-7da309534931\", \"aggregate_type\": \"Order\", \"version\": 2, \"timestamp\": \"2026-04-20T17:13:45.142885+00:00\", \"payload\": {}}"
+5) 1) "1776705225103-0"
+   2) 1) "data"
+      2) "{\"event_id\": \"b94491d4-b6b4-4c96-bcb5-3ccfc5778942\", \"event_type\": \"OrderPlaced\", \"aggregate_id\": \"cb4a7b95-3501-4d69-9609-7da309534931\", \"aggregate_type\": \"Order\", \"version\": 1, \"timestamp\": \"2026-04-20T17:13:45.101523+00:00\", \"payload\": {\"customer_id\": \"cust_alice\", \"customer_name\": \"Alice Smith\", \"customer_email\": \"alice@example.com\", \"region\": \"US-WEST\", \"items\": [{\"product_id\": \"p1\", \"name\": \"Laptop\", \"quantity\": 1, \"price\": 999.99}, {\"product_id\": \"p3\", \"name\": \"Keyboard\", \"quantity\": 2, \"price\": 79.99}], \"total_amount\": 1159.97}}"
+127.0.0.1:6379> XREVRANGE order_events + - COUNT 10 > lol.txt
+(error) ERR syntax error
+127.0.0.1:6379> 

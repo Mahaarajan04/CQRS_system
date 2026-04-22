@@ -105,6 +105,154 @@ def stream_len():
 
 
 # ═════════════════════════════════════════════════════════════
+# READER BENCHMARK — measures read-your-writes lag
+# ═════════════════════════════════════════════════════════════
+#
+# Purpose: baseline numbers for how long after POST /orders a reader can
+# successfully GET /orders/{id}. This is the window the RYW cache closes.
+#
+#   python scripts/test_flow.py --reader                  # idle, 50 orders
+#   python scripts/test_flow.py --reader --under-load     # same, during concurrent write flood
+#   python scripts/test_flow.py --reader --n 200          # custom sample size
+
+if "--reader" in sys.argv:
+    import statistics
+    import csv
+
+    N = 50
+    if "--n" in sys.argv:
+        N = int(sys.argv[sys.argv.index("--n") + 1])
+    POLL_INTERVAL_SEC = 0.002   # 2ms — fine-grained so we can see sub-10ms lag
+
+    from requests.adapters import HTTPAdapter
+    session = requests.Session()
+    session.mount("http://", HTTPAdapter(pool_connections=64, pool_maxsize=64))
+
+    def measure_ryw_lag(order_payload):
+        t_post_start = time.perf_counter()
+        r = session.post(f"{WRITE}/orders", json=order_payload)
+        t_post_done  = time.perf_counter()
+        if r.status_code != 201:
+            return None
+        order_id = r.json()["order_id"]
+
+        polls = 0
+        while True:
+            polls += 1
+            try:
+                rr = session.get(f"{READ}/orders/{order_id}", timeout=5)
+            except requests.exceptions.RequestException:
+                time.sleep(POLL_INTERVAL_SEC)
+                continue
+            if rr.status_code == 200:
+                t_visible = time.perf_counter()
+                return {
+                    "order_id":    order_id,
+                    "post_ms":     (t_post_done  - t_post_start) * 1000,
+                    "ryw_ms":      (t_visible    - t_post_done ) * 1000,
+                    "total_ms":    (t_visible    - t_post_start) * 1000,
+                    "polls":       polls,
+                }
+            if time.perf_counter() - t_post_done > 10:  # 10s timeout
+                return None
+            time.sleep(POLL_INTERVAL_SEC)
+
+    banner("READER BENCHMARK — Read-Your-Writes Lag (baseline)")
+    info(f"Placing {N} orders sequentially and measuring GET-after-POST lag")
+    info(f"Poll interval: {POLL_INTERVAL_SEC*1000:.0f}ms (so floor resolution ≈ {POLL_INTERVAL_SEC*1000:.0f}ms)")
+
+    # ── Optional: concurrent write load to stress the projector ──
+    load_threads   = []
+    stop_load_flag = {"stop": False}
+    if "--under-load" in sys.argv:
+        LOAD_THREADS = 32
+        info(f"--under-load: starting {LOAD_THREADS} flood threads to stress the consumer")
+
+        def flood():
+            s = requests.Session()
+            s.mount("http://", HTTPAdapter(pool_connections=4, pool_maxsize=4))
+            while not stop_load_flag["stop"]:
+                try:
+                    s.post(f"{WRITE}/orders", json=random_order(), timeout=2)
+                except Exception:
+                    pass
+
+        for _ in range(LOAD_THREADS):
+            t = threading.Thread(target=flood, daemon=True)
+            t.start()
+            load_threads.append(t)
+        time.sleep(1.0)  # let load ramp up
+        try:
+            lag_now = int(subprocess.check_output(
+                ["redis-cli", "XINFO", "GROUPS", "order_events"], text=True
+            ).split("lag")[1].split()[0])
+            info(f"Stream lag under load before measurement: {lag_now}")
+        except Exception:
+            pass
+
+    results = []
+    failures = 0
+    t0 = time.time()
+    for i in range(N):
+        r = measure_ryw_lag(random_order())
+        if r is None:
+            failures += 1
+        else:
+            results.append(r)
+        if (i + 1) % 10 == 0:
+            print(f"    ...{i+1}/{N} orders placed & read")
+    elapsed = time.time() - t0
+
+    if load_threads:
+        stop_load_flag["stop"] = True
+
+    if not results:
+        err(f"All {N} samples failed"); sys.exit(1)
+
+    post_ms  = sorted(r["post_ms"]  for r in results)
+    ryw_ms   = sorted(r["ryw_ms"]   for r in results)
+    polls    = sorted(r["polls"]    for r in results)
+
+    def pct(data, p):
+        k = int(len(data) * p / 100)
+        return data[min(k, len(data) - 1)]
+
+    print(f"\n  {BOLD}Results  (N={len(results)}, failures={failures}, wall={elapsed:.1f}s){RESET}")
+    print(f"  {'metric':<12}  {'p50':>8}  {'p95':>8}  {'p99':>8}  {'max':>8}  {'mean':>8}")
+    for name, data in [("POST ms", post_ms), ("RYW lag ms", ryw_ms), ("polls", polls)]:
+        mean = statistics.mean(data)
+        if name == "polls":
+            print(f"  {name:<12}  {pct(data,50):>8.0f}  {pct(data,95):>8.0f}  {pct(data,99):>8.0f}  {max(data):>8.0f}  {mean:>8.1f}")
+        else:
+            print(f"  {name:<12}  {pct(data,50):>8.1f}  {pct(data,95):>8.1f}  {pct(data,99):>8.1f}  {max(data):>8.1f}  {mean:>8.1f}")
+
+    # histogram of RYW lag
+    buckets = [0, 5, 10, 20, 50, 100, 250, 500, 1000, 10000]
+    counts = [0] * (len(buckets) - 1)
+    for v in ryw_ms:
+        for i in range(len(buckets) - 1):
+            if buckets[i] <= v < buckets[i + 1]:
+                counts[i] += 1
+                break
+    print(f"\n  {BOLD}RYW lag distribution{RESET}")
+    max_c = max(counts) or 1
+    for i in range(len(counts)):
+        bar = "█" * int(30 * counts[i] / max_c)
+        print(f"  [{buckets[i]:>5} – {buckets[i+1]:>5} ms]  {counts[i]:>4}  {bar}")
+
+    # dump raw for later diff against post-cache run
+    out = "/tmp/reader_baseline.csv"
+    if "--under-load" in sys.argv:
+        out = "/tmp/reader_baseline_loaded.csv"
+    with open(out, "w") as f:
+        w = csv.DictWriter(f, fieldnames=["order_id", "post_ms", "ryw_ms", "total_ms", "polls"])
+        w.writeheader(); w.writerows(results)
+    ok(f"Raw samples written to {out}")
+    info("After implementing the cache, rerun the same command and diff the RYW lag.")
+    sys.exit(0)
+
+
+# ═════════════════════════════════════════════════════════════
 # SAGA DEMO MODE
 # ═════════════════════════════════════════════════════════════
 
@@ -309,7 +457,7 @@ if "--blast" in sys.argv:
     print(f"    XINFO GROUPS order_events")
     print(f"    XLEN order_events")
     print(f"\n  Waiting 15 seconds before restarting consumer...")
-    for i in range(15, 0, -1):
+    for i in range(5, 0, -1):
         print(f"\r  Starting consumer in {i}s...  ", end="", flush=True)
         time.sleep(1)
     print()

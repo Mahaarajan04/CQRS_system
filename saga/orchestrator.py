@@ -13,6 +13,7 @@ Only the outcome events (InventoryReserved, PaymentAuthorized, etc.) go to Redis
 
 import os
 import sys
+import time
 import uuid
 import random
 import psycopg2
@@ -37,17 +38,32 @@ def _get_pg_conn():
 
 
 # ── Simulated payment service ──────────────────────────────────
+#
+# Mimics a real provider (Stripe, Adyen) that dedupes by Idempotency-Key.
+# Calling twice with the same key returns the same result — no double-charge,
+# no new auth_code. In production this cache lives in the provider; here it's
+# process-local (fine for the simulator, matches the "external system" model).
 
-def simulate_payment_auth(order_id: str, total_amount: float) -> dict:
+_PAYMENT_IDEMPOTENCY_CACHE: dict = {}
+
+
+def simulate_payment_auth(order_id: str, total_amount: float, idempotency_key: str) -> dict:
+    if idempotency_key in _PAYMENT_IDEMPOTENCY_CACHE:
+        return _PAYMENT_IDEMPOTENCY_CACHE[idempotency_key]
+
     failure_rate = float(os.getenv("PAYMENT_FAILURE_RATE", "0.15"))
     if random.random() < failure_rate:
-        return {
+        result = {
             "success": False,
             "error":   "card_declined",
             "detail":  f"Payment authorization declined for order {order_id}",
         }
-    auth_code = str(uuid.uuid4())[:8].upper()
-    return {"success": True, "auth_code": auth_code, "amount": total_amount}
+    else:
+        auth_code = str(uuid.uuid4())[:8].upper()
+        result = {"success": True, "auth_code": auth_code, "amount": total_amount}
+
+    _PAYMENT_IDEMPOTENCY_CACHE[idempotency_key] = result
+    return result
 
 
 # ── Real inventory service (direct SQL) ───────────────────────
@@ -168,6 +184,17 @@ class SagaOrchestrator:
         pg_conn = _get_pg_conn()
 
         try:
+            if state == "inventory_reserving":
+                existing = [e["event_type"] for e in get_events_for_order(order_id)]
+                if "InventoryReserved" in existing:
+                    self._save(saga_id, state="inventory_reserved")
+                    state = "inventory_reserved"
+                elif "InventoryReserveFailed" in existing:
+                    self._save(saga_id, state="compensating")
+                    state = "compensating"
+                else:
+                    state = "started"
+
             if state == "started":
                 self._save(saga_id, state="inventory_reserving")
                 result = check_and_reserve_inventory(pg_conn, order_id, items)
@@ -204,18 +231,52 @@ class SagaOrchestrator:
                     self._compensate(saga_id, order_id, result["reason"], items=None, pg_conn=pg_conn)
                     return
 
-            if state == "inventory_reserved":
+            if state in ("inventory_reserved", "payment_authorizing"):
                 self._save(saga_id, state="payment_authorizing")
-                result = simulate_payment_auth(order_id, total_amt)
+
+                existing       = get_events_for_order(order_id)
+                existing_types = {e["event_type"]: e for e in existing}
+
+                # ── Idempotent resume: short-circuit if work already done ──
+                if "PaymentConfirmed" in existing_types:
+                    self._save(saga_id, state="completed")
+                    print(f"[SAGA] {saga_id[:8]} already PaymentConfirmed — marking completed")
+                    return
+                if "PaymentAuthorizeFailed" in existing_types:
+                    reason = existing_types["PaymentAuthorizeFailed"]["payload"].get("reason", "unknown")
+                    self._save(saga_id, state="compensating")
+                    self._compensate(saga_id, order_id, reason, items=items, pg_conn=pg_conn)
+                    return
+
+                if "PaymentAuthorized" in existing_types:
+                    # Auth already happened on a previous attempt — reuse it.
+                    auth_payload = existing_types["PaymentAuthorized"]["payload"]
+                    result = {"success": True,
+                              "auth_code": auth_payload["auth_code"],
+                              "amount":    auth_payload["amount"]}
+                    print(f"[SAGA] {saga_id[:8]} reusing existing PaymentAuthorized (auth_code={result['auth_code']})")
+                else:
+                    delay = float(os.getenv("SAGA_STEP_DELAY_SEC", "0"))
+                    if delay > 0:
+                        print(f"[SAGA] {saga_id[:8]} sleeping {delay}s before payment (kill window)")
+                        time.sleep(delay)
+                    # saga_id is the idempotency key — provider dedupes on it
+                    result = simulate_payment_auth(order_id, total_amt, idempotency_key=saga_id)
 
                 if result["success"]:
+                    if "PaymentAuthorized" not in existing_types:
+                        version = self._get_order_version(order_id)
+                        try:
+                            append_event("PaymentAuthorized", order_id,
+                                         {"auth_code": result["auth_code"], "amount": result["amount"]},
+                                         expected_version=version)
+                        except ConcurrencyError:
+                            pass
+
                     version = self._get_order_version(order_id)
                     try:
-                        append_event("PaymentAuthorized", order_id,
-                                     {"auth_code": result["auth_code"], "amount": result["amount"]},
-                                     expected_version=version)
                         append_event("PaymentConfirmed", order_id, {},
-                                     expected_version=version + 1)
+                                     expected_version=version)
                     except ConcurrencyError:
                         pass
                     self._push_step(saga_id, {

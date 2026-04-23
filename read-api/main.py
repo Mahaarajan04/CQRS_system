@@ -1,14 +1,19 @@
 import os
+import json
 from datetime import date
 from typing import Optional
 
 import psycopg2
 import psycopg2.extras
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.responses import JSONResponse
+
+from cache import OrderCache
 
 POSTGRES_URL = os.getenv("POSTGRES_URL", "postgresql://cqrs:cqrs_pass@localhost:5432/cqrs_read")
 
 app = FastAPI(title="CQRS Read API — Query Side")
+cache = OrderCache()
 
 
 def get_conn():
@@ -62,7 +67,15 @@ def list_orders(
 
 @app.get("/orders/{order_id}")
 def get_order(order_id: str):
-    """Returns order + customer info + line items as a nested list."""
+    """
+    Cache-first read: Redis HIT short-circuits PG. On MISS we fall through to
+    PG and populate the cache so the next reader hits (read-through).
+    404s are not cached — avoids poisoning the cache during projection lag.
+    """
+    cached = cache.get_order(order_id)
+    if cached is not None:
+        return JSONResponse(content=cached, headers={"X-Cache": "HIT"})
+
     conn = get_conn()
     with conn.cursor() as cur:
         cur.execute(
@@ -95,7 +108,12 @@ def get_order(order_id: str):
         )
         items = cur.fetchall()
 
-    return {**order, "items": items}
+    doc = {**order, "items": items}
+    cache.set_order(order_id, doc)
+    return JSONResponse(
+        content=json.loads(json.dumps(doc, default=str)),
+        headers={"X-Cache": "MISS"},
+    )
 
 
 # ── Customers ─────────────────────────────────────────────────

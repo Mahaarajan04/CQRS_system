@@ -1,0 +1,132 @@
+Context
+The problem we're solving. This CQRS system has a write path (Write API → MongoDB events → Redis Stream) and a read path (Consumer → PostgreSQL → Read API). They're decoupled so reads scale independently — but a reader who just did a write has to wait for the consumer to project the event into PostgreSQL before the write becomes visible. This is the classic read-your-writes consistency gap.
+
+What we measured. The benchmark in scripts/test_flow.py --reader shows:
+
+Scenario	p50	p95	p99	max	polls/read
+Idle, fast consumer	4ms	7ms	21ms	21ms	1.0
+Under 32-thread write load	5ms	6ms	10ms	10ms	1.0
+Slow consumer (100ms/event)	313ms	1281ms	3412ms	3412ms	42
+The slow-consumer row is what happens when the read side is stressed (heavy batch jobs, large projections, cross-region replica lag, or simply an overloaded consumer). A user who just placed an order and refreshes the page sees a 404 for up to 3.4 seconds. That's the window we want to close.
+
+The intended outcome. After this change, GET /orders/{id} for an order the user just placed returns in ~1ms regardless of consumer state, because the Write API eagerly populates a Redis cache entry that the Read API checks first. List endpoints and analytics stay on PostgreSQL (cache is per-order only).
+
+Design
+The core idea
+Add a Redis-backed key/value cache keyed by order:{order_id}. The Write API writes the cache on every successful command. The Read API checks the cache before hitting PostgreSQL.
+
+Write path (unchanged):
+  POST /orders → append_event (Mongo insert + Redis xadd) → 201
+
+Cache path (new):
+  POST /orders → cache.set_order(order_id, {...full doc...}) with TTL=60s
+
+Read path (new):
+  GET /orders/{id} → cache.get_order(id)
+                     ├── HIT  → return doc + X-Cache: HIT
+                     └── MISS → PostgreSQL query → return + X-Cache: MISS
+What the cache stores
+One key per order: order:{order_id}, value = JSON of the exact shape that GET /orders/{id} returns today. No schema drift: the cached doc is a drop-in replacement for the PG query result.
+
+{
+  "order_id": "...",
+  "status": "placed" | "payment_confirmed" | "shipped" | "cancelled",
+  "region": "...",
+  "placed_at": "...",
+  "payment_confirmed_at": null,
+  "shipped_at": null,
+  "cancelled_at": null,
+  "version": 1,
+  "customer_id": "...", "customer_name": "...", "customer_email": "...",
+  "items": [{"product_id": "...", "name": "...", "quantity": N, "unit_price": X}]
+}
+Cache lifecycle
+Event	Cache action
+POST /orders succeeds	SET order:{id} <full doc, status=placed> TTL=60s
+POST /orders/{id}/confirm-payment succeeds	read cache, patch {status, payment_confirmed_at, version}, re-SET with TTL
+POST /orders/{id}/ship succeeds	read cache, patch {status, shipped_at, version}, re-SET
+POST /orders/{id}/cancel succeeds	read cache, patch {status, cancelled_at, version}, re-SET
+Any ConcurrencyError	no cache change (write was rejected)
+Cache miss on a patch	skip silently (cache expired; no need to repopulate)
+Redis unavailable	log + continue (cache is an accelerator, not authoritative)
+Why TTL=60s and no consumer invalidation
+TTL is the safety net. If cache and PG ever drift (bug, clock skew, dropped update), the drift self-heals in ≤60s.
+No invalidation from the consumer keeps the consumer completely unchanged. Simplifies the change and avoids a new coupling direction (consumer → cache).
+60s is long enough to cover any realistic projection lag, short enough that stale data doesn't linger.
+Scope — what's NOT cached
+Endpoint	Treatment	Reason
+GET /orders/{id}	Cache + PG fallback	RYW target
+GET /orders (list, filters)	PG only	Can't serve filters from per-order cache
+GET /customers/{id}/orders	PG only	Same
+GET /customers/summary	PG only (materialized view)	Already fast
+GET /analytics/revenue	PG only (materialized view)	Already fast
+Saga-driven status transitions (InventoryReserved, PaymentAuthorized, etc.) are not written to the cache — they flow through PG only. Rationale: the saga is internal; users don't refresh to watch those transitions. Keeps scope focused on user-facing commands.
+
+Files to modify
+New files
+write-api/cache.py (~45 lines)
+
+Class OrderCache wrapping a single Redis.from_url(REDIS_URL) client.
+Methods: set_order(order_id, doc), patch_order(order_id, **fields), invalidate(order_id).
+Key format: order:{order_id}, TTL constant at module top.
+All methods swallow Redis errors + log (cache is non-critical).
+read-api/cache.py (~20 lines)
+
+Same OrderCache class but only get_order(order_id) needed.
+Duplicated rather than shared because the two services live in separate Docker containers (see write-api/Dockerfile, read-api/Dockerfile). ~30 lines of duplication is cheaper than a cross-container shared module.
+Edited files
+write-api/main.py — wire OrderCache into all 4 command handlers.
+
+place_order (write-api/main.py:45): after append_event, build the full order doc using cmd fields + event["timestamp"] and call cache.set_order(order_id, doc).
+confirm_payment (write-api/main.py:74): after successful append, cache.patch_order(order_id, status="payment_confirmed", payment_confirmed_at=event["timestamp"], version=event["version"]).
+ship_order (write-api/main.py:88): same pattern with status="shipped", shipped_at.
+cancel_order (write-api/main.py:102): same pattern with status="cancelled", cancelled_at.
+read-api/main.py — make get_order cache-first.
+
+get_order (read-api/main.py:63): call cache.get_order(id) first. On hit, return with X-Cache: HIT response header. On miss, fall through to existing PG query path and set X-Cache: MISS. Need to change the return type to Response so we can set headers.
+Shape reference (to keep cache doc = PG result)
+The read response shape is already defined by read-api/main.py:63-98. Fields we populate on write:
+
+From PlaceOrderCommand input: customer_id, customer_name, customer_email, region, items (translated: price → unit_price)
+From append_event return value: placed_at ← event["timestamp"], version ← event["version"]
+Static: status="placed", all other *_at fields null
+items elements: {product_id, name, quantity, unit_price} per read-api/main.py:92-96
+Edge cases and how we handle them
+Write-API crashes after event append, before cache SET: event is in Mongo, no cache entry. Next GET is a cache miss → PG fallback → eventually consistent via consumer. No regression vs. today.
+Redis down when caching: caught, logged, command still returns 201. Reads that would have hit cache now go to PG. Degraded but correct.
+Patch on an expired cache entry: patch_order finds no key, skips silently. Next GET goes to PG which (eventually) has the new status. Safe.
+Cache shows status=placed, PG shows status=placed (normal): HIT is valid.
+Cache shows status=payment_confirmed, PG still shows status=placed (consumer lagging): HIT is more current than PG. This is exactly the point of the cache.
+Out-of-order updates (shouldn't happen — optimistic concurrency prevents it at the event layer, ConcurrencyError means no cache update either): not possible given the existing concurrency guards.
+Verification plan
+Slow consumer (CONSISTENCY_DELAY=0.1, currently running on pid 97718) stays running throughout — we want the before/after comparison against the same baseline.
+
+Benchmark — python scripts/test_flow.py --reader --n 50
+
+Expect: p50/p95/p99 drop from 313 / 1281 / 3412 ms to single-digit ms.
+Expect: polls drops from 42 to 1 for every sample.
+Save to /tmp/reader_cached.csv for side-by-side with /tmp/reader_baseline.csv.
+Cache semantics spot-check — inspect headers:
+
+ORDER_ID=$(curl -s -X POST http://localhost:8001/orders -H 'content-type: application/json' -d '{...}' | jq -r .order_id)
+curl -sI http://localhost:8002/orders/$ORDER_ID | grep -i x-cache   # expect HIT
+sleep 70                                                             # wait TTL to expire
+curl -sI http://localhost:8002/orders/$ORDER_ID | grep -i x-cache   # expect MISS (and PG fallback works)
+redis-cli GET order:$ORDER_ID                                        # expect nil after TTL
+Patch semantics — place order, confirm-payment, GET immediately:
+
+# expect cache to reflect status=payment_confirmed even if PG hasn't caught up
+Verify status in response is payment_confirmed within ~1ms of the confirm.
+
+Non-regression — python scripts/test_flow.py (normal mode). All 9 banner sections should still pass. List endpoints (steps 8–9) should behave identically — cache is per-order so list queries untouched.
+
+Saga non-regression — python scripts/test_flow.py --saga. All 3 scenarios should pass. Cache is only written by user-facing commands, so saga behavior is unchanged.
+
+Clean restart — bash restart.sh at the end. Wipes data and restarts all services at default speed so the system is back to a known-good state.
+
+Out of scope (explicit non-goals for this change)
+Saga writing to the cache (saga events update PG only; deliberate).
+Invalidating cache from the consumer after projection (TTL handles this).
+Caching list or aggregate endpoints (wrong tool — those want secondary indexes, not a KV cache).
+Cross-service code sharing for cache.py (duplicate the ~30 lines, keep the containers independent).
+Tuning TTL dynamically based on projection lag (60s flat is fine for the demo).

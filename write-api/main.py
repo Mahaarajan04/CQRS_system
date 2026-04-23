@@ -5,8 +5,10 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 from events import append_event, get_events_for_order, ConcurrencyError
+from cache import OrderCache
 
 app = FastAPI(title="CQRS Write API — Command Side")
+cache = OrderCache()
 
 
 # ── Request models ────────────────────────────────────────────────────────────
@@ -64,6 +66,32 @@ def place_order(cmd: PlaceOrderCommand):
             "total_amount":   total,
         },
     )
+
+    # Prime the read-your-writes cache with the full order doc in the exact
+    # shape GET /orders/{id} returns. Closes the projection-lag window.
+    cache.set_order(order_id, {
+        "order_id":             order_id,
+        "status":               "placed",
+        "region":               cmd.region,
+        "placed_at":            event["timestamp"],
+        "payment_confirmed_at": None,
+        "shipped_at":           None,
+        "cancelled_at":         None,
+        "version":              event["version"],
+        "customer_id":          cmd.customer_id,
+        "customer_name":        cmd.customer_name,
+        "customer_email":       cmd.customer_email,
+        "items": [
+            {
+                "product_id": i.product_id,
+                "name":       i.name,
+                "quantity":   i.quantity,
+                "unit_price": i.price,
+            }
+            for i in cmd.items
+        ],
+    })
+
     return {
         "order_id": order_id,
         "event_id": event["event_id"],
@@ -80,6 +108,12 @@ def confirm_payment(order_id: str, cmd: ConfirmPaymentCommand):
             expected_version=cmd.expected_version,
             payload={},
         )
+        cache.patch_order(
+            order_id,
+            status="payment_confirmed",
+            payment_confirmed_at=event["timestamp"],
+            version=event["version"],
+        )
         return {"event_id": event["event_id"], "version": event["version"]}
     except ConcurrencyError as e:
         raise HTTPException(status_code=409, detail=str(e))
@@ -94,6 +128,12 @@ def ship_order(order_id: str, cmd: ShipOrderCommand):
             expected_version=cmd.expected_version,
             payload={"tracking_number": cmd.tracking_number},
         )
+        cache.patch_order(
+            order_id,
+            status="shipped",
+            shipped_at=event["timestamp"],
+            version=event["version"],
+        )
         return {"event_id": event["event_id"], "version": event["version"]}
     except ConcurrencyError as e:
         raise HTTPException(status_code=409, detail=str(e))
@@ -107,6 +147,12 @@ def cancel_order(order_id: str, cmd: CancelOrderCommand):
             aggregate_id=order_id,
             expected_version=cmd.expected_version,
             payload={"reason": cmd.reason},
+        )
+        cache.patch_order(
+            order_id,
+            status="cancelled",
+            cancelled_at=event["timestamp"],
+            version=event["version"],
         )
         return {"event_id": event["event_id"], "version": event["version"]}
     except ConcurrencyError as e:

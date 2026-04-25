@@ -15,11 +15,11 @@ cd "$ROOT/read-api"  && uvicorn main:app --port 8002 --log-level info > /tmp/rea
 READ_PID=$!
 
 echo "[START] Consumer worker"
-cd "$ROOT/consumer"  && python worker.py > /tmp/consumer.log 2>&1 &
+cd "$ROOT/consumer"  && "$ROOT/venv/bin/python" -u worker.py > /tmp/consumer.log 2>&1 &
 CONSUMER_PID=$!
 
 echo "[START] Saga orchestrator"
-cd "$ROOT/saga"      && python saga_worker.py > /tmp/saga.log 2>&1 &
+cd "$ROOT/saga"      && "$ROOT/venv/bin/python" -u saga_worker.py > /tmp/saga.log 2>&1 &
 SAGA_PID=$!
 
 echo ""

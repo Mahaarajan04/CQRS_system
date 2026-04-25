@@ -5,9 +5,7 @@ The Read API checks this cache before PostgreSQL on GET /orders/{id}. On a
 cache miss it falls through to PostgreSQL, then repopulates the cache so the
 next reader hits (read-through / lazy load).
 
-Duplicated across write-api/ and read-api/ intentionally: the two services ship
-as separate containers, so sharing a module across process boundaries would
-cost more than the ~30 lines of duplication.
+Duplicated across write-api/ and read-api/.
 """
 
 import os

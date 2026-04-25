@@ -72,9 +72,10 @@ def get_order(order_id: str):
     PG and populate the cache so the next reader hits (read-through).
     404s are not cached — avoids poisoning the cache during projection lag.
     """
-    cached = cache.get_order(order_id)
-    if cached is not None:
-        return JSONResponse(content=cached, headers={"X-Cache": "HIT"})
+    if not os.getenv("DISABLE_CACHE"):
+        cached = cache.get_order(order_id)
+        if cached is not None:
+            return JSONResponse(content=cached, headers={"X-Cache": "HIT"})
 
     conn = get_conn()
     with conn.cursor() as cur:

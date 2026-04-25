@@ -63,5 +63,10 @@ for i in $(seq 1 40); do
     fi
 done
 
+# ── Wipe MongoDB collections (belt-and-suspenders; volumes already wiped above) ──
+echo "Clearing MongoDB events and sagas..."
+docker compose exec -T mongodb mongosh cqrs_events --quiet \
+    --eval "db.events.deleteMany({}); db.sagas.deleteMany({}); print('MongoDB cleared')"
+
 echo "All services up."
 echo "Logs: docker compose logs -f [write-api|read-api|consumer|saga]"

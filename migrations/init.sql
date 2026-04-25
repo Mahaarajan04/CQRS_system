@@ -98,8 +98,8 @@ CREATE TABLE IF NOT EXISTS inventory (
 );
 
 INSERT INTO inventory (product_id, name, total_qty) VALUES
-    ('p1', 'Laptop',   5),
-    ('p2', 'Mouse',    20),
-    ('p3', 'Keyboard', 15),
-    ('p4', 'Monitor',  8)
+    ('p1', 'Laptop',   100000),
+    ('p2', 'Mouse',    500000),
+    ('p3', 'Keyboard', 300000),
+    ('p4', 'Monitor',  200000)
 ON CONFLICT DO NOTHING;

@@ -6,17 +6,70 @@
 
 ## Setup — Run Once
 
+### Architecture note
+
+The services (Write API, Read API, Consumer, Saga) run inside Docker. The databases run inside Docker too, but they **expose ports to localhost** so that the local Python scripts (`scripts/`, `saga/recovery.py`) can connect directly.
+
+It is recommended to have these locally installed for better logging. Docker also provides them. They can be installed in MacOS as follows:
+```
+brew install redis postgresql mongodb-community
+```
+
+### 1. Install Python Dependencies (for local scripts)
+
+Create a Python environment and install dependencies:
+
+```bash
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+### 2. Start Docker Services
+
 ```bash
 bash restart.sh
 ```
 
-Wait ~15 seconds for all containers to start, then open **http://localhost:3000**.
+Wait ~15 seconds for all containers to start. All local scripts (`scripts/consistency_demo.py`, `scripts/seed.py`, etc.) require Docker to be running since they connect to the databases over the exposed localhost ports above.
 
+## Setup & Run the Dashboard
+
+Follow these steps to get the dashboard up and running locally:
+
+### 1. Install Dependencies
+Make sure you have `npm` installed. If not, you can install it using:
+
+```bash
+brew install npm
+````
+
+Then install the project dependencies:
+
+```bash
+npm install
+```
+
+### 2. Start the Development Server
+
+```bash
+npm run dev
+```
+
+### 3. Open the Dashboard
+
+Once the server is running, open your browser and go to:
+
+```
+http://localhost:5173
+```
+
+You should now see the dashboard running locally.
 ---
 
 ## Demo 1 — Basic CQRS Flow (Write → Event → Project → Read)
 
-**Where to watch:****Dashboard** (http://localhost:3000) — Orders table populates and status progresses `placed → reserved → confirmed → shipped`.
+**Dashboard** (http://localhost:5173) — Orders table populates and status progresses `placed → reserved → confirmed → shipped`.
 
 ```bash
 curl -s -X POST http://localhost:8001/orders \
@@ -71,7 +124,7 @@ This demo shows the lag window between a write landing in MongoDB (Write API) an
 
 **Step 1 — slow consumer + cache OFF (see the gap):**
 ```bash
-bash restart.sh --delay 2 --no-cache
+bash restart.sh --delay 0.1 --no-cache
 python3 scripts/consistency_demo.py            # N=5 orders
 python3 scripts/consistency_demo.py --n 20     # larger sample for stats
 ```

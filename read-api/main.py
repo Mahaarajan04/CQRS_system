@@ -158,7 +158,9 @@ def customer_summaries():
     """
     conn = get_conn()
     with conn.cursor() as cur:
-        cur.execute("SELECT * FROM mv_orders_by_customer ORDER BY total_spent DESC")
+        cur.execute(
+            "SELECT * FROM mv_orders_by_customer WHERE total_orders > 0 ORDER BY total_spent DESC"
+        )
         return cur.fetchall()
 
 

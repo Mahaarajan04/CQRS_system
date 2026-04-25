@@ -196,6 +196,16 @@ class SagaOrchestrator:
                     state = "started"
 
             if state == "started":
+                existing_types = {e["event_type"] for e in get_events_for_order(order_id)}
+                if "OrderShipped" in existing_types:
+                    self._save(saga_id, state="completed")
+                    print(f"[SAGA] {saga_id[:8]} order already shipped (seeded) — skipping")
+                    return
+                if "OrderCancelled" in existing_types:
+                    self._save(saga_id, state="failed", error="pre-existing cancellation")
+                    print(f"[SAGA] {saga_id[:8]} order already cancelled (seeded) — skipping")
+                    return
+
                 self._save(saga_id, state="inventory_reserving")
                 result = check_and_reserve_inventory(pg_conn, order_id, items)
 

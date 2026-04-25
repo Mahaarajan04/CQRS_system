@@ -22,7 +22,7 @@ def _mark_processed(cur, event_id: str):
     )
 
 
-def project_event(conn, event: dict):
+def project_event(conn, event: dict, silent: bool = False):
     """
     Apply one event to the 3NF PostgreSQL read model. Idempotent.
     """
@@ -135,12 +135,14 @@ def project_event(conn, event: dict):
         _mark_processed(cur, event_id)
 
     conn.commit()
-    print(f"[OK] {event_type} → order {order_id}")
+    if not silent:
+        print(f"[OK] {event_type} → order {order_id}")
 
 
-def refresh_materialized_views(conn):
+def refresh_materialized_views(conn, silent: bool = False):
     with conn.cursor() as cur:
         cur.execute("REFRESH MATERIALIZED VIEW CONCURRENTLY mv_orders_by_customer")
         cur.execute("REFRESH MATERIALIZED VIEW CONCURRENTLY mv_daily_revenue")
     conn.commit()
-    print("[REFRESH] Materialized views updated")
+    if not silent:
+        print("[REFRESH] Materialized views updated")

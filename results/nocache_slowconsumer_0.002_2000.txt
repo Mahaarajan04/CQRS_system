@@ -205,20 +205,20 @@
     ...1990/2000 orders placed & read
     ...2000/2000 orders placed & read
 
-  [1mResults  (N=2000, failures=0, wall=37.1s)[0m
+  [1mResults  (N=2000, failures=0, wall=21.5s)[0m
   metric             p50       p95       p99       max      mean
-  POST ms            4.3      10.1      10.7      11.7       5.0
-  RYW lag ms        12.8      21.5      26.9     367.4      13.6
-  polls                2         2         3        44       1.7
+  POST ms            2.4       3.4       4.0      21.9       2.5
+  RYW lag ms         9.3      10.8      13.4      22.3       8.3
+  polls                2         2         2         3       1.8
 
   [1mRYW lag distribution[0m
-  [    0 –     5 ms]   103  ██
-  [    5 –    10 ms]   529  ██████████████
-  [   10 –    20 ms]  1071  ██████████████████████████████
-  [   20 –    50 ms]   294  ████████
-  [   50 –   100 ms]     2  
+  [    0 –     5 ms]   456  ███████████
+  [    5 –    10 ms]  1184  ██████████████████████████████
+  [   10 –    20 ms]   357  █████████
+  [   20 –    50 ms]     3  
+  [   50 –   100 ms]     0  
   [  100 –   250 ms]     0  
-  [  250 –   500 ms]     1  
+  [  250 –   500 ms]     0  
   [  500 –  1000 ms]     0  
   [ 1000 – 10000 ms]     0  
   [92m✓[0m  Raw samples written to /tmp/reader_baseline.csv

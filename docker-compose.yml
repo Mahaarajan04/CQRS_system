@@ -1,6 +1,39 @@
 version: '3.8'
 
+# Two Redis instances:
+#   redis-stream  :6379  — order_events stream, no memory limit
+#   redis-cache   :6380  — order:* KV cache, 2MB + allkeys-lru
+#
+# Pass env vars to control consumer speed and cache:
+#   CONSISTENCY_DELAY=0.1 DISABLE_CACHE=1 docker compose up -d
+# Or use restart.sh --delay 0.1 --no-cache
+
 services:
+
+  # ── Infrastructure ──────────────────────────────────────────────────────────
+
+  redis-stream:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --maxmemory 0
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis-cache:
+    image: redis:7-alpine
+    ports:
+      - "6380:6379"
+    command: redis-server --maxmemory 2mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
   mongodb:
     image: mongo:7
     ports:
@@ -9,6 +42,11 @@ services:
       - mongo_data:/data/db
     environment:
       MONGO_INITDB_DATABASE: cqrs_events
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   postgres:
     image: postgres:16
@@ -21,11 +59,13 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./migrations/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cqrs -d cqrs_read"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
+  # ── Application services ────────────────────────────────────────────────────
 
   write-api:
     build: ./write-api
@@ -33,23 +73,15 @@ services:
       - "8001:8001"
     environment:
       MONGO_URL: mongodb://mongodb:27017
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis://redis-stream:6379
+      REDIS_CACHE_URL: redis://redis-cache:6379
     depends_on:
-      - mongodb
-      - redis
-    restart: on-failure
-
-  consumer:
-    build: ./consumer
-    environment:
-      MONGO_URL: mongodb://mongodb:27017
-      REDIS_URL: redis://redis:6379
-      POSTGRES_URL: postgresql://cqrs:cqrs_pass@postgres:5432/cqrs_read
-      CONSISTENCY_DELAY: "0"
-    depends_on:
-      - mongodb
-      - redis
-      - postgres
+      mongodb:
+        condition: service_healthy
+      redis-stream:
+        condition: service_healthy
+      redis-cache:
+        condition: service_healthy
     restart: on-failure
 
   read-api:
@@ -58,8 +90,46 @@ services:
       - "8002:8002"
     environment:
       POSTGRES_URL: postgresql://cqrs:cqrs_pass@postgres:5432/cqrs_read
+      REDIS_CACHE_URL: redis://redis-cache:6379
+      DISABLE_CACHE: ${DISABLE_CACHE:-}
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+      redis-cache:
+        condition: service_healthy
+    restart: on-failure
+
+  consumer:
+    build: ./consumer
+    environment:
+      MONGO_URL: mongodb://mongodb:27017
+      REDIS_URL: redis://redis-stream:6379
+      POSTGRES_URL: postgresql://cqrs:cqrs_pass@postgres:5432/cqrs_read
+      CONSISTENCY_DELAY: ${CONSISTENCY_DELAY:-0}
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis-stream:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    restart: on-failure
+
+  saga:
+    build:
+      context: .
+      dockerfile: saga/Dockerfile
+    environment:
+      MONGO_URL: mongodb://mongodb:27017
+      REDIS_URL: redis://redis-stream:6379
+      POSTGRES_URL: postgresql://cqrs:cqrs_pass@postgres:5432/cqrs_read
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis-stream:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
     restart: on-failure
 
 volumes:

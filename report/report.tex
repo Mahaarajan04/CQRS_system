@@ -73,7 +73,7 @@
 % ── Header/Footer ─────────────────────────────────────────────────────────────
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\textcolor{primary}{CQRS + Event Sourcing}}
+\fancyhead[L]{\textcolor{primary}{CQRS System}}
 \fancyhead[R]{\textcolor{primary}{CS315 Report}}
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
@@ -92,14 +92,15 @@
 % ── Title page ────────────────────────────────────────────────────────────────
 \begin{titlepage}
   \centering
-  \vspace*{1.5cm}
+  \vspace*{5.5cm}
   {\color{primary}\rule{\textwidth}{1pt}}\\[0.6cm]
   {\Huge\bfseries CQRS Order-Fulfillment System}\\[0.4cm]
   {\Large CS315 - Principles of Database Systems}\\[0.4cm]
+  {\Large Project Report}\\[0.4cm]
   {\color{primary}\rule{\textwidth}{1pt}}\\[2.0cm]
 
   % {\Large CS315 - Principles of Database Systems}\\[0.4cm]
-  {\Large Project Report}\\[3.0cm]
+  
 
   % \begin{tabular}{r@{\hskip 1em}l}
   %   \textbf{Project:}    & CQRS Order-Fulfillment System \\[0.2cm]
@@ -107,9 +108,9 @@
   %   \textbf{Languages:}  & Python (backend), JavaScript (dashboard), SQL \\[0.2cm]
   %   \textbf{LoC:}        & $\approx$2{,}900 (Python) + 1 SQL migration + dashboard \\[0.2cm]
   % \end{tabular}
-\vfill
+  \vspace{-0.5cm}
 
-{\Large\bfseries Authors}\\[1cm]
+% {\Large\bfseries Authors}\\[1cm]
 
 \begin{tabular}{c}
 \textbf{Mahaarajan J} \quad (Roll No: 220600) \\[0.4cm]
@@ -117,7 +118,7 @@
 \textbf{Aaditi Agarwal} \quad (Roll No: 220006)
 \end{tabular}
 
-\vfill
+  \vspace{2cm}
 {\large 26th April 2026}
 \end{titlepage}
 
@@ -146,24 +147,39 @@ The system has four backend services and four data stores. They communicate as f
 
 \subsection{Services}
 
-\begin{description}[style=nextline,leftmargin=2em]
-  \item[Write API (port 8001, FastAPI)]
-    The only writer of the canonical event log. Exposes four command endpoints - \code{POST /orders} (PlaceOrder), \code{POST /orders/\{id\}/confirm-payment}, \code{.../ship}, \code{.../cancel} - plus a diagnostic \code{GET /orders/\{id\}/events} that returns the raw event log for debugging. \\
-    \emph{Reads} the latest event of the target aggregate from MongoDB to perform the optimistic-concurrency check. \emph{Writes} to three places per command: appends the new event to the MongoDB \code{events} collection, \code{XADD}s the same event onto the \code{order\_events} Redis stream, and \code{SET}s (or read-modify-writes) the corresponding entry in the Redis cache. The cache write is best-effort - if Redis is unreachable the command still succeeds.
+\begin{enumerate}
 
-  \item[Read API (port 8002, FastAPI)]
-    Serves all client queries. \code{GET /orders/\{id\}} is cache-first: it \emph{reads} the Redis cache and returns immediately on hit; on miss, it falls through to PostgreSQL, returns the result, and \emph{writes} it back to the cache (read-through). The remaining endpoints - \code{GET /orders} (filtered list with JOIN), \code{GET /customers/\{id\}/orders}, \code{GET /customers/summary}, \code{GET /analytics/revenue}, \code{GET /inventory} - read directly from PostgreSQL tables and materialized views. A small in-memory counter exposes \code{GET /cache/stats}, which the dashboard polls to display the live hit rate.
+  \item \textbf{Write API (port 8001, FastAPI)}
+  \begin{itemize}
+    \item \textbf{Endpoints:} \code{POST /orders}, \code{POST /orders/\{id\}/confirm-payment}, \code{.../ship}, \code{.../cancel}, and \code{GET /orders/\{id\}/events}.
+    \item \textbf{Behavior:} Reads latest event from MongoDB for concurrency check; writes each command to MongoDB (event log), Redis stream (\code{XADD}), and Redis cache (if present).
+  \end{itemize}
 
-  \item[Consumer Worker (background process)]
-    Subscribes to the \code{order\_events} stream via the \code{projector\_group} consumer group using \code{XREADGROUP}. For each event it dispatches by \code{event\_type} into a projection routine: \code{OrderPlaced} causes upserts into \code{customers}, \code{orders}, and \code{order\_items}; \code{PaymentConfirmed} / \code{OrderShipped} / \code{OrderCancelled} update the corresponding \code{*\_at} timestamp on \code{orders}; saga-internal events (\code{InventoryReserved}, \code{PaymentAuthorized}, \ldots) update the \code{status} column. After a successful projection the consumer inserts the \code{event\_id} into the \code{processed\_events} guard table and acknowledges the message with \code{XACK}. Every 30 seconds it runs \code{REFRESH MATERIALIZED VIEW CONCURRENTLY} on both views.
+  \item \textbf{Read API (port 8002, FastAPI)}
+  \begin{itemize}
+    \item \textbf{Endpoints:} \code{GET /orders/\{id\}} (cache first),\code{/orders}, \code{/customers/\{id\}/orders}, \\\code{/customers/summary}, \code{/analytics/revenue}, \code{/inventory}, and \code{/cache/stats} (This is to show number of cache hits).
+    \item \textbf{Behavior:} Cache-first reads via Redis with PostgreSQL fallback (read-through); all other queries served from PostgreSQL and materialized views.
+  \end{itemize}
 
-  \item[Saga Orchestrator (background process)]
-    Subscribes to \code{OrderPlaced} events via the \code{saga\_group} consumer group. For each order it \emph{reads} the event log from MongoDB and the \code{inventory} table from PostgreSQL to drive a four-step workflow: reserve inventory $\to$ authorise payment $\to$ confirm $\to$ ship. \emph{Writes} go to (a) PostgreSQL, where it issues a conditional \code{UPDATE inventory SET reserved\_qty = reserved\_qty + qty WHERE (total\_qty - reserved\_qty) >= qty}, and (b) MongoDB, where it appends saga-driven events (\code{InventoryReserved}, \code{PaymentAuthorized}, \code{PaymentConfirmed}, \code{OrderShipped}, or on failure \code{InventoryReserveFailed}, \code{PaymentAuthorizeFailed}, \code{OrderCancelled}). Saga state itself is persisted in the \code{cqrs\_events.sagas} collection after every transition; the recovery worker (\file{saga/recovery.py}) scans this collection for documents whose \code{state} is non-terminal and \code{updated\_at} older than a threshold, and re-invokes \code{run(saga\_id)}, which uses the existing event log to skip already-completed steps.
+  \item \textbf{Consumer Worker (background process)}
+  \begin{itemize}
+    \item \textbf{Role:} Subscribes to Redis stream (\code{XREADGROUP}) and projects events into PostgreSQL tables. This is the core which connects both the databases.
+    \item \textbf{Behavior:} Updates tables based on event type, records processed events, acknowledges via \code{XACK}, and periodically refreshes materialized views (once every 30s) to display analytics.
+  \end{itemize}
 
-  \item[Frontend Dashboard (port 3000, React/Vite)]
-    A static SPA served via Nginx. Polls \code{/orders}, \code{/inventory}, \code{/analytics/revenue}, and \code{/cache/stats} on the Read API every 1-2 seconds. Renders the live orders table (with status badges), inventory bars per product, a revenue bar chart per region, and a cache hit-rate chip. It is purely a consumer of the Read API; it never talks to the Write API or to any database directly.
-\end{description}
+  \item \textbf{Saga Orchestrator (background process)}
+  \begin{itemize}
+    \item \textbf{Role:} Drives order workflow (inventory $\rightarrow$ payment $\rightarrow$ confirm $\rightarrow$ ship) from \code{OrderPlaced} events.
+    \item \textbf{Behavior:} Reads from MongoDB and PostgreSQL; writes saga events to MongoDB in order to maintain idempotency and updates inventory in PostgreSQL; persists saga state and supports recovery via replay.
+  \end{itemize}
 
+  \item \textbf{Frontend Dashboard (port 3000, React/Vite)}
+  \begin{itemize}
+    \item \textbf{Role:} Static SPA that polls Read API endpoints (\code{/orders}, \code{/inventory}, \code{/analytics/revenue}, \code{/cache/stats}).
+    \item \textbf{Behavior:} Renders live orders, inventory, revenue charts, and cache hit rate; interacts only with the Read API.
+  \end{itemize}
+
+\end{enumerate}
 \subsection{Data Stores}
 
 \subsubsection{MongoDB \code{cqrs\_events}}
@@ -225,141 +241,57 @@ Both views carry a unique index on their grouping keys, which PostgreSQL require
 % ──────────────────────────────────────────────────────────────────────────────
 \section{Implementation}
 
-\subsection{Write Path: Commands $\to$ Events}
+\subsection{Write Path}
 
-The Write API is intentionally thin. \code{POST /orders} validates the payload, calls \code{append\_event}, then primes the cache:
+The Write API is intentionally thin — it validates the incoming command, appends an event, and primes the cache. No synchronous projection, no cross-service call.
 
-\begin{lstlisting}[language=Python]
-@app.post("/orders", status_code=201)
-def place_order(cmd: PlaceOrderCommand):
-    order_id = str(uuid.uuid4())
-    event = append_event(
-        event_type="OrderPlaced",
-        aggregate_id=order_id,
-        expected_version=0,
-        payload={
-            "customer_id":    cmd.customer_id,
-            "customer_name":  cmd.customer_name,
-            "customer_email": cmd.customer_email,
-            "region":         cmd.region,
-            "items":          [i.model_dump() for i in cmd.items],
-            "total_amount":   sum(i.price * i.quantity for i in cmd.items),
-        },
-    )
-    cache.set_order(order_id, {  # prime RYW cache
-        "order_id": order_id, "status": "placed",
-        "placed_at": event["timestamp"], "version": event["version"],
-        # ... full doc in the same shape Read API returns ...
-    })
-    return {"order_id": order_id, "version": event["version"]}
-\end{lstlisting}
+\begin{itemize}
+  \item \textbf{Command validation.} Pydantic models enforce field types and required fields at the API boundary.
+  \item \textbf{Optimistic concurrency.} \code{append\_event} reads the latest event for the aggregate from MongoDB (\code{find\_one} with \code{sort=[("version", -1)]}), compares it against \code{expected\_version}, and raises HTTP~409 if they differ. Two concurrent writers on the same aggregate are serialised; writers on different aggregates never contend.
+  \item \textbf{Dual write.} On success, the event is inserted into MongoDB and \code{XADD}-ed onto the Redis stream in sequence. There is no distributed transaction; a crash between the two would leave the event in Mongo but unpublished (the outbox pattern would close this gap — see Section~\ref{sec:future}).
+  \item \textbf{Cache priming.} After every successful command, the Write API calls \code{cache.set\_order} (or \code{patch\_order} for status-only updates) to pre-populate the Redis cache. This is best-effort — a Redis failure does not fail the command.
+\end{itemize}
 
-\subsubsection{Optimistic Concurrency}
+\subsection{Read Path}
 
-\code{append\_event} performs an optimistic concurrency check before inserting:
+The Read API exposes two tiers — cache-first for point lookups, PostgreSQL-only for lists and analytics.
 
-\begin{lstlisting}[language=Python]
-def append_event(event_type, aggregate_id, payload, expected_version):
-    last = events_collection.find_one(
-        {"aggregate_id": aggregate_id},
-        sort=[("version", -1)],
-    )
-    current_version = last["version"] if last else 0
-    if current_version != expected_version:
-        raise ConcurrencyError(
-            f"expected version {expected_version}, found {current_version}")
-    event = {
-        "event_id":     str(uuid.uuid4()),
-        "event_type":   event_type,
-        "aggregate_id": aggregate_id,
-        "version":      current_version + 1,
-        "timestamp":    datetime.now(timezone.utc).isoformat(),
-        "payload":      payload,
-    }
-    events_collection.insert_one(event)
-    _redis.xadd(STREAM_NAME, {"data": json.dumps(event)})
-    return event
-\end{lstlisting}
+\begin{itemize}
+  \item \textbf{Point lookup (\code{GET /orders/\{id\}}).} Checks the Redis cache first. On a HIT, returns immediately with \code{X-Cache: HIT}. On a MISS, queries PostgreSQL (\code{orders JOIN customers} + a second query for \code{order\_items}), writes the result back to the cache (read-through), and returns with \code{X-Cache: MISS}. The header makes hit/miss rates observable to the benchmark harness.
+  \item \textbf{List and analytics queries.} \code{GET /orders}, \code{GET /customers/summary}, \code{GET /analytics/revenue}, and \code{GET /inventory} read directly from PostgreSQL tables and materialized views. These are not cached — their result sets are too large and volatile for a key-value store.
+  \item \textbf{Cache stats.} An in-memory counter (incremented on each HIT/MISS) is exposed via \code{GET /cache/stats} for the dashboard's hit-rate chip.
+\end{itemize}
 
-This is per-aggregate optimistic concurrency: two concurrent confirm-payment commands for the same order will be serialised, with the loser receiving HTTP 409. There is no global lock - different aggregates do not contend.
+\subsection{Cache Design}
 
-\subsection{Read Path: Cache + PG Fallback}
-
-The Read API's point-lookup endpoint checks the cache first, falls through to PostgreSQL on miss, and writes the PG result back to the cache so the next reader hits (\emph{read-through}):
-
-\begin{lstlisting}[language=Python]
-@app.get("/orders/{order_id}")
-def get_order(order_id: str):
-    if not os.getenv("DISABLE_CACHE"):
-        cached = cache.get_order(order_id)
-        if cached is not None:
-            return JSONResponse(content=cached, headers={"X-Cache": "HIT"})
-
-    # cache miss -> PG fallback
-    conn = get_conn()
-    with conn.cursor() as cur:
-        cur.execute("""SELECT o.*, c.customer_name, c.customer_email
-                       FROM orders o JOIN customers c ON ...
-                       WHERE o.order_id = %s""", (order_id,))
-        order = cur.fetchone()
-        if not order:
-            raise HTTPException(status_code=404, detail="Order not found")
-        cur.execute("SELECT product_id, name, quantity, unit_price "
-                    "FROM order_items WHERE order_id = %s", (order_id,))
-        items = cur.fetchall()
-
-    doc = {**order, "items": items}
-    cache.set_order(order_id, doc)  # populate cache for next reader
-    return JSONResponse(content=..., headers={"X-Cache": "MISS"})
-\end{lstlisting}
-
-The \code{X-Cache} response header makes hits and misses visible to the benchmark harness so we can measure hit rate without a separate stats endpoint.
-
-\subsection{Cache: write-through + read-through, 60\,s TTL}
-
-\begin{lstlisting}[language=Python]
-class OrderCache:                                    # write-api/cache.py
-    def set_order(self, order_id, doc):
-        self._r.set(f"order:{order_id}", json.dumps(doc), ex=TTL_SEC)
-
-    def patch_order(self, order_id, **fields):
-        raw = self._r.get(f"order:{order_id}")
-        if raw is None:
-            return  # cache miss -- read path will warm it
-        doc = json.loads(raw)
-        doc.update(fields)
-        self._r.set(f"order:{order_id}", json.dumps(doc), ex=TTL_SEC)
-\end{lstlisting}
-
-The TTL is the safety net: if the cache and PG ever drift (a bug, a dropped patch, clock skew), the drift self-heals in $\le 60$~s. We deliberately avoid invalidation from the consumer because that would couple the consumer to the cache's existence; the TTL plus read-through is simpler and correct enough for an interactive workload.
+\begin{itemize}
+  \item \textbf{Write-through + read-through.} The Write API primes the cache on every command; the Read API repopulates it on every miss. Between them, the cache stays warm for recently active orders.
+  \item \textbf{60-second TTL as safety net.} If the cached document ever drifts from PostgreSQL (a bug, a dropped patch), the drift self-heals within 60~s. TTL replaces invalidation — we deliberately do not have the consumer invalidate cache entries, as that would couple two independent services and add a new failure mode.
+  \item \textbf{Patch vs.\ set.} Status updates use \code{patch\_order}: read the existing cached doc, apply only the changed fields, re-set it with a refreshed TTL. If the key is absent, \code{patch\_order} is a no-op — the read path will warm it on the next request.
+  \item \textbf{LRU eviction.} The cache Redis instance is capped at 2~MB with \code{allkeys-lru}. Under the N=2000 benchmark, this evicts $\sim$8 entries before they are read — a 99.6\% hit rate — demonstrating bounded eviction behaviour.
+\end{itemize}
 
 \subsection{Consumer: Idempotent Projection}
 
-The consumer reads the stream via \code{XREADGROUP}, dispatches by \code{event\_type}, and inserts/updates the corresponding 3NF rows. Idempotency is provided by the \code{processed\_events} table:
+The consumer subscribes to \code{order\_events} via \code{XREADGROUP} (group \code{projector\_group}) and projects every event into PostgreSQL. It sees \emph{all} events on the stream — including the saga-internal ones — and is responsible for keeping the \code{orders.status} column up to date.
 
-\begin{lstlisting}[language=Python]
-def project_event(conn, event):
-    if is_processed(conn, event["event_id"]):
-        return  # already seen; safe to ignore
-    with conn.cursor() as cur:
-        if event["event_type"] == "OrderPlaced":
-            cur.execute("INSERT INTO customers ... ON CONFLICT DO UPDATE ...")
-            cur.execute("INSERT INTO orders ... ON CONFLICT DO NOTHING")
-            for item in event["payload"]["items"]:
-                cur.execute("INSERT INTO order_items ... ON CONFLICT DO NOTHING")
-        elif event["event_type"] == "PaymentConfirmed":
-            cur.execute("UPDATE orders SET status = 'payment_confirmed' ...")
-        # ... other event types ...
-        cur.execute("INSERT INTO processed_events (event_id) VALUES (%s) "
-                    "ON CONFLICT DO NOTHING", (event["event_id"],))
-    conn.commit()
-\end{lstlisting}
-
-The combination of \code{XACK} after a successful project and the \code{processed\_events} guard means \emph{every event is projected exactly once} even when messages are redelivered after a crash.
+\begin{itemize}
+  \item \textbf{Dispatch by event type.} A single \code{project\_event} function switches on \code{event\_type}:
+    \begin{itemize}
+      \item \code{OrderPlaced} $\to$ upsert \code{customers}, insert \code{orders} and \code{order\_items}.
+      \item \code{InventoryReserved} $\to$ \code{UPDATE orders SET status = 'reserved'}.
+      \item \code{PaymentAuthorized} $\to$ \code{UPDATE orders SET status = 'payment\_authorized'}.
+      \item \code{PaymentConfirmed} $\to$ \code{UPDATE orders SET status = 'payment\_confirmed', payment\_confirmed\_at = ...}.
+      \item \code{OrderShipped} $\to$ \code{UPDATE orders SET status = 'shipped', shipped\_at = ...}.
+      \item \code{OrderCancelled} $\to$ \code{UPDATE orders SET status = 'cancelled', cancelled\_at = ...}.
+    \end{itemize}
+  \item \textbf{Idempotency guard.} Before projecting, the consumer checks whether \code{event\_id} is already in \code{processed\_events}. On success it inserts \code{event\_id} in the same transaction and \code{XACK}s the message. This ensures exactly-once projection even when messages are redelivered after a crash.
+  \item \textbf{Materialized view refresh.} Every 30~s the consumer runs \code{REFRESH MATERIALIZED VIEW CONCURRENTLY} on both views. The \code{CONCURRENTLY} flag (which requires a unique index on each view) avoids blocking readers during the refresh.
+\end{itemize}
 
 \subsection{Saga: Orchestration with Compensation}
 
-The order-fulfillment saga is a state machine over five states:
+The order-fulfillment saga drives inventory reservation, payment, and shipping. It runs in a separate process subscribed to the same stream via the independent \code{saga\_group} consumer group, reacting only to \code{OrderPlaced} events. The consumer and saga run fully in parallel — neither waits for the other.
 
 \begin{center}
 \begin{tikzpicture}[
@@ -384,76 +316,29 @@ The order-fulfillment saga is a state machine over five states:
 \end{tikzpicture}
 \end{center}
 
-Each transition appends an event to MongoDB \emph{and} mutates inventory in PostgreSQL via a row-level lock. The saga document itself is persisted in MongoDB after every transition, so a crash leaves the saga in a known state from which the recovery job can resume.
+\textbf{How order status reaches PostgreSQL.} The saga does \emph{not} write directly to the \code{orders} table. Instead, each transition appends a domain event to MongoDB and publishes it to the Redis stream. The consumer's \code{projector\_group} picks up each event independently and issues the corresponding \code{UPDATE orders SET status = ...}. The status column therefore walks through its states incrementally as each event arrives — not in a single batch when the saga finishes.
 
-\subsubsection{Inventory: row-level conditional update}
+\begin{itemize}
+  \item Inventory reserved $\to$ appends \code{InventoryReserved} $\to$ consumer sets \code{status = 'reserved'}.
+  \item Payment authorised $\to$ appends \code{PaymentAuthorized} $\to$ consumer sets \code{status = 'payment\_authorized'}.
+  \item Payment confirmed $\to$ appends \code{PaymentConfirmed} $\to$ consumer sets \code{status = 'payment\_confirmed'}.
+  \item Shipped $\to$ appends \code{OrderShipped} $\to$ consumer sets \code{status = 'shipped'}.
+  \item Any failure $\to$ appends \code{InventoryReserveFailed} / \code{PaymentAuthorizeFailed} / \code{OrderCancelled} $\to$ consumer sets \code{status = 'cancelled'}.
+\end{itemize}
 
-Inventory uses a conditional UPDATE that atomically reserves stock or fails:
+\textbf{Key implementation decisions:}
 
-\begin{lstlisting}[language=SQL]
-UPDATE inventory
-   SET reserved_qty = reserved_qty + $qty
- WHERE product_id = $product_id
-   AND (total_qty - reserved_qty) >= $qty
-RETURNING product_id, name;
-\end{lstlisting}
-
-If \code{RETURNING} yields no row, the item is out of stock. The saga rolls the entire transaction back, appends \code{InventoryReserveFailed}, and compensates. Under concurrency (e.g.\ 100 customers chasing the last 50 mice), PostgreSQL's row-level locking serialises the UPDATEs - the first $N$ winners reserve, the rest fail, no inventory is double-allocated.
-
-\subsubsection{Idempotent payment authorisation}
-
-The simulated payment service caches results by \code{Idempotency-Key} (the saga's own id). If the saga crashes after the provider authorised the charge but before \code{PaymentAuthorized} was appended, the recovery job calls the provider again with the same key and receives the same result - the charge is not duplicated. This mirrors the production semantics of Stripe/Adyen.
-
-\subsubsection{Crash recovery}
-
-\file{saga/recovery.py} scans MongoDB for sagas whose \code{state} is non-terminal and whose \code{updated\_at} is older than a threshold (default 30~s). For each, it re-invokes \code{SagaOrchestrator.run(saga\_id)}, which inspects the existing event log and resumes from the last persisted step. This is demonstrated empirically in Demo~5 (Section~\ref{sec:demo5}).
-
-\subsection{Schema: 3NF + Materialized Views}
-
-\begin{lstlisting}[language=SQL]
-CREATE TABLE customers (
-    customer_id    VARCHAR(36)  PRIMARY KEY,
-    customer_name  VARCHAR(255) NOT NULL,
-    customer_email VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE orders (
-    order_id             VARCHAR(36) PRIMARY KEY,
-    customer_id          VARCHAR(36) NOT NULL REFERENCES customers,
-    status               VARCHAR(50) NOT NULL,
-    region               VARCHAR(100),
-    placed_at            TIMESTAMPTZ,
-    payment_confirmed_at TIMESTAMPTZ,
-    shipped_at           TIMESTAMPTZ,
-    cancelled_at         TIMESTAMPTZ,
-    version              INTEGER NOT NULL DEFAULT 0
-);
-
-CREATE TABLE order_items (
-    order_id   VARCHAR(36),
-    product_id VARCHAR(36),
-    name       VARCHAR(255) NOT NULL,
-    quantity   INTEGER       NOT NULL,
-    unit_price NUMERIC(10,2) NOT NULL,
-    PRIMARY KEY (order_id, product_id)
-);
-
--- Pre-aggregated for the dashboard
-CREATE MATERIALIZED VIEW mv_daily_revenue AS
-SELECT DATE(o.placed_at) AS date, o.region,
-       COUNT(DISTINCT o.order_id) FILTER (WHERE o.status='shipped') AS total_orders,
-       COALESCE(SUM(oi.quantity*oi.unit_price)
-           FILTER (WHERE o.status='shipped'), 0) AS revenue
-  FROM orders o LEFT JOIN order_items oi ON o.order_id = oi.order_id
- GROUP BY DATE(o.placed_at), o.region;
-\end{lstlisting}
-
-The schema is in third normal form: no transitive dependencies, no repeating groups. \code{unit\_price} is the price \emph{at order time} (a snapshot) - it lives in \code{order\_items} rather than \code{products} because the latter would change over time.
+\begin{itemize}
+  \item \textbf{Inventory: conditional UPDATE.} The saga issues \code{UPDATE inventory SET reserved\_qty = reserved\_qty + \$qty WHERE (total\_qty - reserved\_qty) >= \$qty RETURNING product\_id}. If \code{RETURNING} yields no row, the item is out of stock and the saga compensates. PostgreSQL's row-level lock serialises concurrent reservations of the same product — no double-allocation is possible.
+  \item \textbf{Idempotent payment.} The simulated payment call is keyed by \code{saga\_id}. If the saga crashes after the charge is authorised but before the event is appended, the recovery job re-invokes the provider with the same key and receives the same auth code — no duplicate charge.
+  \item \textbf{Saga state persistence.} After every transition, the saga writes its current \code{state} and \code{steps[]} to the \code{sagas} collection in MongoDB. A crash always leaves the saga in a known, recoverable state.
+  \item \textbf{Crash recovery.} \file{saga/recovery.py} queries MongoDB for sagas whose \code{state} is non-terminal and \code{updated\_at} is older than a configurable threshold. For each, it re-invokes \code{SagaOrchestrator.run(saga\_id)}, which inspects the event log and skips already-completed steps before resuming. This is demonstrated in Demo~5 (Section~\ref{sec:demo5}).
+\end{itemize}
 
 % ──────────────────────────────────────────────────────────────────────────────
 \section{Demos and Experiments}
 
-This section walks through six end-to-end demonstrations. Demos~2, 4, and 6 produce quantitative measurements; Demos~1, 3, and 5 are observational. The benchmark scripts are in \file{scripts/}; raw results from this report's runs are in \file{results/}.
+This section walks through six end-to-end demonstrations. The benchmark scripts are in \file{scripts/}; raw results from this report's runs are in \file{results/}.
 
 \subsection{Demo 1 - Basic CQRS Flow}
 
@@ -461,7 +346,7 @@ This section walks through six end-to-end demonstrations. Demos~2, 4, and 6 prod
 
 A \code{POST /orders} returns 201 with the new \code{order\_id} in $\sim$2~ms. Within $\sim$1~s the dashboard's orders table shows the new row in status \code{placed}. Over the next few seconds the saga progresses the row through \code{inventory\_reserved} $\to$ \code{payment\_confirmed} $\to$ \code{shipped}. The inventory bar for the corresponding product decreases.
 
-\textbf{What this proves:} the four services and four data stores are wired correctly; events flow Write API $\to$ MongoDB $\to$ Redis Stream $\to$ \{Consumer, Saga\} $\to$ PostgreSQL; the dashboard reads the projected state and reflects it live.
+This proves that the four services and four data stores are wired correctly; events flow Write API $\to$ MongoDB $\to$ Redis Stream $\to$ \{Consumer, Saga\} $\to$ PostgreSQL; the dashboard reads the projected state and reflects it live.
 
 \subsection{Demo 2 - Read-Your-Writes Cache: Quantitative Benchmark}\label{sec:demo2}
 
@@ -657,7 +542,7 @@ Consistency            & Strong on writes, fast point reads via cache           
   \item[Materialized views encode access patterns.] The 100--300$\times$ MV-vs-JOIN speedup is not magic; it is just doing the GROUP BY once instead of every query. CQRS makes this trivial because the view exists in the read model only; the write side is unaware.
 \end{description}
 
-\subsection{Limitations and Future Work}
+\subsection{Limitations and Future Work}\label{sec:future}
 
 \begin{itemize}
   \item \textbf{Outbox pattern.} \code{append\_event} writes to MongoDB then publishes to Redis. A crash between the two leaves the event in Mongo but unpublished. A transactional outbox would close this gap - write event + outbox row in one Mongo transaction, separate poller publishes to Redis and marks rows published.

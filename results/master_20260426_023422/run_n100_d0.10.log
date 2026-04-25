@@ -1,0 +1,1466 @@
+
+=======================================================
+
+[1mPHASE 1 of 2 — NO CACHE + SLOW CONSUMER (baseline)[0m
+  Restarting with --delay 0.10 --no-cache ...
+Stopping services and wiping volumes...
+
+  cache:    DISABLED
+  consumer: SLOW (0.10s/event)
+  saga:     fast
+  stream:   redis-stream :6379  (no memory limit)
+
+Starting services...
+time="2026-04-26T02:38:22+05:30" level=warning msg="/Users/akankshawattamwar/Desktop/CS315/CQRS/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.05kB done
+#1 DONE 0.0s
+
+#2 [saga internal] load build definition from Dockerfile
+#2 transferring dockerfile: 365B done
+#2 DONE 0.0s
+
+#3 [consumer internal] load build definition from Dockerfile
+#3 transferring dockerfile: 186B done
+#3 DONE 0.0s
+
+#4 [saga internal] load metadata for docker.io/library/python:3.12-slim
+#4 DONE 0.5s
+
+#5 [consumer internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [saga internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [consumer internal] load build context
+#7 transferring context: 308B done
+#7 DONE 0.0s
+
+#8 [saga 1/7] FROM docker.io/library/python:3.12-slim@sha256:46cb7cc2877e60fbd5e21a9ae6115c30ace7a077b9f8772da879e4590c18c2e3
+#8 resolve docker.io/library/python:3.12-slim@sha256:46cb7cc2877e60fbd5e21a9ae6115c30ace7a077b9f8772da879e4590c18c2e3 done
+#8 DONE 0.0s
+
+#9 [saga 2/7] WORKDIR /service
+#9 CACHED
+
+#10 [consumer 2/5] WORKDIR /app
+#10 CACHED
+
+#11 [saga internal] load build context
+#11 transferring context: 386B done
+#11 DONE 0.0s
+
+#12 [consumer 3/5] COPY requirements.txt .
+#12 DONE 0.0s
+
+#13 [saga 3/7] COPY saga/requirements.txt saga/
+#13 DONE 0.0s
+
+#14 [saga 4/7] RUN pip install --no-cache-dir -r saga/requirements.txt
+#14 2.897 Collecting pymongo==4.7.2 (from -r saga/requirements.txt (line 1))
+#14 3.255   Downloading pymongo-4.7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (22 kB)
+#14 3.404 Collecting redis==5.0.5 (from -r saga/requirements.txt (line 2))
+#14 3.450   Downloading redis-5.0.5-py3-none-any.whl.metadata (9.3 kB)
+#14 3.698 Collecting psycopg2-binary==2.9.9 (from -r saga/requirements.txt (line 3))
+#14 3.734   Downloading psycopg2_binary-2.9.9-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.4 kB)
+#14 3.862 Collecting dnspython<3.0.0,>=1.16.0 (from pymongo==4.7.2->-r saga/requirements.txt (line 1))
+#14 4.019   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+#14 4.102 Downloading pymongo-4.7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (688 kB)
+#14 5.447    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 689.0/689.0 kB 933.2 kB/s eta 0:00:00
+#14 5.513 Downloading redis-5.0.5-py3-none-any.whl (251 kB)
+#14 6.084 Downloading psycopg2_binary-2.9.9-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (2.9 MB)
+#14 ...
+
+#15 [consumer 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#15 3.339 Collecting pymongo==4.7.2 (from -r requirements.txt (line 1))
+#15 3.503   Downloading pymongo-4.7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (22 kB)
+#15 3.746 Collecting redis==5.0.5 (from -r requirements.txt (line 2))
+#15 3.809   Downloading redis-5.0.5-py3-none-any.whl.metadata (9.3 kB)
+#15 4.119 Collecting psycopg2-binary==2.9.9 (from -r requirements.txt (line 3))
+#15 4.241   Downloading psycopg2_binary-2.9.9-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.4 kB)
+#15 4.370 Collecting dnspython<3.0.0,>=1.16.0 (from pymongo==4.7.2->-r requirements.txt (line 1))
+#15 5.075   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+#15 5.156 Downloading pymongo-4.7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (688 kB)
+#15 7.319    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 689.0/689.0 kB 314.0 kB/s eta 0:00:00
+#15 7.723 Downloading redis-5.0.5-py3-none-any.whl (251 kB)
+#15 9.234 Downloading psycopg2_binary-2.9.9-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (2.9 MB)
+#15 ...
+
+#14 [saga 4/7] RUN pip install --no-cache-dir -r saga/requirements.txt
+#14 10.94    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.9/2.9 MB 624.0 kB/s eta 0:00:00
+#14 11.04 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+#14 11.40 Installing collected packages: redis, psycopg2-binary, dnspython, pymongo
+#14 11.71 Successfully installed dnspython-2.8.0 psycopg2-binary-2.9.9 pymongo-4.7.2 redis-5.0.5
+#14 11.71 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#14 13.45 
+#14 13.45 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#14 13.45 [notice] To update, run: pip install --upgrade pip
+#14 DONE 13.6s
+
+#15 [consumer 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#15 ...
+
+#16 [saga 5/7] COPY write-api/events.py write-api/
+#16 DONE 0.0s
+
+#17 [saga 6/7] COPY saga/ saga/
+#17 DONE 0.0s
+
+#18 [saga 7/7] WORKDIR /service/saga
+#18 DONE 0.0s
+
+#19 [saga] exporting to image
+#19 exporting layers
+#19 exporting layers 0.5s done
+#19 exporting manifest sha256:f85c4e42a49db08f28cb1f550fa6000af642cafb6877bd1d567d4a9b27a096a2 done
+#19 exporting config sha256:98c74cf83230afd9d4060638411ea40650bc7d77fbf7f2fa1c6f14c0e95daed7 done
+#19 exporting attestation manifest sha256:e89f09ba985ec0b5e2191acc8b0cab313009f1d51bc97e75a10e58562a09f294 done
+#19 exporting manifest list sha256:b5202c7c1e63839b6d82494a47168a848e21c3daebb8f2a73f36ea39625b833d done
+#19 naming to docker.io/library/cqrs-saga:latest done
+#19 unpacking to docker.io/library/cqrs-saga:latest 0.1s done
+#19 DONE 0.6s
+
+#20 [saga] resolving provenance for metadata file
+#20 DONE 0.0s
+
+#15 [consumer 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#15 14.15    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.9/2.9 MB 674.6 kB/s eta 0:00:00
+#15 14.26 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+#15 14.46 Installing collected packages: redis, psycopg2-binary, dnspython, pymongo
+#15 14.78 Successfully installed dnspython-2.8.0 psycopg2-binary-2.9.9 pymongo-4.7.2 redis-5.0.5
+#15 14.78 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#15 15.43 
+#15 15.43 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#15 15.43 [notice] To update, run: pip install --upgrade pip
+#15 DONE 15.5s
+
+#21 [consumer 5/5] COPY . .
+#21 DONE 0.0s
+
+#22 [consumer] exporting to image
+#22 exporting layers 0.5s done
+#22 exporting manifest sha256:662197f60b7d8fbc6d78c0597304e96fda45b88be197e8a25997a95e18c532f0
+#22 exporting manifest sha256:662197f60b7d8fbc6d78c0597304e96fda45b88be197e8a25997a95e18c532f0 done
+#22 exporting config sha256:a6ccf4b64978e8bd56301bd2ceeec9d68fc77d15dcfd673b089c141c058b1aa0 done
+#22 exporting attestation manifest sha256:8ce87de9e642424aa8531dd7ccecf3ebaffa9d68e3ab7b681fc68e18a3d0f747 done
+#22 exporting manifest list sha256:4bf4f7bd5bf7b33dd5283be3da45ef2638bab1a18dbec2f4fa58f54812125f12 done
+#22 naming to docker.io/library/cqrs-consumer:latest done
+#22 unpacking to docker.io/library/cqrs-consumer:latest 0.1s done
+#22 DONE 0.6s
+
+#23 [consumer] resolving provenance for metadata file
+#23 DONE 0.0s
+ cqrs-consumer  Built
+ cqrs-saga  Built
+time="2026-04-26T02:38:40+05:30" level=warning msg="/Users/akankshawattamwar/Desktop/CS315/CQRS/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.42kB done
+#1 DONE 0.0s
+
+#2 [frontend internal] load build definition from Dockerfile
+#2 transferring dockerfile: 271B done
+#2 DONE 0.0s
+
+#3 [consumer internal] load build definition from Dockerfile
+#3 transferring dockerfile: 186B done
+#3 DONE 0.0s
+
+#4 [read-api internal] load build definition from Dockerfile
+#4 transferring dockerfile: 225B done
+#4 DONE 0.0s
+
+#5 [write-api internal] load build definition from Dockerfile
+#5 transferring dockerfile: 225B done
+#5 DONE 0.0s
+
+#6 [saga internal] load build definition from Dockerfile
+#6 transferring dockerfile: 365B done
+#6 DONE 0.0s
+
+#7 [saga internal] load metadata for docker.io/library/python:3.12-slim
+#7 DONE 0.5s
+
+#8 [write-api internal] load .dockerignore
+#8 transferring context: 2B done
+#8 DONE 0.0s
+
+#9 [read-api internal] load .dockerignore
+#9 transferring context: 2B done
+#9 DONE 0.0s
+
+#10 [saga internal] load .dockerignore
+#10 transferring context: 2B done
+#10 DONE 0.0s
+
+#11 [consumer internal] load .dockerignore
+#11 transferring context: 2B done
+#11 DONE 0.0s
+
+#12 [write-api internal] load build context
+#12 transferring context: 341B done
+#12 DONE 0.0s
+
+#13 [read-api internal] load build context
+#13 transferring context: 258B done
+#13 DONE 0.0s
+
+#14 [consumer internal] load build context
+#14 transferring context: 308B done
+#14 DONE 0.0s
+
+#15 [consumer 1/5] FROM docker.io/library/python:3.12-slim@sha256:46cb7cc2877e60fbd5e21a9ae6115c30ace7a077b9f8772da879e4590c18c2e3
+#15 resolve docker.io/library/python:3.12-slim@sha256:46cb7cc2877e60fbd5e21a9ae6115c30ace7a077b9f8772da879e4590c18c2e3 0.0s done
+#15 DONE 0.0s
+
+#16 [saga internal] load build context
+#16 transferring context: 386B done
+#16 DONE 0.0s
+
+#17 [write-api 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#17 CACHED
+
+#18 [write-api 3/5] COPY requirements.txt .
+#18 CACHED
+
+#19 [read-api 3/5] COPY requirements.txt .
+#19 CACHED
+
+#20 [read-api 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#20 CACHED
+
+#21 [read-api 5/5] COPY . .
+#21 CACHED
+
+#22 [write-api 5/5] COPY . .
+#22 CACHED
+
+#23 [consumer 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#23 CACHED
+
+#24 [consumer 2/5] WORKDIR /app
+#24 CACHED
+
+#25 [consumer 3/5] COPY requirements.txt .
+#25 CACHED
+
+#26 [consumer 5/5] COPY . .
+#26 CACHED
+
+#27 [saga 4/7] RUN pip install --no-cache-dir -r saga/requirements.txt
+#27 CACHED
+
+#28 [saga 6/7] COPY saga/ saga/
+#28 CACHED
+
+#29 [saga 2/7] WORKDIR /service
+#29 CACHED
+
+#30 [saga 3/7] COPY saga/requirements.txt saga/
+#30 CACHED
+
+#31 [saga 5/7] COPY write-api/events.py write-api/
+#31 CACHED
+
+#32 [saga 7/7] WORKDIR /service/saga
+#32 CACHED
+
+#33 [saga] exporting to image
+#33 exporting layers
+#33 exporting layers done
+#33 exporting manifest sha256:f85c4e42a49db08f28cb1f550fa6000af642cafb6877bd1d567d4a9b27a096a2 done
+#33 exporting config sha256:98c74cf83230afd9d4060638411ea40650bc7d77fbf7f2fa1c6f14c0e95daed7 done
+#33 exporting attestation manifest sha256:e818c6baccd913392f3a3442f8ae1cd2094f0f7269403dcbbd55915d34074f45 0.0s done
+#33 exporting manifest list sha256:043b4abdb2c830a1f37802badb77c86228ecb43f8517db0c9d678b00ccdc49df done
+#33 naming to docker.io/library/cqrs-saga:latest done
+#33 unpacking to docker.io/library/cqrs-saga:latest 0.0s done
+#33 DONE 0.1s
+
+#34 [read-api] exporting to image
+#34 exporting layers done
+#34 exporting manifest sha256:c63ee61fb06e4bd063e843362129b868354c2f94e2566ad3c11bbd0548881470 done
+#34 exporting config sha256:46bb870cf8127e2823c379c44ac9a3c0d6ee66fd1b3343341206f22ff23f7f62 done
+#34 exporting attestation manifest sha256:fd54722ea7248dee5daed0c12d545fa1490f53bfd1c6e07eaac3ea9138513655 0.0s done
+#34 exporting manifest list sha256:431f0cd5c2e31d7994fd3341d3d15d25364620a8c4360bc0526c38f1c9ce7cca done
+#34 naming to docker.io/library/cqrs-read-api:latest done
+#34 unpacking to docker.io/library/cqrs-read-api:latest done
+#34 DONE 0.1s
+
+#35 [write-api] exporting to image
+#35 exporting layers done
+#35 exporting manifest sha256:92a21a99b40b6531c5801222236f42d6aa7bbf8b65d7634fc566f9392602e764 done
+#35 exporting config sha256:be9fb26fa271ebf0c525960e70f2e967c21bf78a1eb2b7a7dc06e6d3ff4d3f55 done
+#35 exporting attestation manifest sha256:afa4a4fbfe7c19a43e12f1db65ccf041878c74f6178a1c1774c53cc010b228e8 0.0s done
+#35 exporting manifest list sha256:c8f586c8495ebebe7c9d9a501c115f25d395a0de55a3f7565fbef6d978d35914 done
+#35 naming to docker.io/library/cqrs-write-api:latest done
+#35 unpacking to docker.io/library/cqrs-write-api:latest done
+#35 DONE 0.1s
+
+#36 [consumer] exporting to image
+#36 exporting layers done
+#36 exporting manifest sha256:662197f60b7d8fbc6d78c0597304e96fda45b88be197e8a25997a95e18c532f0 done
+#36 exporting config sha256:a6ccf4b64978e8bd56301bd2ceeec9d68fc77d15dcfd673b089c141c058b1aa0 done
+#36 exporting attestation manifest sha256:5c76b9d4f62b5722c7c214157969edf4c1cde1e5dde3b4f4fc9195e4b869ca41 0.0s done
+#36 exporting manifest list sha256:59beb50ead1e9a71aafa2415b01a8e687e01aa09f350980afe67646f5cb5004c done
+#36 naming to docker.io/library/cqrs-consumer:latest done
+#36 unpacking to docker.io/library/cqrs-consumer:latest done
+#36 DONE 0.1s
+
+#37 [read-api] resolving provenance for metadata file
+#37 DONE 0.0s
+
+#38 [consumer] resolving provenance for metadata file
+#38 DONE 0.0s
+
+#39 [saga] resolving provenance for metadata file
+#39 DONE 0.0s
+
+#40 [write-api] resolving provenance for metadata file
+#40 DONE 0.0s
+
+#41 [frontend internal] load metadata for docker.io/library/node:20-alpine
+#41 ...
+
+#42 [frontend internal] load metadata for docker.io/library/nginx:alpine
+#42 DONE 1.3s
+
+#41 [frontend internal] load metadata for docker.io/library/node:20-alpine
+#41 DONE 1.3s
+
+#43 [frontend internal] load .dockerignore
+#43 transferring context: 2B done
+#43 DONE 0.0s
+
+#44 [frontend stage-1 1/3] FROM docker.io/library/nginx:alpine@sha256:5616878291a2eed594aee8db4dade5878cf7edcb475e59193904b198d9b830de
+#44 resolve docker.io/library/nginx:alpine@sha256:5616878291a2eed594aee8db4dade5878cf7edcb475e59193904b198d9b830de 0.0s done
+#44 DONE 0.0s
+
+#45 [frontend build 1/6] FROM docker.io/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293
+#45 resolve docker.io/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293 0.0s done
+#45 DONE 0.0s
+
+#46 [frontend internal] load build context
+#46 transferring context: 185.58kB 0.1s done
+#46 DONE 0.1s
+
+#47 [frontend build 2/6] WORKDIR /app
+#47 CACHED
+
+#48 [frontend build 5/6] COPY . .
+#48 CACHED
+
+#49 [frontend stage-1 2/3] COPY --from=build /app/dist /usr/share/nginx/html
+#49 CACHED
+
+#50 [frontend build 4/6] RUN npm install
+#50 CACHED
+
+#51 [frontend build 6/6] RUN npm run build
+#51 CACHED
+
+#52 [frontend build 3/6] COPY package.json ./
+#52 CACHED
+
+#53 [frontend stage-1 3/3] COPY nginx.conf /etc/nginx/conf.d/default.conf
+#53 CACHED
+
+#54 [frontend] exporting to image
+#54 exporting layers done
+#54 exporting manifest sha256:32782dd8e2053c61118ccbb621867087941de406675097f92803716fedafab00 done
+#54 exporting config sha256:64d46ad231b32d64275256ac207db88e0b5dd078678dcdc752d464f80305d609 done
+#54 exporting attestation manifest sha256:4239bcb8861919ba14f8794044cb1eb91c0ade7fb4454f87e3e37170c6c38892 done
+#54 exporting manifest list sha256:e58afd3ebc01fc9279044433f5f72ef488d3658fe4e8cfa8da2f0e0a655f6cb5 done
+#54 naming to docker.io/library/cqrs-frontend:latest done
+#54 unpacking to docker.io/library/cqrs-frontend:latest done
+#54 DONE 0.0s
+
+#55 [frontend] resolving provenance for metadata file
+#55 DONE 0.0s
+ cqrs-write-api  Built
+ cqrs-consumer  Built
+ cqrs-read-api  Built
+ cqrs-saga  Built
+ cqrs-frontend  Built
+ Network cqrs_default  Creating
+ Network cqrs_default  Created
+ Volume "cqrs_postgres_data"  Creating
+ Volume "cqrs_postgres_data"  Created
+ Volume "cqrs_mongo_data"  Creating
+ Volume "cqrs_mongo_data"  Created
+ Container cqrs-redis-stream-1  Creating
+ Container cqrs-postgres-1  Creating
+ Container cqrs-redis-cache-1  Creating
+ Container cqrs-mongodb-1  Creating
+ Container cqrs-mongodb-1  Created
+ Container cqrs-redis-cache-1  Created
+ Container cqrs-postgres-1  Created
+ Container cqrs-read-api-1  Creating
+ Container cqrs-redis-stream-1  Created
+ Container cqrs-saga-1  Creating
+ Container cqrs-write-api-1  Creating
+ Container cqrs-consumer-1  Creating
+ Container cqrs-read-api-1  Created
+ Container cqrs-frontend-1  Creating
+ Container cqrs-saga-1  Created
+ Container cqrs-write-api-1  Created
+ Container cqrs-consumer-1  Created
+ Container cqrs-frontend-1  Created
+ Container cqrs-redis-stream-1  Starting
+ Container cqrs-mongodb-1  Starting
+ Container cqrs-redis-cache-1  Starting
+ Container cqrs-postgres-1  Starting
+ Container cqrs-redis-cache-1  Started
+ Container cqrs-redis-stream-1  Started
+ Container cqrs-postgres-1  Started
+ Container cqrs-redis-cache-1  Waiting
+ Container cqrs-postgres-1  Waiting
+ Container cqrs-mongodb-1  Started
+ Container cqrs-redis-stream-1  Waiting
+ Container cqrs-redis-stream-1  Waiting
+ Container cqrs-postgres-1  Waiting
+ Container cqrs-postgres-1  Waiting
+ Container cqrs-redis-cache-1  Waiting
+ Container cqrs-mongodb-1  Waiting
+ Container cqrs-mongodb-1  Waiting
+ Container cqrs-mongodb-1  Waiting
+ Container cqrs-redis-stream-1  Waiting
+ Container cqrs-redis-stream-1  Healthy
+ Container cqrs-redis-stream-1  Healthy
+ Container cqrs-redis-cache-1  Healthy
+ Container cqrs-redis-stream-1  Healthy
+ Container cqrs-redis-cache-1  Healthy
+ Container cqrs-postgres-1  Healthy
+ Container cqrs-read-api-1  Starting
+ Container cqrs-postgres-1  Healthy
+ Container cqrs-postgres-1  Healthy
+ Container cqrs-read-api-1  Started
+ Container cqrs-frontend-1  Starting
+ Container cqrs-frontend-1  Started
+ Container cqrs-mongodb-1  Healthy
+ Container cqrs-mongodb-1  Healthy
+ Container cqrs-mongodb-1  Healthy
+ Container cqrs-write-api-1  Starting
+ Container cqrs-consumer-1  Starting
+ Container cqrs-saga-1  Starting
+ Container cqrs-write-api-1  Started
+ Container cqrs-consumer-1  Started
+ Container cqrs-saga-1  Started
+Waiting for APIs to be ready...
+Clearing MongoDB events and sagas...
+time="2026-04-26T02:38:54+05:30" level=warning msg="/Users/akankshawattamwar/Desktop/CS315/CQRS/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+MongoDB cleared
+All services up.
+Logs: docker compose logs -f [write-api|read-api|consumer|saga]
+
+=======================================================
+
+[34mRunning benchmark (N=100, consumer delay=0.10s/event) — no cache...[0m
+
+[1m[94m=======================================================[0m
+[1m[94m  READER BENCHMARK — Read-Your-Writes Lag (baseline)[0m
+[1m[94m=======================================================[0m
+  [93m→[0m  Placing 100 orders sequentially and measuring GET-after-POST lag
+  [93m→[0m  Poll interval: 2ms (so floor resolution ≈ 2ms)
+    ...10/100 orders placed & read
+    ...20/100 orders placed & read
+    ...30/100 orders placed & read
+    ...40/100 orders placed & read
+    ...50/100 orders placed & read
+    ...60/100 orders placed & read
+    ...70/100 orders placed & read
+    ...80/100 orders placed & read
+    ...90/100 orders placed & read
+    ...100/100 orders placed & read
+
+  [1mResults  (N=100, failures=0, wall=49.2s)[0m
+  metric             p50       p95       p99       max      mean
+  POST ms            3.2       4.4      14.3      14.3       3.4
+  RYW lag ms       506.3     512.4     515.6     515.6     488.3
+  polls               70        73        76        76      67.3
+
+  [1mRYW lag distribution[0m
+  [    0 –     5 ms]     0  
+  [    5 –    10 ms]     0  
+  [   10 –    20 ms]     0  
+  [   20 –    50 ms]     0  
+  [   50 –   100 ms]     0  
+  [  100 –   250 ms]     1  
+  [  250 –   500 ms]    15  █████
+  [  500 –  1000 ms]    84  ██████████████████████████████
+  [ 1000 – 10000 ms]     0  
+  [92m✓[0m  Raw samples written to /tmp/reader_baseline.csv
+  [93m→[0m  After implementing the cache, rerun the same command and diff the RYW lag.
+
+=======================================================
+
+[1mPHASE 2 of 2 — CACHE ENABLED + SLOW CONSUMER[0m
+  Restarting with --delay 0.10 (cache on) ...
+Stopping services and wiping volumes...
+
+  cache:    enabled  (redis-cache :6380, 2MB allkeys-lru)
+  consumer: SLOW (0.10s/event)
+  saga:     fast
+  stream:   redis-stream :6379  (no memory limit)
+
+Starting services...
+time="2026-04-26T02:39:54+05:30" level=warning msg="/Users/akankshawattamwar/Desktop/CS315/CQRS/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.05kB done
+#1 DONE 0.0s
+
+#2 [saga internal] load build definition from Dockerfile
+#2 transferring dockerfile: 365B done
+#2 DONE 0.0s
+
+#3 [consumer internal] load build definition from Dockerfile
+#3 transferring dockerfile: 186B done
+#3 DONE 0.0s
+
+#4 [saga internal] load metadata for docker.io/library/python:3.12-slim
+#4 DONE 1.6s
+
+#5 [consumer internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [saga internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [consumer internal] load build context
+#7 transferring context: 308B done
+#7 DONE 0.0s
+
+#8 [consumer 1/5] FROM docker.io/library/python:3.12-slim@sha256:46cb7cc2877e60fbd5e21a9ae6115c30ace7a077b9f8772da879e4590c18c2e3
+#8 resolve docker.io/library/python:3.12-slim@sha256:46cb7cc2877e60fbd5e21a9ae6115c30ace7a077b9f8772da879e4590c18c2e3 done
+#8 DONE 0.0s
+
+#9 [consumer 2/5] WORKDIR /app
+#9 CACHED
+
+#10 [saga 2/7] WORKDIR /service
+#10 CACHED
+
+#11 [saga internal] load build context
+#11 transferring context: 386B done
+#11 DONE 0.0s
+
+#12 [consumer 3/5] COPY requirements.txt .
+#12 DONE 0.0s
+
+#13 [saga 3/7] COPY saga/requirements.txt saga/
+#13 DONE 0.0s
+
+#14 [saga 4/7] RUN pip install --no-cache-dir -r saga/requirements.txt
+#14 1.270 Collecting pymongo==4.7.2 (from -r saga/requirements.txt (line 1))
+#14 1.387   Downloading pymongo-4.7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (22 kB)
+#14 1.451 Collecting redis==5.0.5 (from -r saga/requirements.txt (line 2))
+#14 1.549   Downloading redis-5.0.5-py3-none-any.whl.metadata (9.3 kB)
+#14 1.627 Collecting psycopg2-binary==2.9.9 (from -r saga/requirements.txt (line 3))
+#14 1.647   Downloading psycopg2_binary-2.9.9-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.4 kB)
+#14 1.676 Collecting dnspython<3.0.0,>=1.16.0 (from pymongo==4.7.2->-r saga/requirements.txt (line 1))
+#14 1.705   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+#14 1.728 Downloading pymongo-4.7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (688 kB)
+#14 2.120    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 689.0/689.0 kB 1.7 MB/s eta 0:00:00
+#14 2.143 Downloading redis-5.0.5-py3-none-any.whl (251 kB)
+#14 2.231 Downloading psycopg2_binary-2.9.9-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (2.9 MB)
+#14 3.163    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.9/2.9 MB 3.2 MB/s eta 0:00:00
+#14 3.290 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+#14 3.475 Installing collected packages: redis, psycopg2-binary, dnspython, pymongo
+#14 3.780 Successfully installed dnspython-2.8.0 psycopg2-binary-2.9.9 pymongo-4.7.2 redis-5.0.5
+#14 3.780 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#14 3.976 
+#14 3.976 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#14 3.976 [notice] To update, run: pip install --upgrade pip
+#14 DONE 4.1s
+
+#15 [consumer 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#15 1.277 Collecting pymongo==4.7.2 (from -r requirements.txt (line 1))
+#15 1.424   Downloading pymongo-4.7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (22 kB)
+#15 1.583 Collecting redis==5.0.5 (from -r requirements.txt (line 2))
+#15 1.621   Downloading redis-5.0.5-py3-none-any.whl.metadata (9.3 kB)
+#15 1.686 Collecting psycopg2-binary==2.9.9 (from -r requirements.txt (line 3))
+#15 1.713   Downloading psycopg2_binary-2.9.9-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.4 kB)
+#15 1.737 Collecting dnspython<3.0.0,>=1.16.0 (from pymongo==4.7.2->-r requirements.txt (line 1))
+#15 1.766   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+#15 1.862 Downloading pymongo-4.7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (688 kB)
+#15 2.593    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 689.0/689.0 kB 1.2 MB/s eta 0:00:00
+#15 2.660 Downloading redis-5.0.5-py3-none-any.whl (251 kB)
+#15 2.896 Downloading psycopg2_binary-2.9.9-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (2.9 MB)
+#15 ...
+
+#16 [saga 5/7] COPY write-api/events.py write-api/
+#16 DONE 0.0s
+
+#17 [saga 6/7] COPY saga/ saga/
+#17 DONE 0.0s
+
+#18 [saga 7/7] WORKDIR /service/saga
+#18 DONE 0.0s
+
+#15 [consumer 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#15 4.285    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.9/2.9 MB 3.2 MB/s eta 0:00:00
+#15 4.304 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+#15 4.395 Installing collected packages: redis, psycopg2-binary, dnspython, pymongo
+#15 4.712 Successfully installed dnspython-2.8.0 psycopg2-binary-2.9.9 pymongo-4.7.2 redis-5.0.5
+#15 4.712 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#15 4.851 
+#15 4.851 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#15 4.851 [notice] To update, run: pip install --upgrade pip
+#15 DONE 5.0s
+
+#19 [saga] exporting to image
+#19 exporting layers 0.5s done
+#19 exporting manifest sha256:e42dda78d0c0d1060c7afcefe950cda54a221c71bb90b4190c83fbf9141b8d7b done
+#19 exporting config sha256:6af1e2dfedcc897afa777ae587fbf441aea94786d6cc21708bd81ae7929a12d7 done
+#19 exporting attestation manifest sha256:bba47e0832ea5c3da5d7fd727d8a77daf147b61bc25d7374cf576c1d88f0c9a5 done
+#19 exporting manifest list sha256:b3f693cd229dbed81eb43f827c27c87260c873c51de95de6a8bef8ceddd7b672 done
+#19 naming to docker.io/library/cqrs-saga:latest done
+#19 unpacking to docker.io/library/cqrs-saga:latest 0.1s done
+#19 DONE 0.7s
+
+#20 [saga] resolving provenance for metadata file
+#20 DONE 0.0s
+
+#21 [consumer 5/5] COPY . .
+#21 DONE 0.0s
+
+#22 [consumer] exporting to image
+#22 exporting layers 0.5s done
+#22 exporting manifest sha256:e589ad7d7a4bd16621ef9c9428150f1d20906f3611161bc2df9b683622963df1
+#22 exporting manifest sha256:e589ad7d7a4bd16621ef9c9428150f1d20906f3611161bc2df9b683622963df1 done
+#22 exporting config sha256:ada7178e5e3795a4b0d73eaab2c9f14e87d2e7bdfe96488995dcc99539975831 done
+#22 exporting attestation manifest sha256:63f23139c12b4e5cb19b30eced37419ea3cf33ede0cdd96566e0729ac3fd164c done
+#22 exporting manifest list sha256:23f12213eced9874d7638406eee53d00ba8a02e6803ac39d91c98bbc7ce4118f done
+#22 naming to docker.io/library/cqrs-consumer:latest done
+#22 unpacking to docker.io/library/cqrs-consumer:latest 0.1s done
+#22 DONE 0.7s
+
+#23 [consumer] resolving provenance for metadata file
+#23 DONE 0.0s
+ cqrs-consumer  Built
+ cqrs-saga  Built
+time="2026-04-26T02:40:02+05:30" level=warning msg="/Users/akankshawattamwar/Desktop/CS315/CQRS/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.42kB done
+#1 DONE 0.0s
+
+#2 [consumer internal] load build definition from Dockerfile
+#2 transferring dockerfile: 186B done
+#2 DONE 0.0s
+
+#3 [read-api internal] load build definition from Dockerfile
+#3 transferring dockerfile: 225B done
+#3 DONE 0.0s
+
+#4 [write-api internal] load build definition from Dockerfile
+#4 transferring dockerfile: 225B done
+#4 DONE 0.0s
+
+#5 [frontend internal] load build definition from Dockerfile
+#5 transferring dockerfile: 271B done
+#5 DONE 0.0s
+
+#6 [saga internal] load build definition from Dockerfile
+#6 transferring dockerfile: 365B done
+#6 DONE 0.0s
+
+#7 [saga internal] load metadata for docker.io/library/python:3.12-slim
+#7 DONE 0.4s
+
+#8 [read-api internal] load .dockerignore
+#8 transferring context: 2B done
+#8 DONE 0.0s
+
+#9 [write-api internal] load .dockerignore
+#9 transferring context: 2B done
+#9 DONE 0.0s
+
+#10 [consumer internal] load .dockerignore
+#10 transferring context: 2B done
+#10 DONE 0.0s
+
+#11 [saga internal] load .dockerignore
+#11 transferring context: 2B done
+#11 DONE 0.0s
+
+#12 [read-api internal] load build context
+#12 transferring context: 258B done
+#12 DONE 0.0s
+
+#13 [consumer internal] load build context
+#13 transferring context: 308B done
+#13 DONE 0.0s
+
+#14 [write-api internal] load build context
+#14 transferring context: 341B done
+#14 DONE 0.0s
+
+#15 [saga 1/5] FROM docker.io/library/python:3.12-slim@sha256:46cb7cc2877e60fbd5e21a9ae6115c30ace7a077b9f8772da879e4590c18c2e3
+#15 resolve docker.io/library/python:3.12-slim@sha256:46cb7cc2877e60fbd5e21a9ae6115c30ace7a077b9f8772da879e4590c18c2e3 0.0s done
+#15 DONE 0.0s
+
+#16 [saga internal] load build context
+#16 transferring context: 386B done
+#16 DONE 0.0s
+
+#17 [read-api 3/5] COPY requirements.txt .
+#17 CACHED
+
+#18 [read-api 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#18 CACHED
+
+#19 [read-api 5/5] COPY . .
+#19 CACHED
+
+#20 [write-api 3/5] COPY requirements.txt .
+#20 CACHED
+
+#21 [write-api 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#21 CACHED
+
+#22 [consumer 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#22 CACHED
+
+#23 [write-api 2/5] WORKDIR /app
+#23 CACHED
+
+#24 [consumer 3/5] COPY requirements.txt .
+#24 CACHED
+
+#25 [write-api 5/5] COPY . .
+#25 CACHED
+
+#26 [consumer 5/5] COPY . .
+#26 CACHED
+
+#27 [saga 3/7] COPY saga/requirements.txt saga/
+#27 CACHED
+
+#28 [saga 2/7] WORKDIR /service
+#28 CACHED
+
+#29 [saga 5/7] COPY write-api/events.py write-api/
+#29 CACHED
+
+#30 [saga 6/7] COPY saga/ saga/
+#30 CACHED
+
+#31 [saga 4/7] RUN pip install --no-cache-dir -r saga/requirements.txt
+#31 CACHED
+
+#32 [saga 7/7] WORKDIR /service/saga
+#32 CACHED
+
+#33 [read-api] exporting to image
+#33 exporting layers done
+#33 exporting manifest sha256:c63ee61fb06e4bd063e843362129b868354c2f94e2566ad3c11bbd0548881470 done
+#33 exporting config sha256:46bb870cf8127e2823c379c44ac9a3c0d6ee66fd1b3343341206f22ff23f7f62 done
+#33 exporting attestation manifest sha256:9596fbcd41fe08863586174bb7de3a5d67b4a1b9191cc14e6f8790a72f323539 done
+#33 exporting manifest list sha256:e99eaaa036ede0166e31a35d2b5cfc6fe718f9f36d584d5a734d5e9ff559547f done
+#33 naming to docker.io/library/cqrs-read-api:latest done
+#33 unpacking to docker.io/library/cqrs-read-api:latest done
+#33 DONE 0.0s
+
+#34 [consumer] exporting to image
+#34 exporting layers done
+#34 exporting manifest sha256:e589ad7d7a4bd16621ef9c9428150f1d20906f3611161bc2df9b683622963df1 done
+#34 exporting config sha256:ada7178e5e3795a4b0d73eaab2c9f14e87d2e7bdfe96488995dcc99539975831 done
+#34 exporting attestation manifest sha256:ee00d9222ea20e3198f1678a76416ccb5dd9e7918030c37c53db5b4008b39dd5 done
+#34 exporting manifest list sha256:fee6961a81e4036479ecda5b82c86e06e0c303829e35e1b8260a253b09f85665 done
+#34 naming to docker.io/library/cqrs-consumer:latest done
+#34 unpacking to docker.io/library/cqrs-consumer:latest 0.0s done
+#34 DONE 0.1s
+
+#35 [write-api] exporting to image
+#35 exporting layers done
+#35 exporting manifest sha256:92a21a99b40b6531c5801222236f42d6aa7bbf8b65d7634fc566f9392602e764 done
+#35 exporting config sha256:be9fb26fa271ebf0c525960e70f2e967c21bf78a1eb2b7a7dc06e6d3ff4d3f55 done
+#35 exporting attestation manifest sha256:cc456c59a20c70ea4e3de75e68d9e80ecc39a1f987a79122373022022b5aa833 0.0s done
+#35 exporting manifest list sha256:e5cf6cdacd8cf7b9fc312a119a787f1c2f17c2fe5ba28528df6b17f1979c32e6 done
+#35 naming to docker.io/library/cqrs-write-api:latest done
+#35 unpacking to docker.io/library/cqrs-write-api:latest 0.0s done
+#35 DONE 0.1s
+
+#36 [read-api] resolving provenance for metadata file
+#36 DONE 0.0s
+
+#37 [saga] exporting to image
+#37 exporting layers done
+#37 exporting manifest sha256:e42dda78d0c0d1060c7afcefe950cda54a221c71bb90b4190c83fbf9141b8d7b done
+#37 exporting config sha256:6af1e2dfedcc897afa777ae587fbf441aea94786d6cc21708bd81ae7929a12d7 done
+#37 exporting attestation manifest sha256:e2ee017168dc3a496674492f08e3772b60772dc4eb23e80bdf96c6f3ca87562a done
+#37 exporting manifest list sha256:c3110ed2bdd58b04e2adb1aab98c5e8bd9e17ca2d64063917723cbe468289396 done
+#37 naming to docker.io/library/cqrs-saga:latest done
+#37 unpacking to docker.io/library/cqrs-saga:latest done
+#37 DONE 0.1s
+
+#38 [consumer] resolving provenance for metadata file
+#38 DONE 0.0s
+
+#39 [write-api] resolving provenance for metadata file
+#39 DONE 0.0s
+
+#40 [saga] resolving provenance for metadata file
+#40 DONE 0.0s
+
+#41 [frontend internal] load metadata for docker.io/library/node:20-alpine
+#41 DONE 1.3s
+
+#42 [frontend internal] load metadata for docker.io/library/nginx:alpine
+#42 DONE 1.6s
+
+#43 [frontend internal] load .dockerignore
+#43 transferring context: 2B done
+#43 DONE 0.0s
+
+#44 [frontend build 1/6] FROM docker.io/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293
+#44 resolve docker.io/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293 0.0s done
+#44 DONE 0.0s
+
+#45 [frontend stage-1 1/3] FROM docker.io/library/nginx:alpine@sha256:5616878291a2eed594aee8db4dade5878cf7edcb475e59193904b198d9b830de
+#45 resolve docker.io/library/nginx:alpine@sha256:5616878291a2eed594aee8db4dade5878cf7edcb475e59193904b198d9b830de 0.0s done
+#45 DONE 0.0s
+
+#46 [frontend internal] load build context
+#46 transferring context: 185.58kB 0.1s done
+#46 DONE 0.1s
+
+#47 [frontend build 2/6] WORKDIR /app
+#47 CACHED
+
+#48 [frontend build 4/6] RUN npm install
+#48 CACHED
+
+#49 [frontend build 5/6] COPY . .
+#49 CACHED
+
+#50 [frontend stage-1 2/3] COPY --from=build /app/dist /usr/share/nginx/html
+#50 CACHED
+
+#51 [frontend build 6/6] RUN npm run build
+#51 CACHED
+
+#52 [frontend build 3/6] COPY package.json ./
+#52 CACHED
+
+#53 [frontend stage-1 3/3] COPY nginx.conf /etc/nginx/conf.d/default.conf
+#53 CACHED
+
+#54 [frontend] exporting to image
+#54 exporting layers done
+#54 exporting manifest sha256:32782dd8e2053c61118ccbb621867087941de406675097f92803716fedafab00 done
+#54 exporting config sha256:64d46ad231b32d64275256ac207db88e0b5dd078678dcdc752d464f80305d609 done
+#54 exporting attestation manifest sha256:c79f245cd603eecaa3f2136192084ef0804191fb635579034a7cc9deabb248b6 done
+#54 exporting manifest list sha256:2766976253723cd29f21772abc72db72531fc670b466330d6cbe28895298f3d1 done
+#54 naming to docker.io/library/cqrs-frontend:latest done
+#54 unpacking to docker.io/library/cqrs-frontend:latest done
+#54 DONE 0.0s
+
+#55 [frontend] resolving provenance for metadata file
+#55 DONE 0.0s
+ cqrs-consumer  Built
+ cqrs-saga  Built
+ cqrs-read-api  Built
+ cqrs-frontend  Built
+ cqrs-write-api  Built
+ Network cqrs_default  Creating
+ Network cqrs_default  Created
+ Volume "cqrs_postgres_data"  Creating
+ Volume "cqrs_postgres_data"  Created
+ Volume "cqrs_mongo_data"  Creating
+ Volume "cqrs_mongo_data"  Created
+ Container cqrs-postgres-1  Creating
+ Container cqrs-redis-cache-1  Creating
+ Container cqrs-mongodb-1  Creating
+ Container cqrs-redis-stream-1  Creating
+ Container cqrs-mongodb-1  Created
+ Container cqrs-postgres-1  Created
+ Container cqrs-redis-stream-1  Created
+ Container cqrs-saga-1  Creating
+ Container cqrs-consumer-1  Creating
+ Container cqrs-redis-cache-1  Created
+ Container cqrs-read-api-1  Creating
+ Container cqrs-write-api-1  Creating
+ Container cqrs-consumer-1  Created
+ Container cqrs-saga-1  Created
+ Container cqrs-write-api-1  Created
+ Container cqrs-read-api-1  Created
+ Container cqrs-frontend-1  Creating
+ Container cqrs-frontend-1  Created
+ Container cqrs-redis-cache-1  Starting
+ Container cqrs-redis-stream-1  Starting
+ Container cqrs-mongodb-1  Starting
+ Container cqrs-postgres-1  Starting
+ Container cqrs-redis-stream-1  Started
+ Container cqrs-redis-cache-1  Started
+ Container cqrs-postgres-1  Started
+ Container cqrs-redis-cache-1  Waiting
+ Container cqrs-postgres-1  Waiting
+ Container cqrs-mongodb-1  Started
+ Container cqrs-mongodb-1  Waiting
+ Container cqrs-redis-stream-1  Waiting
+ Container cqrs-mongodb-1  Waiting
+ Container cqrs-redis-stream-1  Waiting
+ Container cqrs-redis-cache-1  Waiting
+ Container cqrs-postgres-1  Waiting
+ Container cqrs-redis-stream-1  Waiting
+ Container cqrs-mongodb-1  Waiting
+ Container cqrs-postgres-1  Waiting
+ Container cqrs-redis-stream-1  Healthy
+ Container cqrs-redis-cache-1  Healthy
+ Container cqrs-redis-stream-1  Healthy
+ Container cqrs-redis-stream-1  Healthy
+ Container cqrs-postgres-1  Healthy
+ Container cqrs-redis-cache-1  Healthy
+ Container cqrs-read-api-1  Starting
+ Container cqrs-postgres-1  Healthy
+ Container cqrs-postgres-1  Healthy
+ Container cqrs-read-api-1  Started
+ Container cqrs-frontend-1  Starting
+ Container cqrs-frontend-1  Started
+ Container cqrs-mongodb-1  Healthy
+ Container cqrs-mongodb-1  Healthy
+ Container cqrs-write-api-1  Starting
+ Container cqrs-mongodb-1  Healthy
+ Container cqrs-saga-1  Starting
+ Container cqrs-consumer-1  Starting
+ Container cqrs-write-api-1  Started
+ Container cqrs-saga-1  Started
+ Container cqrs-consumer-1  Started
+Waiting for APIs to be ready...
+Clearing MongoDB events and sagas...
+time="2026-04-26T02:40:17+05:30" level=warning msg="/Users/akankshawattamwar/Desktop/CS315/CQRS/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+MongoDB cleared
+All services up.
+Logs: docker compose logs -f [write-api|read-api|consumer|saga]
+
+=======================================================
+
+[34mRunning benchmark (N=100, consumer delay=0.10s/event) ...[0m
+
+[1m[94m=======================================================[0m
+[1m[94m  READER BENCHMARK — Read-Your-Writes Lag (baseline)[0m
+[1m[94m=======================================================[0m
+  [93m→[0m  Placing 100 orders sequentially and measuring GET-after-POST lag
+  [93m→[0m  Poll interval: 2ms (so floor resolution ≈ 2ms)
+    ...10/100 orders placed & read
+    ...20/100 orders placed & read
+    ...30/100 orders placed & read
+    ...40/100 orders placed & read
+    ...50/100 orders placed & read
+    ...60/100 orders placed & read
+    ...70/100 orders placed & read
+    ...80/100 orders placed & read
+    ...90/100 orders placed & read
+    ...100/100 orders placed & read
+
+  [1mResults  (N=100, failures=0, wall=0.2s)[0m
+  metric             p50       p95       p99       max      mean
+  POST ms            1.2       2.2      17.3      17.3       1.5
+  RYW lag ms         0.8       1.4       3.7       3.7       0.9
+  polls                1         1         1         1       1.0
+
+  [1mRYW lag distribution[0m
+  [    0 –     5 ms]   100  ██████████████████████████████
+  [    5 –    10 ms]     0  
+  [   10 –    20 ms]     0  
+  [   20 –    50 ms]     0  
+  [   50 –   100 ms]     0  
+  [  100 –   250 ms]     0  
+  [  250 –   500 ms]     0  
+  [  500 –  1000 ms]     0  
+  [ 1000 – 10000 ms]     0  
+  [92m✓[0m  Raw samples written to /tmp/reader_baseline.csv
+  [93m→[0m  After implementing the cache, rerun the same command and diff the RYW lag.
+
+=======================================================
+
+[1mRESULTS COMPARISON (N=100, consumer delay=0.10s/event)[0m
+
+WITHOUT CACHE:
+      metric             p50       p95       p99       max      mean
+      POST ms            3.2       4.4      14.3      14.3       3.4
+      RYW lag ms       506.3     512.4     515.6     515.6     488.3
+      polls               70        73        76        76      67.3
+    
+      RYW lag distribution
+
+WITH CACHE:
+      metric             p50       p95       p99       max      mean
+      POST ms            1.2       2.2      17.3      17.3       1.5
+      RYW lag ms         0.8       1.4       3.7       3.7       0.9
+      polls                1         1         1         1       1.0
+    
+      RYW lag distribution
+
+[1mSpeedup:[0m
+    p50        506.3 ms  →     0.8 ms   (632x faster)
+    p95        512.4 ms  →     1.4 ms   (366x faster)
+    p99        515.6 ms  →     3.7 ms   (139x faster)
+
+[1mCache hit/miss stats (phase 2):[0m
+    hits:     100
+    misses:   0
+    hit rate: 100.0%
+
+[1mCache Redis :6380 — memory & eviction (allkeys-lru, cap=2.00M):[0m
+    evicted keys:  0  (this run; lifetime=0)
+    used memory:   1.20M / 2.00M
+    order:* keys:  100 live in cache now
+
+[32mResults saved to:[0m
+  no-cache:  /Users/akankshawattamwar/Desktop/CS315/CQRS/results/nocache_slowconsumer_0.10_100.txt
+  cached:    /Users/akankshawattamwar/Desktop/CS315/CQRS/results/cached_slowconsumer_0.10_100.txt
+
+=======================================================
+
+[1mCleaning up — restarting with defaults (fast consumer, cache on)...[0m
+Stopping services and wiping volumes...
+
+  cache:    enabled  (redis-cache :6380, 2MB allkeys-lru)
+  consumer: fast
+  saga:     fast
+  stream:   redis-stream :6379  (no memory limit)
+
+Starting services...
+time="2026-04-26T02:40:28+05:30" level=warning msg="/Users/akankshawattamwar/Desktop/CS315/CQRS/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.05kB done
+#1 DONE 0.0s
+
+#2 [consumer internal] load build definition from Dockerfile
+#2 transferring dockerfile: 186B done
+#2 DONE 0.0s
+
+#3 [saga internal] load build definition from Dockerfile
+#3 transferring dockerfile: 365B done
+#3 DONE 0.0s
+
+#4 [consumer internal] load metadata for docker.io/library/python:3.12-slim
+#4 DONE 0.4s
+
+#5 [consumer internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [saga internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [consumer internal] load build context
+#7 transferring context: 308B done
+#7 DONE 0.0s
+
+#8 [consumer 1/5] FROM docker.io/library/python:3.12-slim@sha256:46cb7cc2877e60fbd5e21a9ae6115c30ace7a077b9f8772da879e4590c18c2e3
+#8 resolve docker.io/library/python:3.12-slim@sha256:46cb7cc2877e60fbd5e21a9ae6115c30ace7a077b9f8772da879e4590c18c2e3 done
+#8 DONE 0.0s
+
+#9 [consumer 2/5] WORKDIR /app
+#9 CACHED
+
+#10 [saga 2/7] WORKDIR /service
+#10 CACHED
+
+#11 [saga internal] load build context
+#11 transferring context: 386B done
+#11 DONE 0.0s
+
+#12 [consumer 3/5] COPY requirements.txt .
+#12 DONE 0.0s
+
+#13 [saga 3/7] COPY saga/requirements.txt saga/
+#13 DONE 0.0s
+
+#14 [saga 4/7] RUN pip install --no-cache-dir -r saga/requirements.txt
+#14 1.492 Collecting pymongo==4.7.2 (from -r saga/requirements.txt (line 1))
+#14 1.591   Downloading pymongo-4.7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (22 kB)
+#14 1.681 Collecting redis==5.0.5 (from -r saga/requirements.txt (line 2))
+#14 1.706   Downloading redis-5.0.5-py3-none-any.whl.metadata (9.3 kB)
+#14 1.796 Collecting psycopg2-binary==2.9.9 (from -r saga/requirements.txt (line 3))
+#14 1.831   Downloading psycopg2_binary-2.9.9-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.4 kB)
+#14 1.857 Collecting dnspython<3.0.0,>=1.16.0 (from pymongo==4.7.2->-r saga/requirements.txt (line 1))
+#14 1.882   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+#14 1.907 Downloading pymongo-4.7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (688 kB)
+#14 2.261    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 689.0/689.0 kB 2.4 MB/s eta 0:00:00
+#14 2.284 Downloading redis-5.0.5-py3-none-any.whl (251 kB)
+#14 2.423 Downloading psycopg2_binary-2.9.9-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (2.9 MB)
+#14 3.792    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.9/2.9 MB 2.1 MB/s eta 0:00:00
+#14 3.811 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+#14 3.876 Installing collected packages: redis, psycopg2-binary, dnspython, pymongo
+#14 ...
+
+#15 [consumer 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#15 1.505 Collecting pymongo==4.7.2 (from -r requirements.txt (line 1))
+#15 1.594   Downloading pymongo-4.7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (22 kB)
+#15 1.686 Collecting redis==5.0.5 (from -r requirements.txt (line 2))
+#15 1.709   Downloading redis-5.0.5-py3-none-any.whl.metadata (9.3 kB)
+#15 1.802 Collecting psycopg2-binary==2.9.9 (from -r requirements.txt (line 3))
+#15 1.824   Downloading psycopg2_binary-2.9.9-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.4 kB)
+#15 1.861 Collecting dnspython<3.0.0,>=1.16.0 (from pymongo==4.7.2->-r requirements.txt (line 1))
+#15 1.884   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+#15 1.910 Downloading pymongo-4.7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (688 kB)
+#15 2.184    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 689.0/689.0 kB 2.8 MB/s eta 0:00:00
+#15 2.216 Downloading redis-5.0.5-py3-none-any.whl (251 kB)
+#15 2.290 Downloading psycopg2_binary-2.9.9-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (2.9 MB)
+#15 3.304    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.9/2.9 MB 2.8 MB/s eta 0:00:00
+#15 3.347 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+#15 3.532 Installing collected packages: redis, psycopg2-binary, dnspython, pymongo
+#15 3.841 Successfully installed dnspython-2.8.0 psycopg2-binary-2.9.9 pymongo-4.7.2 redis-5.0.5
+#15 3.841 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#15 4.015 
+#15 4.015 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#15 4.015 [notice] To update, run: pip install --upgrade pip
+#15 DONE 4.1s
+
+#16 [consumer 5/5] COPY . .
+#16 DONE 0.0s
+
+#14 [saga 4/7] RUN pip install --no-cache-dir -r saga/requirements.txt
+#14 4.215 Successfully installed dnspython-2.8.0 psycopg2-binary-2.9.9 pymongo-4.7.2 redis-5.0.5
+#14 4.215 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#14 4.328 
+#14 4.328 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#14 4.328 [notice] To update, run: pip install --upgrade pip
+#14 DONE 4.4s
+
+#17 [saga 5/7] COPY write-api/events.py write-api/
+#17 DONE 0.0s
+
+#18 [saga 6/7] COPY saga/ saga/
+#18 DONE 0.0s
+
+#19 [saga 7/7] WORKDIR /service/saga
+#19 DONE 0.0s
+
+#20 [saga] exporting to image
+#20 exporting layers
+#20 ...
+
+#21 [consumer] exporting to image
+#21 exporting layers 0.5s done
+#21 exporting manifest sha256:20b0f7721983128533b7d06d5a1c216ff03442d3db46bace75ce6d502887da8e done
+#21 exporting config sha256:25523b7efbccde1dfb71e3f08b49ccaad6eb5e5b5c12dd7e212315d9b0f0d765 done
+#21 exporting attestation manifest sha256:20c63e91e4fb7c175a60b4166fa5516ecce44fbf215b5eb367ed19310dc22515 done
+#21 exporting manifest list sha256:a1cff10e15c94125b7d4b259f9975768e7b5a4aa590ddbfa943cdecc46d78e48 done
+#21 naming to docker.io/library/cqrs-consumer:latest done
+#21 unpacking to docker.io/library/cqrs-consumer:latest 0.1s done
+#21 DONE 0.7s
+
+#22 [consumer] resolving provenance for metadata file
+#22 DONE 0.0s
+
+#20 [saga] exporting to image
+#20 exporting layers 0.5s done
+#20 exporting manifest sha256:fa8486fc98106846d5673379904373a3bc112d165090539c6f1245d55fd74cea done
+#20 exporting config sha256:b569eb28a21256f89fe23c1d5889eebb8c9a98889b426a7e65b89d0c0d24725d done
+#20 exporting attestation manifest sha256:bf305946428a3478d958021ab79a6cfbb1f6b8cb42aee1d73769bd16947138ea done
+#20 exporting manifest list sha256:565111cdff8d246775dd8d00bd4c9e1197a0aa34944199f68397e31cf3319443 done
+#20 naming to docker.io/library/cqrs-saga:latest done
+#20 unpacking to docker.io/library/cqrs-saga:latest 0.1s done
+#20 DONE 0.7s
+
+#23 [saga] resolving provenance for metadata file
+#23 DONE 0.0s
+ cqrs-saga  Built
+ cqrs-consumer  Built
+time="2026-04-26T02:40:34+05:30" level=warning msg="/Users/akankshawattamwar/Desktop/CS315/CQRS/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.42kB done
+#1 DONE 0.0s
+
+#2 [write-api internal] load build definition from Dockerfile
+#2 transferring dockerfile: 225B done
+#2 DONE 0.0s
+
+#3 [saga internal] load build definition from Dockerfile
+#3 transferring dockerfile: 365B done
+#3 DONE 0.0s
+
+#4 [read-api internal] load build definition from Dockerfile
+#4 transferring dockerfile: 225B done
+#4 DONE 0.0s
+
+#5 [consumer internal] load build definition from Dockerfile
+#5 transferring dockerfile: 186B done
+#5 DONE 0.0s
+
+#6 [frontend internal] load build definition from Dockerfile
+#6 transferring dockerfile: 271B done
+#6 DONE 0.0s
+
+#7 [consumer internal] load metadata for docker.io/library/python:3.12-slim
+#7 DONE 0.4s
+
+#8 [consumer internal] load .dockerignore
+#8 transferring context: 2B done
+#8 DONE 0.0s
+
+#9 [saga internal] load .dockerignore
+#9 transferring context: 2B done
+#9 DONE 0.0s
+
+#10 [read-api internal] load .dockerignore
+#10 transferring context: 2B done
+#10 DONE 0.0s
+
+#11 [write-api internal] load .dockerignore
+#11 transferring context: 2B done
+#11 DONE 0.0s
+
+#12 [consumer internal] load build context
+#12 transferring context: 308B done
+#12 DONE 0.0s
+
+#13 [write-api internal] load build context
+#13 transferring context: 341B done
+#13 DONE 0.0s
+
+#14 [read-api internal] load build context
+#14 transferring context: 258B done
+#14 DONE 0.0s
+
+#15 [saga 1/5] FROM docker.io/library/python:3.12-slim@sha256:46cb7cc2877e60fbd5e21a9ae6115c30ace7a077b9f8772da879e4590c18c2e3
+#15 resolve docker.io/library/python:3.12-slim@sha256:46cb7cc2877e60fbd5e21a9ae6115c30ace7a077b9f8772da879e4590c18c2e3 0.0s done
+#15 DONE 0.0s
+
+#16 [saga internal] load build context
+#16 transferring context: 386B done
+#16 DONE 0.0s
+
+#17 [write-api 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#17 CACHED
+
+#18 [write-api 3/5] COPY requirements.txt .
+#18 CACHED
+
+#19 [write-api 5/5] COPY . .
+#19 CACHED
+
+#20 [consumer 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#20 CACHED
+
+#21 [consumer 3/5] COPY requirements.txt .
+#21 CACHED
+
+#22 [consumer 5/5] COPY . .
+#22 CACHED
+
+#23 [read-api 3/5] COPY requirements.txt .
+#23 CACHED
+
+#24 [read-api 2/5] WORKDIR /app
+#24 CACHED
+
+#25 [read-api 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#25 CACHED
+
+#26 [read-api 5/5] COPY . .
+#26 CACHED
+
+#27 [saga 3/7] COPY saga/requirements.txt saga/
+#27 CACHED
+
+#28 [saga 6/7] COPY saga/ saga/
+#28 CACHED
+
+#29 [saga 5/7] COPY write-api/events.py write-api/
+#29 CACHED
+
+#30 [saga 2/7] WORKDIR /service
+#30 CACHED
+
+#31 [saga 4/7] RUN pip install --no-cache-dir -r saga/requirements.txt
+#31 CACHED
+
+#32 [saga 7/7] WORKDIR /service/saga
+#32 CACHED
+
+#33 [write-api] exporting to image
+#33 exporting layers done
+#33 exporting manifest sha256:92a21a99b40b6531c5801222236f42d6aa7bbf8b65d7634fc566f9392602e764 done
+#33 exporting config sha256:be9fb26fa271ebf0c525960e70f2e967c21bf78a1eb2b7a7dc06e6d3ff4d3f55 done
+#33 exporting attestation manifest sha256:1cc4fcaa2de34cb76e5c2ea8ee6cf221ef07c7406a08142ab07d2e09bb1d1108 done
+#33 exporting manifest list sha256:22b3e377d7e17b6496fb7bbe976cb8c846b4515f5b3ebb305fc2ecba0a7f3e73 done
+#33 naming to docker.io/library/cqrs-write-api:latest done
+#33 unpacking to docker.io/library/cqrs-write-api:latest done
+#33 DONE 0.1s
+
+#34 [consumer] exporting to image
+#34 exporting layers done
+#34 exporting manifest sha256:20b0f7721983128533b7d06d5a1c216ff03442d3db46bace75ce6d502887da8e done
+#34 exporting config sha256:25523b7efbccde1dfb71e3f08b49ccaad6eb5e5b5c12dd7e212315d9b0f0d765 done
+#34 exporting attestation manifest sha256:c23e85d128527205ace687e8317330f291b8aeeec2466b12d20f0f71ad41bece 0.0s done
+#34 exporting manifest list sha256:6bb7d67cdde35aa87623369bb6588763d9befa8b29221822171efcd9ab815027 done
+#34 naming to docker.io/library/cqrs-consumer:latest done
+#34 unpacking to docker.io/library/cqrs-consumer:latest done
+#34 DONE 0.1s
+
+#35 [read-api] exporting to image
+#35 exporting layers done
+#35 exporting manifest sha256:c63ee61fb06e4bd063e843362129b868354c2f94e2566ad3c11bbd0548881470 done
+#35 exporting config sha256:46bb870cf8127e2823c379c44ac9a3c0d6ee66fd1b3343341206f22ff23f7f62 done
+#35 exporting attestation manifest sha256:372c0ede3006c3776f35fee7704db2c61f144f12dcaa71498018693948d04128 0.0s done
+#35 exporting manifest list sha256:96ccabc29a6135281fa0a473ad827f45cdfec029326dd6508d436746e3704552 done
+#35 naming to docker.io/library/cqrs-read-api:latest done
+#35 unpacking to docker.io/library/cqrs-read-api:latest done
+#35 DONE 0.1s
+
+#36 [write-api] resolving provenance for metadata file
+#36 DONE 0.0s
+
+#37 [saga] exporting to image
+#37 exporting layers done
+#37 exporting manifest sha256:fa8486fc98106846d5673379904373a3bc112d165090539c6f1245d55fd74cea done
+#37 exporting config sha256:b569eb28a21256f89fe23c1d5889eebb8c9a98889b426a7e65b89d0c0d24725d done
+#37 exporting attestation manifest sha256:c95aa60cee4feb756256a7dd2b079e0d9616443609855efaa1ca9a0a7fbdc585 0.0s done
+#37 exporting manifest list sha256:aae9553958dd26d28bcacf3ecab7699a4a6abae14ec8ec4a1126bc5be6ee94d4 done
+#37 naming to docker.io/library/cqrs-saga:latest done
+#37 unpacking to docker.io/library/cqrs-saga:latest 0.0s done
+#37 DONE 0.1s
+
+#38 [read-api] resolving provenance for metadata file
+#38 DONE 0.0s
+
+#39 [consumer] resolving provenance for metadata file
+#39 DONE 0.0s
+
+#40 [frontend internal] load metadata for docker.io/library/node:20-alpine
+#40 ...
+
+#41 [saga] resolving provenance for metadata file
+#41 DONE 0.0s
+
+#40 [frontend internal] load metadata for docker.io/library/node:20-alpine
+#40 DONE 0.9s
+
+#42 [frontend internal] load metadata for docker.io/library/nginx:alpine
+#42 DONE 0.9s
+
+#43 [frontend internal] load .dockerignore
+#43 transferring context: 2B done
+#43 DONE 0.0s
+
+#44 [frontend build 1/6] FROM docker.io/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293
+#44 resolve docker.io/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293 0.0s done
+#44 DONE 0.0s
+
+#45 [frontend stage-1 1/3] FROM docker.io/library/nginx:alpine@sha256:5616878291a2eed594aee8db4dade5878cf7edcb475e59193904b198d9b830de
+#45 resolve docker.io/library/nginx:alpine@sha256:5616878291a2eed594aee8db4dade5878cf7edcb475e59193904b198d9b830de 0.0s done
+#45 DONE 0.0s
+
+#46 [frontend internal] load build context
+#46 transferring context: 185.58kB 0.1s done
+#46 DONE 0.1s
+
+#47 [frontend build 3/6] COPY package.json ./
+#47 CACHED
+
+#48 [frontend build 4/6] RUN npm install
+#48 CACHED
+
+#49 [frontend build 6/6] RUN npm run build
+#49 CACHED
+
+#50 [frontend build 5/6] COPY . .
+#50 CACHED
+
+#51 [frontend build 2/6] WORKDIR /app
+#51 CACHED
+
+#52 [frontend stage-1 2/3] COPY --from=build /app/dist /usr/share/nginx/html
+#52 CACHED
+
+#53 [frontend stage-1 3/3] COPY nginx.conf /etc/nginx/conf.d/default.conf
+#53 CACHED
+
+#54 [frontend] exporting to image
+#54 exporting layers done
+#54 exporting manifest sha256:32782dd8e2053c61118ccbb621867087941de406675097f92803716fedafab00 done
+#54 exporting config sha256:64d46ad231b32d64275256ac207db88e0b5dd078678dcdc752d464f80305d609 done
+#54 exporting attestation manifest sha256:00eaa4ab0ea41511df828e9cbf8efe1efe622fd3cbef47c18bbb6f527ce84c7e 0.0s done
+#54 exporting manifest list sha256:fef506914ffe1f30ecdd0a56dda98dfeb81fd19860f4e1df2b4616c10168e7a4 done
+#54 naming to docker.io/library/cqrs-frontend:latest done
+#54 unpacking to docker.io/library/cqrs-frontend:latest done
+#54 DONE 0.0s
+
+#55 [frontend] resolving provenance for metadata file
+#55 DONE 0.0s
+ cqrs-read-api  Built
+ cqrs-consumer  Built
+ cqrs-frontend  Built
+ cqrs-saga  Built
+ cqrs-write-api  Built
+ Network cqrs_default  Creating
+ Network cqrs_default  Created
+ Volume "cqrs_mongo_data"  Creating
+ Volume "cqrs_mongo_data"  Created
+ Volume "cqrs_postgres_data"  Creating
+ Volume "cqrs_postgres_data"  Created
+ Container cqrs-mongodb-1  Creating
+ Container cqrs-postgres-1  Creating
+ Container cqrs-redis-cache-1  Creating
+ Container cqrs-redis-stream-1  Creating
+ Container cqrs-mongodb-1  Created
+ Container cqrs-redis-stream-1  Created
+ Container cqrs-redis-cache-1  Created
+ Container cqrs-write-api-1  Creating
+ Container cqrs-postgres-1  Created
+ Container cqrs-consumer-1  Creating
+ Container cqrs-read-api-1  Creating
+ Container cqrs-saga-1  Creating
+ Container cqrs-read-api-1  Created
+ Container cqrs-frontend-1  Creating
+ Container cqrs-saga-1  Created
+ Container cqrs-consumer-1  Created
+ Container cqrs-write-api-1  Created
+ Container cqrs-frontend-1  Created
+ Container cqrs-redis-cache-1  Starting
+ Container cqrs-redis-stream-1  Starting
+ Container cqrs-postgres-1  Starting
+ Container cqrs-mongodb-1  Starting
+ Container cqrs-redis-cache-1  Started
+ Container cqrs-redis-stream-1  Started
+ Container cqrs-mongodb-1  Started
+ Container cqrs-redis-stream-1  Waiting
+ Container cqrs-redis-cache-1  Waiting
+ Container cqrs-mongodb-1  Waiting
+ Container cqrs-postgres-1  Started
+ Container cqrs-redis-stream-1  Waiting
+ Container cqrs-postgres-1  Waiting
+ Container cqrs-redis-cache-1  Waiting
+ Container cqrs-postgres-1  Waiting
+ Container cqrs-mongodb-1  Waiting
+ Container cqrs-redis-stream-1  Waiting
+ Container cqrs-postgres-1  Waiting
+ Container cqrs-mongodb-1  Waiting
+ Container cqrs-redis-cache-1  Healthy
+ Container cqrs-redis-stream-1  Healthy
+ Container cqrs-redis-stream-1  Healthy
+ Container cqrs-postgres-1  Healthy
+ Container cqrs-redis-cache-1  Healthy
+ Container cqrs-redis-stream-1  Healthy
+ Container cqrs-read-api-1  Starting
+ Container cqrs-postgres-1  Healthy
+ Container cqrs-postgres-1  Healthy
+ Container cqrs-read-api-1  Started
+ Container cqrs-frontend-1  Starting
+ Container cqrs-frontend-1  Started
+ Container cqrs-mongodb-1  Healthy
+ Container cqrs-write-api-1  Starting
+ Container cqrs-mongodb-1  Healthy
+ Container cqrs-mongodb-1  Healthy
+ Container cqrs-consumer-1  Starting
+ Container cqrs-saga-1  Starting
+ Container cqrs-write-api-1  Started
+ Container cqrs-saga-1  Started
+ Container cqrs-consumer-1  Started
+Waiting for APIs to be ready...
+Clearing MongoDB events and sagas...
+time="2026-04-26T02:40:48+05:30" level=warning msg="/Users/akankshawattamwar/Desktop/CS315/CQRS/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+MongoDB cleared
+All services up.
+Logs: docker compose logs -f [write-api|read-api|consumer|saga]
+[32mDone. System back to default state.[0m

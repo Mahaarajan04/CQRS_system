@@ -1,0 +1,45 @@
+
+[1m[94m=======================================================[0m
+[1m[94m  READER BENCHMARK — Read-Your-Writes Lag (baseline)[0m
+[1m[94m=======================================================[0m
+  [93m→[0m  Placing 200 orders sequentially and measuring GET-after-POST lag
+  [93m→[0m  Poll interval: 2ms (so floor resolution ≈ 2ms)
+    ...10/200 orders placed & read
+    ...20/200 orders placed & read
+    ...30/200 orders placed & read
+    ...40/200 orders placed & read
+    ...50/200 orders placed & read
+    ...60/200 orders placed & read
+    ...70/200 orders placed & read
+    ...80/200 orders placed & read
+    ...90/200 orders placed & read
+    ...100/200 orders placed & read
+    ...110/200 orders placed & read
+    ...120/200 orders placed & read
+    ...130/200 orders placed & read
+    ...140/200 orders placed & read
+    ...150/200 orders placed & read
+    ...160/200 orders placed & read
+    ...170/200 orders placed & read
+    ...180/200 orders placed & read
+    ...190/200 orders placed & read
+    ...200/200 orders placed & read
+
+  [1mResults  (N=200, failures=0, wall=11.0s)[0m
+  metric             p50       p95       p99       max      mean
+  POST ms            2.5       3.5       3.7      14.0       2.7
+  RYW lag ms        54.1      58.3      60.9      61.6      52.1
+  polls                9         9        10        10       8.3
+
+  [1mRYW lag distribution[0m
+  [    0 –     5 ms]     0  
+  [    5 –    10 ms]     0  
+  [   10 –    20 ms]     1  
+  [   20 –    50 ms]    52  ██████████
+  [   50 –   100 ms]   147  ██████████████████████████████
+  [  100 –   250 ms]     0  
+  [  250 –   500 ms]     0  
+  [  500 –  1000 ms]     0  
+  [ 1000 – 10000 ms]     0  
+  [92m✓[0m  Raw samples written to /tmp/reader_baseline.csv
+  [93m→[0m  After implementing the cache, rerun the same command and diff the RYW lag.

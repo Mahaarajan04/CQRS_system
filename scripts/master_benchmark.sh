@@ -1,17 +1,5 @@
 #!/bin/bash
-# Master benchmark — diagonal-capped N × delay grid.
-# N values:     500, 1250, 2500, 3750, 5000
-# Delay values: 0.01, 0.05, 0.10, 0.30
-#
-# High delays are skipped for high N to keep runtimes sane:
-#   N=500,  1250 → all delays
-#   N=2500       → max 0.10
-#   N=3750       → max 0.05
-#   N=5000       → max 0.01
-#
-# Usage:
-#   bash scripts/master_benchmark.sh
-#   bash scripts/master_benchmark.sh --n-values "500 1000 5000" --delay-values "0.01 0.05 0.1"
+# Master benchmark — full N × delay grid (no diagonal cap)
 
 set -uo pipefail
 
@@ -20,19 +8,11 @@ SCRIPT="$(cd "$(dirname "$0")" && pwd)/benchmark_cache.sh"
 RESULTS_DIR="$ROOT/results/master_$(date +%Y%m%d_%H%M%S)"
 SUMMARY="$RESULTS_DIR/summary.txt"
 
-# ── Defaults ──────────────────────────────────────────────────────────────────
-N_VALUES=(500 1000 2500 4000 5000)
-DELAY_VALUES=(0.01 0.05 0.10 0.30)
+# ── Defaults ────────────────────────────────────────────────────────────────
+N_VALUES=(100 200 300 500 1000)
+DELAY_VALUES=(0.01 0.05 0.10)
 
-# ── Diagonal cap: max delay allowed per N ─────────────────────────────────────
-declare -A MAX_DELAY
-MAX_DELAY[500]=0.30
-MAX_DELAY[1000]=0.30
-MAX_DELAY[2500]=0.10
-MAX_DELAY[4000]=0.05
-MAX_DELAY[5000]=0.05
-
-# ── Arg overrides ─────────────────────────────────────────────────────────────
+# ── Arg overrides ───────────────────────────────────────────────────────────
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --n-values)     read -ra N_VALUES     <<< "$2"; shift ;;
@@ -42,75 +22,46 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-# ── Ensure results root exists ────────────────────────────────────────────────
+# ── Ensure results dir ──────────────────────────────────────────────────────
 RESULTS_ROOT="$ROOT/results"
-if [[ ! -d "$RESULTS_ROOT" ]]; then
-    echo "  'results/' folder not found — creating $RESULTS_ROOT"
-    mkdir -p "$RESULTS_ROOT"
-fi
+mkdir -p "$RESULTS_ROOT"
 mkdir -p "$RESULTS_DIR"
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
+# ── Helpers ─────────────────────────────────────────────────────────────────
 bold()   { printf "\033[1m%s\033[0m\n" "$*"; }
 green()  { printf "\033[32m%s\033[0m\n" "$*"; }
 yellow() { printf "\033[33m%s\033[0m\n" "$*"; }
 red()    { printf "\033[31m%s\033[0m\n" "$*"; }
-grey()   { printf "\033[90m%s\033[0m\n" "$*"; }
 sep()    { printf "\n%s\n\n" "$(printf '=%.0s' {1..60})"; }
 
-# ── Pre-calculate actual runs (respecting diagonal cap) ───────────────────────
-TOTAL=0
-for N in "${N_VALUES[@]}"; do
-    for DELAY in "${DELAY_VALUES[@]}"; do
-        CAP="${MAX_DELAY[$N]:-9999}"
-        if (( $(echo "$DELAY <= $CAP" | bc -l) )); then
-            TOTAL=$(( TOTAL + 1 ))
-        fi
-    done
-done
+# ── Count total runs ─────────────────────────────────────────────────────────
+TOTAL=$(( ${#N_VALUES[@]} * ${#DELAY_VALUES[@]} ))
 
 PASS=0
-SKIP=0
 RUN=0
-SKIPPED_CAP=0
 FAILED_RUNS=()
 
 log() { echo "$*" | tee -a "$SUMMARY"; }
 
-# ── Header ────────────────────────────────────────────────────────────────────
+# ── Header ──────────────────────────────────────────────────────────────────
 sep
-bold "MASTER BENCHMARK — Diagonal-Capped Grid ($TOTAL active runs)"
+bold "MASTER BENCHMARK — Full Grid ($TOTAL runs)"
 echo "  N values:     ${N_VALUES[*]}"
 echo "  Delay values: ${DELAY_VALUES[*]}"
-echo ""
-echo "  Cap table (max delay per N):"
-for N in "${N_VALUES[@]}"; do
-    printf "    N=%-5s  max delay=%s\n" "$N" "${MAX_DELAY[$N]:-none}"
-done
-echo ""
 echo "  Results dir:  $RESULTS_DIR"
 sep
 
 log "master_benchmark started at $(date)"
 log "N values:     ${N_VALUES[*]}"
 log "Delay values: ${DELAY_VALUES[*]}"
-log "Active runs:  $TOTAL"
+log "Total runs:   $TOTAL"
 log ""
 log "$(printf '%-6s  %-8s  %-10s  %s' 'N' 'delay' 'status' 'notes')"
 log "$(printf '%-6s  %-8s  %-10s  %s' '------' '--------' '----------' '-----')"
 
-# ── Grid loop ─────────────────────────────────────────────────────────────────
+# ── Grid loop ───────────────────────────────────────────────────────────────
 for N in "${N_VALUES[@]}"; do
     for DELAY in "${DELAY_VALUES[@]}"; do
-
-        # ── Diagonal cap check ─────────────────────────────────────────────
-        CAP="${MAX_DELAY[$N]:-9999}"
-        if (( $(echo "$DELAY > $CAP" | bc -l) )); then
-            SKIPPED_CAP=$(( SKIPPED_CAP + 1 ))
-            grey "  [CAP-SKIP] N=$N delay=$DELAY — exceeds max delay ($CAP) for this N"
-            log "$(printf '%-6s  %-8s  %-10s  %s' "$N" "$DELAY" "CAP-SKIP" "exceeds diagonal cap")"
-            continue
-        fi
 
         RUN=$(( RUN + 1 ))
         sep
@@ -120,14 +71,14 @@ for N in "${N_VALUES[@]}"; do
         STATUS="FAIL"
         NOTE=""
 
-        # ── First attempt ──────────────────────────────────────────────────
+        # ── First attempt ────────────────────────────────────────────────
         if bash "$SCRIPT" --n "$N" --delay "$DELAY" > "$LOG_FILE" 2>&1; then
             STATUS="PASS"
             PASS=$(( PASS + 1 ))
             green "  ✓ Passed"
 
         else
-            # ── Retry once ─────────────────────────────────────────────────
+            # ── Retry once ───────────────────────────────────────────────
             yellow "  ✗ Failed — retrying once..."
             RETRY_LOG="$RESULTS_DIR/run_n${N}_d${DELAY}_retry.log"
 
@@ -140,20 +91,15 @@ for N in "${N_VALUES[@]}"; do
 
             else
                 STATUS="FAILED"
-                NOTE="failed twice — skipped"
+                NOTE="failed twice"
                 FAILED_RUNS+=("N=$N delay=$DELAY")
+
                 echo "" >> "$LOG_FILE"
                 echo "=== RETRY ATTEMPT ===" >> "$LOG_FILE"
                 cat "$RETRY_LOG" >> "$LOG_FILE"
                 rm -f "$RETRY_LOG"
 
-                echo ""
-                red "╔══════════════════════════════════════════╗"
-                red "║       ✗  RUN FAILED (x2) — SKIPPED      ║"
-                red "║  N=$N   delay=$DELAY   run [$RUN/$TOTAL]"
-                red "║  log: $(basename "$LOG_FILE")"
-                red "╚══════════════════════════════════════════╝"
-                echo ""
+                red "  ✗ FAILED (after retry)"
             fi
         fi
 
@@ -161,26 +107,21 @@ for N in "${N_VALUES[@]}"; do
     done
 done
 
-# ── Final summary ─────────────────────────────────────────────────────────────
+# ── Final summary ───────────────────────────────────────────────────────────
 sep
 bold "MASTER BENCHMARK COMPLETE"
 echo ""
-printf "  Total combos:    %s\n" "$(( TOTAL + SKIPPED_CAP ))"
-printf "  Ran:             %s\n" "$TOTAL"
-printf "  Cap-skipped:     %s\n" "$SKIPPED_CAP"
-green "$(printf '  Passed:          %s' "$PASS")"
-echo ""
+printf "  Total runs:  %s\n" "$TOTAL"
+green "$(printf '  Passed:      %s' "$PASS")"
 
 if [[ ${#FAILED_RUNS[@]} -gt 0 ]]; then
-    red "$(printf '  Failed:          %s' "${#FAILED_RUNS[@]}")"
-    echo ""
-    red "  ✗ FAILED RUNS:"
+    red "$(printf '  Failed:      %s' "${#FAILED_RUNS[@]}")"
     for entry in "${FAILED_RUNS[@]}"; do
-        red "      • $entry"
-        log "  FAILED: $entry"
+        red "    • $entry"
+        log "FAILED: $entry"
     done
 else
-    green "  Failed:          0"
+    green "  Failed:      0"
 fi
 
 echo ""
@@ -190,4 +131,4 @@ sep
 
 log ""
 log "Finished at $(date)"
-log "Passed: $PASS / $TOTAL   Failed: ${#FAILED_RUNS[@]}   Cap-skipped: $SKIPPED_CAP"
+log "Passed: $PASS / $TOTAL   Failed: ${#FAILED_RUNS[@]}"

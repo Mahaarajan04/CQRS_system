@@ -73,6 +73,8 @@ This project implements that pattern end-to-end:
 │   ├── replay.py           # replays MongoDB event log into PostgreSQL
 │   ├── replay_demo.sh      # end-to-end event replay demo (drop → replay → verify)
 │   ├── benchmark_cache.sh  # two-phase cache on/off benchmark
+│   ├── plot_benchmark.py   # plots RYW lag from cached/nocache benchmark result files
+│   ├── consistency_plot.py # plots consistency lag p50/p95/p99 from consistency_demo logs
 │   └── test_flow.py        # integration smoke test
 │
 ├── results/                # raw benchmark output files
@@ -361,6 +363,47 @@ What you'll see:
 - **STEP 7** — restores to full current state
 
 PostgreSQL is a **disposable projection**. The event log in MongoDB is the only source of truth — any historical state is recoverable by replaying a prefix of the log.
+
+---
+
+## Plotting Results
+
+### Cache Benchmark Plots (`scripts/plot_benchmark.py`)
+
+Parses `cached_slowconsumer_{delay}_{N}.txt` and `nocache_slowconsumer_{delay}_{N}.txt` files from `results/` and produces 5 graphs:
+
+| Output file | Contents |
+|---|---|
+| `ryw_lag_p50.png` | p50 RYW lag — all modes × delays on one chart |
+| `ryw_lag_p95.png` | p95 RYW lag — all modes × delays |
+| `ryw_lag_p99.png` | p99 RYW lag — all modes × delays |
+| `ryw_lag_cached_delay0_01.png` | Cached only, delay=0.01s — p50/p95/p99 as separate lines |
+| `ryw_lag_nocache_delay0_01.png` | No-cache only, delay=0.01s — p50/p95/p99 as separate lines |
+
+```bash
+# Run after benchmark_cache.sh has populated results/
+python3 scripts/plot_benchmark.py                         # reads from results/, writes plots there too
+python3 scripts/plot_benchmark.py --dir results/my_run   # specific results directory
+python3 scripts/plot_benchmark.py --dir results/ --out plots/
+```
+
+### Consistency Lag Plots (`scripts/consistency_plot.py`)
+
+Parses `run_n{N}_d{delay}.log` files from `results/consistency_logs/` and produces 3 graphs (one per percentile):
+
+| Output file | Contents |
+|---|---|
+| `lag_p50.png` | p50 consistency lag vs N, one line per delay |
+| `lag_p95.png` | p95 consistency lag vs N |
+| `lag_p99.png` | p99 consistency lag vs N |
+
+Log files must be named exactly `run_n100_d0.10.log` (N and delay encoded in filename).
+
+```bash
+# Run after consistency_demo.py --n <N> has been run at multiple delays
+python3 scripts/consistency_plot.py                                          # default: results/consistency_logs/
+python3 scripts/consistency_plot.py --dir results/consistency_logs --out results/
+```
 
 ---
 

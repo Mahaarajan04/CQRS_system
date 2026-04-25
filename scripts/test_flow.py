@@ -288,19 +288,15 @@ if "--saga" in sys.argv:
             print(f"    v{e['version']}  {e['event_type']:<28}{payload_summary}")
 
     def restart_saga_worker(env_overrides: dict):
-        """Kill the saga worker and restart it with new env vars (for payment failure rate)."""
-        subprocess.run(["pkill", "-f", "saga_worker.py"], capture_output=True)
-        time.sleep(1.0)
+        """Recreate the saga Docker container with new env vars (for payment failure rate)."""
         env = os.environ.copy()
         env.update(env_overrides)
-        subprocess.Popen(
-            ["python", "saga_worker.py"],
-            cwd=SAGA_ROOT,
-            stdout=open("/tmp/saga.log", "a"),
-            stderr=subprocess.STDOUT,
-            env=env,
+        subprocess.run(["docker", "compose", "stop", "saga"], cwd=ROOT, capture_output=True)
+        subprocess.run(
+            ["docker", "compose", "up", "-d", "--no-deps", "saga"],
+            cwd=ROOT, env=env, capture_output=True,
         )
-        time.sleep(1.5)  # let Redis connection + consumer group setup
+        time.sleep(2.0)  # let container start + Redis consumer group setup
 
     def place_order(payload):
         r = requests.post(f"{WRITE}/orders", json=payload)
@@ -435,7 +431,7 @@ if "--blast" in sys.argv:
             pass
 
     info("Step 1: Kill the consumer so events pile up in Redis...")
-    subprocess.run(["pkill", "-f", "worker.py"], capture_output=True)
+    subprocess.run(["docker", "compose", "stop", "consumer"], cwd=ROOT, capture_output=True)
     time.sleep(1)
     ok("Consumer stopped")
 
@@ -463,13 +459,7 @@ if "--blast" in sys.argv:
     print()
 
     info("Step 3: Restarting consumer — watch lag drain to 0...")
-    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    subprocess.Popen(
-        ["python", "worker.py"],
-        cwd=os.path.join(root, "consumer"),
-        stdout=open("/tmp/consumer.log", "a"),
-        stderr=subprocess.STDOUT,
-    )
+    subprocess.run(["docker", "compose", "start", "consumer"], cwd=ROOT, capture_output=True)
 
     while True:
         time.sleep(0.5)

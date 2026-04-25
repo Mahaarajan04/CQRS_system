@@ -123,6 +123,7 @@ services:
       MONGO_URL: mongodb://mongodb:27017
       REDIS_URL: redis://redis-stream:6379
       POSTGRES_URL: postgresql://cqrs:cqrs_pass@postgres:5432/cqrs_read
+      PAYMENT_FAILURE_RATE: ${PAYMENT_FAILURE_RATE:-0.15}
     depends_on:
       mongodb:
         condition: service_healthy

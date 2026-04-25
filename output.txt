@@ -1,0 +1,126 @@
+
+[1m=======================================================[0m
+[1m  CQRS BENCHMARK — MV + Write Throughput[0m
+[1m=======================================================[0m
+
+  [92mData check passed:[0m 5,400 orders in PostgreSQL read model
+
+[1m=======================================================[0m
+[1m  READ BENCHMARK — Analytical Query (daily revenue by region)[0m
+[1m=======================================================[0m
+
+  Dataset: 5,400 orders across ~30 days, 4 regions
+  Each query run 5 times after 2 warm-up runs. Showing median / p95.
+
+  Running materialized view query...           done
+  Running raw SQL JOIN query...                done
+  Running MongoDB aggregation...               done
+
+  query                                      median       p95    rows
+  ------------------------------------------------------------------
+  [96mCQRS — materialized view (mv_daily_revenue)[0m     5.7ms      6.7ms     124
+  CQRS — raw SQL JOIN (no view)               13.0ms     14.9ms     124
+  MongoDB — aggregation on event log          14.3ms     15.5ms       ~
+
+  [92mSpeedup:[0m
+    MV is 2x faster than raw SQL JOIN
+    MV is 3x faster than MongoDB aggregation pipeline
+
+  [93mWhy:[0m
+    The materialized view pre-computes the GROUP BY at projection time.
+    Raw JOIN scans all rows in orders + order_items at query time.
+    MongoDB aggregates the event payload — no schema, no indexes,
+    and must unwind nested items arrays event-by-event.
+
+[1m=======================================================[0m
+[1m  WRITE BENCHMARK — 200 orders, 20 concurrent threads[0m
+[1m=======================================================[0m
+
+  Comparing CQRS event-log append vs direct PostgreSQL 3NF INSERT.
+
+  CQRS:  POST /orders ...                           done
+  Direct PG: INSERT into 3 tables ...               done
+
+  path                                        ops/sec       p50       p99
+  ----------------------------------------------------------------------
+  [96mCQRS: POST /orders (MongoDB append)       [0m     589      30.8ms     52.2ms
+  Direct: PostgreSQL 3NF INSERT                  412      45.5ms     73.9ms
+
+  [92mCQRS write is 1.4x higher throughput than direct PG INSERT[0m
+
+  [93mWhy CQRS write scales better at high load:[0m
+    MongoDB append: no FK checks, no schema enforcement, pure sequential write.
+    Direct PG INSERT: 3 round-trips (customers + orders + order_items),
+    FK constraint validation, index updates on every INSERT.
+    Under contention (many concurrent writers) PG lock waits dominate.
+
+[1m=======================================================[0m
+
+  [92mDone.[0m
+  Re-run read benchmark only:   python scripts/mv_benchmark.py --read-only
+  Re-run write benchmark only:  python scripts/mv_benchmark.py --write-only
+  Scale up write benchmark:     python scripts/mv_benchmark.py --write-n 500 --write-workers 50
+
+
+[1m=======================================================[0m
+[1m  CQRS BENCHMARK — MV + Write Throughput[0m
+[1m=======================================================[0m
+
+  [92mData check passed:[0m 5,800 orders in PostgreSQL read model
+
+[1m=======================================================[0m
+[1m  READ BENCHMARK — Analytical Query (daily revenue by region)[0m
+[1m=======================================================[0m
+
+  Dataset: 5,800 orders across ~30 days, 4 regions
+  Each query run 5 times after 2 warm-up runs. Showing median / p95.
+
+  Running materialized view query...           done
+  Running raw SQL JOIN query...                done
+  Running MongoDB aggregation...               done
+
+  query                                      median       p95    rows
+  ------------------------------------------------------------------
+  [96mCQRS — materialized view (mv_daily_revenue)[0m     8.1ms     17.0ms     124
+  CQRS — raw SQL JOIN (no view)               13.4ms     14.3ms     124
+  MongoDB — aggregation on event log          14.3ms     14.7ms       ~
+
+  [92mSpeedup:[0m
+    MV is 2x faster than raw SQL JOIN
+    MV is 2x faster than MongoDB aggregation pipeline
+
+  [93mWhy:[0m
+    The materialized view pre-computes the GROUP BY at projection time.
+    Raw JOIN scans all rows in orders + order_items at query time.
+    MongoDB aggregates the event payload — no schema, no indexes,
+    and must unwind nested items arrays event-by-event.
+
+[1m=======================================================[0m
+[1m  WRITE BENCHMARK — 500 orders, 50 concurrent threads[0m
+[1m=======================================================[0m
+
+  Comparing CQRS event-log append vs direct PostgreSQL 3NF INSERT.
+
+  CQRS:  POST /orders ...                           done
+  Direct PG: INSERT into 3 tables ...               done
+
+  path                                        ops/sec       p50       p99
+  ----------------------------------------------------------------------
+  [96mCQRS: POST /orders (MongoDB append)       [0m     611      78.7ms    119.4ms
+  Direct: PostgreSQL 3NF INSERT                  411     106.2ms    296.5ms
+
+  [92mCQRS write is 1.5x higher throughput than direct PG INSERT[0m
+
+  [93mWhy CQRS write scales better at high load:[0m
+    MongoDB append: no FK checks, no schema enforcement, pure sequential write.
+    Direct PG INSERT: 3 round-trips (customers + orders + order_items),
+    FK constraint validation, index updates on every INSERT.
+    Under contention (many concurrent writers) PG lock waits dominate.
+
+[1m=======================================================[0m
+
+  [92mDone.[0m
+  Re-run read benchmark only:   python scripts/mv_benchmark.py --read-only
+  Re-run write benchmark only:  python scripts/mv_benchmark.py --write-only
+  Scale up write benchmark:     python scripts/mv_benchmark.py --write-n 500 --write-workers 50
+

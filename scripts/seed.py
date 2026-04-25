@@ -92,13 +92,15 @@ def seed(n_orders: int, publish: bool):
     all_events.sort(key=lambda e: e["timestamp"])
 
     db["events"].insert_many(all_events)
+    # insert_many mutates dicts in-place with _id (ObjectId) — strip before publishing
+    for e in all_events:
+        e.pop("_id", None)
     print(f"[SEED] Inserted {len(all_events)} events for {n_orders} orders into MongoDB")
 
     if redis:
         pipe = redis.pipeline()
         for event in all_events:
-            e = dict(event)
-            pipe.xadd("order_events", {"data": json.dumps(e)})
+            pipe.xadd("order_events", {"data": json.dumps(event)})
         pipe.execute()
         print(f"[SEED] Published {len(all_events)} events to Redis Streams")
 

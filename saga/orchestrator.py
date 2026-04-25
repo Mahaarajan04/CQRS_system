@@ -213,6 +213,9 @@ class SagaOrchestrator:
                     })
                     self._save(saga_id, state="inventory_reserved")
                     print(f"[SAGA] {saga_id[:8]} inventory reserved")
+                    delay = float(os.getenv("SAGA_STEP_DELAY_SEC", "0"))
+                    if delay > 0:
+                        time.sleep(delay)
                     state = "inventory_reserved"
 
                 else:
@@ -238,9 +241,16 @@ class SagaOrchestrator:
                 existing_types = {e["event_type"]: e for e in existing}
 
                 # ── Idempotent resume: short-circuit if work already done ──
-                if "PaymentConfirmed" in existing_types:
+                if "OrderShipped" in existing_types:
                     self._save(saga_id, state="completed")
-                    print(f"[SAGA] {saga_id[:8]} already PaymentConfirmed — marking completed")
+                    print(f"[SAGA] {saga_id[:8]} already OrderShipped — marking completed")
+                    return
+                if "PaymentConfirmed" in existing_types and "OrderShipped" not in existing_types:
+                    # PaymentConfirmed written but container crashed before OrderShipped — resume from here
+                    version = self._get_order_version(order_id)
+                    append_event("OrderShipped", order_id, {}, expected_version=version)
+                    self._save(saga_id, state="completed")
+                    print(f"[SAGA] {saga_id[:8]} resumed — OrderShipped")
                     return
                 if "PaymentAuthorizeFailed" in existing_types:
                     reason = existing_types["PaymentAuthorizeFailed"]["payload"].get("reason", "unknown")
@@ -283,8 +293,14 @@ class SagaOrchestrator:
                         "step": "payment_auth", "status": "succeeded",
                         "result": result, "executed_at": _now(),
                     })
+                    delay = float(os.getenv("SAGA_STEP_DELAY_SEC", "0"))
+                    if delay > 0:
+                        time.sleep(delay)
+                    version = self._get_order_version(order_id)
+                    append_event("OrderShipped", order_id, {},
+                                 expected_version=version)
                     self._save(saga_id, state="completed")
-                    print(f"[SAGA] {saga_id[:8]} completed — PaymentConfirmed")
+                    print(f"[SAGA] {saga_id[:8]} completed — OrderShipped")
 
                 else:
                     version = self._get_order_version(order_id)

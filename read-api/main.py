@@ -7,6 +7,7 @@ from typing import Optional
 import psycopg2
 import psycopg2.extras
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from cache import OrderCache
@@ -14,6 +15,12 @@ from cache import OrderCache
 POSTGRES_URL = os.getenv("POSTGRES_URL", "postgresql://cqrs:cqrs_pass@localhost:5432/cqrs_read")
 
 app = FastAPI(title="CQRS Read API — Query Side")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["GET"],
+    allow_headers=["*"],
+)
 cache = OrderCache()
 
 _log = logging.getLogger("read_api")
@@ -205,6 +212,19 @@ def daily_revenue(
             params.append(region)
         query += " ORDER BY date DESC"
         cur.execute(query, params)
+        return cur.fetchall()
+
+
+@app.get("/inventory")
+def list_inventory():
+    conn = get_conn()
+    with conn.cursor() as cur:
+        cur.execute("""
+            SELECT product_id, name, total_qty, reserved_qty,
+                   (total_qty - reserved_qty) AS available
+            FROM inventory
+            ORDER BY product_id
+        """)
         return cur.fetchall()
 
 

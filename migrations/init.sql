@@ -55,9 +55,9 @@ SELECT
     c.customer_id,
     c.customer_name,
     c.customer_email,
-    COUNT(DISTINCT o.order_id)                                          AS total_orders,
-    COALESCE(SUM(oi.quantity * oi.unit_price), 0)                       AS total_spent,
-    COUNT(DISTINCT o.order_id) FILTER (WHERE o.status = 'shipped')      AS completed_orders,
+    COUNT(DISTINCT o.order_id) FILTER (WHERE o.status = 'shipped')      AS total_orders,
+    COALESCE(SUM(oi.quantity * oi.unit_price)
+        FILTER (WHERE o.status = 'shipped'), 0)                         AS total_spent,
     COUNT(DISTINCT o.order_id) FILTER (WHERE o.status = 'cancelled')    AS cancelled_orders,
     MAX(o.placed_at)                                                    AS last_order_at
 FROM customers c
@@ -73,10 +73,10 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS mv_daily_revenue AS
 SELECT
     DATE(o.placed_at)                                                       AS date,
     o.region,
-    COUNT(DISTINCT o.order_id)                                              AS total_orders,
-    COALESCE(SUM(oi.quantity * oi.unit_price), 0)                           AS revenue,
-    COUNT(DISTINCT o.order_id) FILTER (WHERE o.status = 'shipped')          AS fulfilled_orders,
-    COUNT(DISTINCT o.order_id) FILTER (WHERE o.status = 'cancelled')        AS cancelled_orders
+    COUNT(DISTINCT o.order_id) FILTER (WHERE o.status = 'shipped')         AS total_orders,
+    COALESCE(SUM(oi.quantity * oi.unit_price)
+        FILTER (WHERE o.status = 'shipped'), 0)                            AS revenue,
+    COUNT(DISTINCT o.order_id) FILTER (WHERE o.status = 'cancelled')       AS cancelled_orders
 FROM orders o
 LEFT JOIN order_items oi ON o.order_id = oi.order_id
 WHERE o.placed_at IS NOT NULL
@@ -98,8 +98,8 @@ CREATE TABLE IF NOT EXISTS inventory (
 );
 
 INSERT INTO inventory (product_id, name, total_qty) VALUES
-    ('p1', 'Laptop',   100000),
-    ('p2', 'Mouse',    500000),
-    ('p3', 'Keyboard', 300000),
-    ('p4', 'Monitor',  200000)
+    ('p1', 'Laptop',   1000),
+    ('p2', 'Mouse',    5000),
+    ('p3', 'Keyboard', 3000),
+    ('p4', 'Monitor',  2000)
 ON CONFLICT DO NOTHING;

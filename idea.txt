@@ -12,10 +12,7 @@ When an aggregate has 1000+ events, replaying from v1 is slow. Snapshot every N 
 4. Saga timeout / recovery cron
 Currently if the saga worker crashes mid-flight, the saga is stuck. Add a periodic job that finds sagas in non-terminal states older than N seconds and resumes them. Shows off the crash-recovery design you already built.
 
-5. Multiple projections (nice-to-have)
-Add a second read store (Elasticsearch? another PostgreSQL schema? in-memory?) with a different shape — e.g. a search index keyed by product. Same event stream, two projectors. Demonstrates the CQRS flexibility angle.
-
-6. Frontend dashboard (demo polish, not DB-relevant)
+5. Frontend dashboard (demo polish, not DB-relevant)
 Minimal React/HTML page showing live orders + saga states + inventory. Good for presentation but doesn't deepen the DB content.
 
 My suggestion order: cache → outbox → snapshotting. Cache because it's your idea and high-visibility. Outbox because it plugs a real gap. Snapshotting because it gives you measurable benchmarks for the report.

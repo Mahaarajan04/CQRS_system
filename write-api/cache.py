@@ -17,7 +17,7 @@ import logging
 from redis import Redis
 from redis.exceptions import RedisError
 
-REDIS_URL  = os.getenv("REDIS_URL", "redis://localhost:6379")
+REDIS_URL  = os.getenv("REDIS_CACHE_URL", "redis://localhost:6380")
 KEY_PREFIX = "order:"
 TTL_SEC    = int(os.getenv("ORDER_CACHE_TTL_SEC", "60"))
 

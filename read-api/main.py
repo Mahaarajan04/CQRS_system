@@ -1,5 +1,6 @@
 import os
 import json
+import logging
 from datetime import date
 from typing import Optional
 
@@ -14,6 +15,23 @@ POSTGRES_URL = os.getenv("POSTGRES_URL", "postgresql://cqrs:cqrs_pass@localhost:
 
 app = FastAPI(title="CQRS Read API — Query Side")
 cache = OrderCache()
+
+_log = logging.getLogger("read_api")
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(message)s")
+
+_hits   = 0
+_misses = 0
+
+
+@app.get("/cache/stats")
+def cache_stats():
+    total = _hits + _misses
+    return {
+        "hits":      _hits,
+        "misses":    _misses,
+        "total":     total,
+        "hit_rate":  round(_hits / total, 4) if total else 0.0,
+    }
 
 
 def get_conn():
@@ -72,9 +90,12 @@ def get_order(order_id: str):
     PG and populate the cache so the next reader hits (read-through).
     404s are not cached — avoids poisoning the cache during projection lag.
     """
+    global _hits, _misses
     if not os.getenv("DISABLE_CACHE"):
         cached = cache.get_order(order_id)
         if cached is not None:
+            _hits += 1
+            _log.info("cache HIT  order=%s  hits=%d misses=%d", order_id[:8], _hits, _misses)
             return JSONResponse(content=cached, headers={"X-Cache": "HIT"})
 
     conn = get_conn()
@@ -111,6 +132,8 @@ def get_order(order_id: str):
 
     doc = {**order, "items": items}
     cache.set_order(order_id, doc)
+    _misses += 1
+    _log.info("cache MISS order=%s  hits=%d misses=%d", order_id[:8], _hits, _misses)
     return JSONResponse(
         content=json.loads(json.dumps(doc, default=str)),
         headers={"X-Cache": "MISS"},

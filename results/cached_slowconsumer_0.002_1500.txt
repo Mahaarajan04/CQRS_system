@@ -1,0 +1,175 @@
+
+[1m[94m=======================================================[0m
+[1m[94m  READER BENCHMARK — Read-Your-Writes Lag (baseline)[0m
+[1m[94m=======================================================[0m
+  [93m→[0m  Placing 1500 orders sequentially and measuring GET-after-POST lag
+  [93m→[0m  Poll interval: 2ms (so floor resolution ≈ 2ms)
+    ...10/1500 orders placed & read
+    ...20/1500 orders placed & read
+    ...30/1500 orders placed & read
+    ...40/1500 orders placed & read
+    ...50/1500 orders placed & read
+    ...60/1500 orders placed & read
+    ...70/1500 orders placed & read
+    ...80/1500 orders placed & read
+    ...90/1500 orders placed & read
+    ...100/1500 orders placed & read
+    ...110/1500 orders placed & read
+    ...120/1500 orders placed & read
+    ...130/1500 orders placed & read
+    ...140/1500 orders placed & read
+    ...150/1500 orders placed & read
+    ...160/1500 orders placed & read
+    ...170/1500 orders placed & read
+    ...180/1500 orders placed & read
+    ...190/1500 orders placed & read
+    ...200/1500 orders placed & read
+    ...210/1500 orders placed & read
+    ...220/1500 orders placed & read
+    ...230/1500 orders placed & read
+    ...240/1500 orders placed & read
+    ...250/1500 orders placed & read
+    ...260/1500 orders placed & read
+    ...270/1500 orders placed & read
+    ...280/1500 orders placed & read
+    ...290/1500 orders placed & read
+    ...300/1500 orders placed & read
+    ...310/1500 orders placed & read
+    ...320/1500 orders placed & read
+    ...330/1500 orders placed & read
+    ...340/1500 orders placed & read
+    ...350/1500 orders placed & read
+    ...360/1500 orders placed & read
+    ...370/1500 orders placed & read
+    ...380/1500 orders placed & read
+    ...390/1500 orders placed & read
+    ...400/1500 orders placed & read
+    ...410/1500 orders placed & read
+    ...420/1500 orders placed & read
+    ...430/1500 orders placed & read
+    ...440/1500 orders placed & read
+    ...450/1500 orders placed & read
+    ...460/1500 orders placed & read
+    ...470/1500 orders placed & read
+    ...480/1500 orders placed & read
+    ...490/1500 orders placed & read
+    ...500/1500 orders placed & read
+    ...510/1500 orders placed & read
+    ...520/1500 orders placed & read
+    ...530/1500 orders placed & read
+    ...540/1500 orders placed & read
+    ...550/1500 orders placed & read
+    ...560/1500 orders placed & read
+    ...570/1500 orders placed & read
+    ...580/1500 orders placed & read
+    ...590/1500 orders placed & read
+    ...600/1500 orders placed & read
+    ...610/1500 orders placed & read
+    ...620/1500 orders placed & read
+    ...630/1500 orders placed & read
+    ...640/1500 orders placed & read
+    ...650/1500 orders placed & read
+    ...660/1500 orders placed & read
+    ...670/1500 orders placed & read
+    ...680/1500 orders placed & read
+    ...690/1500 orders placed & read
+    ...700/1500 orders placed & read
+    ...710/1500 orders placed & read
+    ...720/1500 orders placed & read
+    ...730/1500 orders placed & read
+    ...740/1500 orders placed & read
+    ...750/1500 orders placed & read
+    ...760/1500 orders placed & read
+    ...770/1500 orders placed & read
+    ...780/1500 orders placed & read
+    ...790/1500 orders placed & read
+    ...800/1500 orders placed & read
+    ...810/1500 orders placed & read
+    ...820/1500 orders placed & read
+    ...830/1500 orders placed & read
+    ...840/1500 orders placed & read
+    ...850/1500 orders placed & read
+    ...860/1500 orders placed & read
+    ...870/1500 orders placed & read
+    ...880/1500 orders placed & read
+    ...890/1500 orders placed & read
+    ...900/1500 orders placed & read
+    ...910/1500 orders placed & read
+    ...920/1500 orders placed & read
+    ...930/1500 orders placed & read
+    ...940/1500 orders placed & read
+    ...950/1500 orders placed & read
+    ...960/1500 orders placed & read
+    ...970/1500 orders placed & read
+    ...980/1500 orders placed & read
+    ...990/1500 orders placed & read
+    ...1000/1500 orders placed & read
+    ...1010/1500 orders placed & read
+    ...1020/1500 orders placed & read
+    ...1030/1500 orders placed & read
+    ...1040/1500 orders placed & read
+    ...1050/1500 orders placed & read
+    ...1060/1500 orders placed & read
+    ...1070/1500 orders placed & read
+    ...1080/1500 orders placed & read
+    ...1090/1500 orders placed & read
+    ...1100/1500 orders placed & read
+    ...1110/1500 orders placed & read
+    ...1120/1500 orders placed & read
+    ...1130/1500 orders placed & read
+    ...1140/1500 orders placed & read
+    ...1150/1500 orders placed & read
+    ...1160/1500 orders placed & read
+    ...1170/1500 orders placed & read
+    ...1180/1500 orders placed & read
+    ...1190/1500 orders placed & read
+    ...1200/1500 orders placed & read
+    ...1210/1500 orders placed & read
+    ...1220/1500 orders placed & read
+    ...1230/1500 orders placed & read
+    ...1240/1500 orders placed & read
+    ...1250/1500 orders placed & read
+    ...1260/1500 orders placed & read
+    ...1270/1500 orders placed & read
+    ...1280/1500 orders placed & read
+    ...1290/1500 orders placed & read
+    ...1300/1500 orders placed & read
+    ...1310/1500 orders placed & read
+    ...1320/1500 orders placed & read
+    ...1330/1500 orders placed & read
+    ...1340/1500 orders placed & read
+    ...1350/1500 orders placed & read
+    ...1360/1500 orders placed & read
+    ...1370/1500 orders placed & read
+    ...1380/1500 orders placed & read
+    ...1390/1500 orders placed & read
+    ...1400/1500 orders placed & read
+    ...1410/1500 orders placed & read
+    ...1420/1500 orders placed & read
+    ...1430/1500 orders placed & read
+    ...1440/1500 orders placed & read
+    ...1450/1500 orders placed & read
+    ...1460/1500 orders placed & read
+    ...1470/1500 orders placed & read
+    ...1480/1500 orders placed & read
+    ...1490/1500 orders placed & read
+    ...1500/1500 orders placed & read
+
+  [1mResults  (N=1500, failures=0, wall=3.9s)[0m
+  metric             p50       p95       p99       max      mean
+  POST ms            1.8       2.3       2.5      14.1       1.8
+  RYW lag ms         0.7       0.9       3.5       6.7       0.8
+  polls                1         1         1         1       1.0
+
+  [1mRYW lag distribution[0m
+  [    0 –     5 ms]  1490  ██████████████████████████████
+  [    5 –    10 ms]    10  
+  [   10 –    20 ms]     0  
+  [   20 –    50 ms]     0  
+  [   50 –   100 ms]     0  
+  [  100 –   250 ms]     0  
+  [  250 –   500 ms]     0  
+  [  500 –  1000 ms]     0  
+  [ 1000 – 10000 ms]     0  
+  [92m✓[0m  Raw samples written to /tmp/reader_baseline.csv
+  [93m→[0m  After implementing the cache, rerun the same command and diff the RYW lag.

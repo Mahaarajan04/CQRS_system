@@ -1,12 +1,11 @@
 #!/bin/bash
 # Full before/after cache benchmark demo.
-# Runs N orders twice: once with cache disabled (slow consumer), once enabled.
-# Saves results to results/nocache_*.txt and results/cached_*.txt, then prints a
-# side-by-side summary.
+# Phase 1: no-cache + slow consumer (baseline)
+# Phase 2: cache + slow consumer
 #
 # Usage:
-#   bash scripts/benchmark_demo.sh           # default N=500
-#   bash scripts/benchmark_demo.sh --n 100   # smaller run
+#   bash scripts/benchmark_demo.sh           # default N=500, delay=0.1s
+#   bash scripts/benchmark_demo.sh --n 100 --delay 0.05
 
 set -euo pipefail
 
@@ -51,6 +50,9 @@ echo "  Restarting with --delay $DELAY (cache on) ..."
 
 bash "$ROOT/restart.sh" --delay "$DELAY"
 
+# Snapshot eviction counter before this run for delta reporting
+EVICTED_BEFORE=$(redis-cli -p 6380 INFO stats | awk -F: '/evicted_keys:/ {gsub(/\r/,"",$2); print $2}')
+
 sep
 blue "Running benchmark (N=$N, consumer delay=${DELAY}s/event) ..."
 "$PYTHON" "$ROOT/scripts/test_flow.py" --reader --n "$N" 2>&1 | tee "$CACHED_OUT"
@@ -60,13 +62,11 @@ sep
 bold "RESULTS COMPARISON (N=$N, consumer delay=${DELAY}s/event)"
 echo ""
 
-# Extract the metrics line from each file (strip ANSI codes, grep for the p50 row)
 strip_ansi() { sed 's/\x1b\[[0-9;]*m//g' "$1"; }
 
 NOCACHE_CLEAN=$(mktemp); strip_ansi "$NOCACHE_OUT" > "$NOCACHE_CLEAN"
 CACHED_CLEAN=$(mktemp);  strip_ansi "$CACHED_OUT"  > "$CACHED_CLEAN"
 
-# Pull the results table lines
 echo "WITHOUT CACHE:"
 grep -A5 "^  metric" "$NOCACHE_CLEAN" | head -6 | sed 's/^/    /'
 
@@ -76,7 +76,6 @@ grep -A5 "^  metric" "$CACHED_CLEAN" | head -6 | sed 's/^/    /'
 
 echo ""
 bold "Speedup:"
-# Use Python to extract numbers — avoids grep -P incompatibility on macOS BSD grep
 "$PYTHON" - "$NOCACHE_CLEAN" "$CACHED_CLEAN" <<'PYEOF'
 import sys, re
 
@@ -86,24 +85,46 @@ def extract_ryw(path):
             if "RYW lag ms" in line:
                 nums = re.findall(r"[0-9]+\.[0-9]+", line)
                 if len(nums) >= 3:
-                    return float(nums[0]), float(nums[1]), float(nums[2])  # p50, p95, p99
+                    return float(nums[0]), float(nums[1]), float(nums[2])
     return None, None, None
 
 before = extract_ryw(sys.argv[1])
 after  = extract_ryw(sys.argv[2])
-labels = ["p50", "p95", "p99"]
-for lbl, b, a in zip(labels, before, after):
+for lbl, b, a in zip(["p50", "p95", "p99"], before, after):
     if b and a:
-        speedup = int(b / a)
-        print(f"    {lbl:<6}  {b:>8.1f} ms  →  {a:>6.1f} ms   ({speedup}x faster)")
+        print(f"    {lbl:<6}  {b:>8.1f} ms  →  {a:>6.1f} ms   ({int(b/a)}x faster)")
 PYEOF
 
 echo ""
-green "Results saved to:"
-echo "  no-cache: $NOCACHE_OUT"
-echo "  cached:   $CACHED_OUT"
+bold "Cache hit/miss stats (phase 2):"
+"$PYTHON" - <<PYEOF
+import urllib.request, json
+try:
+    data = json.loads(urllib.request.urlopen("http://localhost:8002/cache/stats").read())
+    print(f"    hits:     {data['hits']}")
+    print(f"    misses:   {data['misses']}")
+    print(f"    hit rate: {data['hit_rate']*100:.1f}%")
+except Exception as e:
+    print(f"    (could not fetch: {e})")
+PYEOF
 
-# ── Clean up ─────────────────────────────────────────────────────────────────
+EVICTED_NOW=$(redis-cli -p 6380 INFO stats  | awk -F: '/evicted_keys:/ {gsub(/\r/,"",$2); print $2}')
+EVICTED_DELTA=$(( EVICTED_NOW - EVICTED_BEFORE ))
+USED=$(redis-cli -p 6380 INFO memory | awk -F: '/used_memory_human:/ {gsub(/\r/,"",$2); print $2}')
+MAX=$(redis-cli  -p 6380 INFO memory | awk -F: '/maxmemory_human:/   {gsub(/\r/,"",$2); print $2}')
+KEYS=$(redis-cli -p 6380 --scan --pattern "order:*" 2>/dev/null | wc -l | tr -d ' ')
+echo ""
+bold "Cache Redis :6380 — memory & eviction (allkeys-lru, cap=${MAX}):"
+printf "    evicted keys:  %s  (this run; lifetime=%s)\n" "$EVICTED_DELTA" "$EVICTED_NOW"
+printf "    used memory:   %s / %s\n" "$USED" "$MAX"
+printf "    order:* keys:  %s live in cache now\n" "$KEYS"
+
+echo ""
+green "Results saved to:"
+echo "  no-cache:  $NOCACHE_OUT"
+echo "  cached:    $CACHED_OUT"
+
+# ── Clean up ──────────────────────────────────────────────────────────────────
 sep
 bold "Cleaning up — restarting with defaults (fast consumer, cache on)..."
 bash "$ROOT/restart.sh"

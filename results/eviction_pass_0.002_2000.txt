@@ -1,0 +1,47 @@
+import sys, csv, requests
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+CSV = sys.argv[1]
+READ = "http://localhost:8002"
+WORKERS = 32
+
+with open(CSV) as f:
+    order_ids = [row["order_id"] for row in csv.DictReader(f)]
+
+total = len(order_ids)
+results = {}   # index → "HIT" | "MISS"
+
+def fetch(args):
+    i, oid = args
+    r = requests.get(f"{READ}/orders/{oid}", timeout=5)
+    return i, r.headers.get("x-cache", "UNKNOWN")
+
+with ThreadPoolExecutor(max_workers=WORKERS) as pool:
+    futures = {pool.submit(fetch, (i, oid)): i for i, oid in enumerate(order_ids)}
+    done = 0
+    for fut in as_completed(futures):
+        i, h = fut.result()
+        results[i] = h
+        done += 1
+        if done % 200 == 0:
+            print(f"  ... {done}/{total}", flush=True)
+
+hits   = sum(1 for h in results.values() if h == "HIT")
+misses = total - hits
+
+# find first evicted (lowest index that is a MISS) and eviction boundary
+sorted_indices = sorted(results)
+first_miss = next((i for i in sorted_indices if results[i] != "HIT"), None)
+first_hit_after_miss = None
+if first_miss is not None:
+    first_hit_after_miss = next(
+        (i for i in sorted_indices if i > first_miss and results[i] == "HIT"), None
+    )
+
+print(f"  Re-read {total} orders (oldest → newest)")
+print(f"  HITs:    {hits:>5}  — still in cache")
+print(f"  MISSes:  {misses:>5}  — evicted by LRU, served from PostgreSQL")
+print(f"  hit rate:  {100*hits/total:.1f}%   miss rate: {100*misses/total:.1f}%")
+if first_miss is not None:
+    print(f"  eviction boundary: order #{first_miss+1} was the first evicted")
+    print(f"  orders 1–{first_miss} evicted | orders {first_miss+1}–{total} still cached")

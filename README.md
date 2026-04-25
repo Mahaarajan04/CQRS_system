@@ -19,14 +19,26 @@ Wait ~15 seconds for all containers to start, then open **http://localhost:3000*
 **What to watch on dashboard:** Orders table populates. Status progresses `placed → reserved → confirmed → shipped`.
 
 ```bash
-# Place a single order
 curl -s -X POST http://localhost:8001/orders \
   -H "Content-Type: application/json" \
-  -d '{
-    "customer_id": "c1", "customer_name": "Alice", "customer_email": "alice@example.com",
-    "region": "us-east",
-    "items": [{"product_id": "p1", "name": "Laptop", "quantity": 1, "price": 999.99}]
-  }' | python3 -m json.tool
+  -d '{"customer_id":"c1","customer_name":"Alice","customer_email":"alice@example.com","region":"Delhi","items":[{"product_id":"p1","name":"Laptop","quantity":1,"price":999.99}]}'
+
+curl -s -X POST http://localhost:8001/orders \
+  -H "Content-Type: application/json" \
+  -d '{"customer_id":"c2","customer_name":"Bob","customer_email":"bob@example.com","region":"Mumbai","items":[{"product_id":"p2","name":"Mouse","quantity":2,"price":29.99},{"product_id":"p3","name":"Keyboard","quantity":1,"price":79.99}]}'
+
+curl -s -X POST http://localhost:8001/orders \
+  -H "Content-Type: application/json" \
+  -d '{"customer_id":"c3","customer_name":"Carol","customer_email":"carol@example.com","region":"Chennai","items":[{"product_id":"p4","name":"Monitor","quantity":1,"price":349.99}]}'
+
+curl -s -X POST http://localhost:8001/orders \
+  -H "Content-Type: application/json" \
+  -d '{"customer_id":"c4","customer_name":"Dave","customer_email":"dave@example.com","region":"Bengaluru","items":[{"product_id":"p1","name":"Laptop","quantity":1,"price":999.99},{"product_id":"p2","name":"Mouse","quantity":1,"price":29.99}]}'
+
+curl -s -X POST http://localhost:8001/orders \
+  -H "Content-Type: application/json" \
+  -d '{"customer_id":"c5","customer_name":"Eve","customer_email":"eve@example.com","region":"Pune","items":[{"product_id":"p3","name":"Keyboard","quantity":2,"price":79.99},{"product_id":"p4","name":"Monitor","quantity":1,"price":349.99}]}'
+
 ```
 
 Watch the Orders table — the new row appears within ~1 second and the status badge changes as the saga progresses. Inventory bar for Laptop decreases.

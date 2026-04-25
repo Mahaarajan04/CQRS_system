@@ -19,7 +19,7 @@ from redis import Redis
 MONGO_URL = os.getenv("MONGO_URL", "mongodb://localhost:27017")
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
 
-REGIONS  = ["US-WEST", "US-EAST", "EU", "APAC"]
+REGIONS  = ["Delhi", "Mumbai", "Bangalore", "Chennai", "Pune"]
 PRODUCTS = [
     {"product_id": "p1", "name": "Laptop",   "price": 999.99},
     {"product_id": "p2", "name": "Mouse",    "price": 29.99},

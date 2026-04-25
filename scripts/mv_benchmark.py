@@ -242,7 +242,7 @@ def _random_order_payload():
         "customer_id":    f"cust_bench_{uuid.uuid4().hex[:6]}",
         "customer_name":  "Bench User",
         "customer_email": "bench@example.com",
-        "region":         "US-WEST",
+        "region":         "Mumbai",
         "items": [{"product_id": "p2", "name": "Mouse", "quantity": 1, "price": 29.99}],
     }
 
@@ -272,7 +272,7 @@ def direct_pg_write_one(_):
             # orders table
             cur.execute(
                 "INSERT INTO orders (order_id, customer_id, status, region, placed_at, version) "
-                "VALUES (%s, %s, 'placed', 'US-WEST', NOW(), 1)",
+                "VALUES (%s, %s, 'placed', 'Mumbai', NOW(), 1)",
                 (order_id, customer_id),
             )
             # order_items table

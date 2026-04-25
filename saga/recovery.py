@@ -19,7 +19,7 @@ Demo (in three terminals):
   Terminal 2 — place an order (saga starts, pauses at payment step):
     curl -s -X POST http://localhost:8001/orders -H 'content-type: application/json' \\
       -d '{"customer_id":"c1","customer_name":"Alice","customer_email":"a@b.com",
-           "region":"US-WEST","items":[{"product_id":"p2","name":"Mouse","quantity":1,"price":29.99}]}'
+           "region":"Mumbai","items":[{"product_id":"p2","name":"Mouse","quantity":1,"price":29.99}]}'
 
   Terminal 3 — kill the saga worker mid-flight:
     docker compose stop saga

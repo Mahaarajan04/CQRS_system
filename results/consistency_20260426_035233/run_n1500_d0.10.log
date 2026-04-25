@@ -1,0 +1,2857 @@
+Stopping services and wiping volumes...
+
+  cache:    DISABLED
+  consumer: SLOW (0.10s/event)
+  saga:     fast
+  stream:   redis-stream :6379  (no memory limit)
+
+Starting services...
+time="2026-04-26T04:24:28+05:30" level=warning msg="/Users/akankshawattamwar/Desktop/CS315/CQRS/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.05kB done
+#1 DONE 0.0s
+
+#2 [consumer internal] load build definition from Dockerfile
+#2 transferring dockerfile: 186B done
+#2 DONE 0.0s
+
+#3 [saga internal] load build definition from Dockerfile
+#3 transferring dockerfile: 365B done
+#3 DONE 0.0s
+
+#4 [consumer internal] load metadata for docker.io/library/python:3.12-slim
+#4 DONE 1.2s
+
+#5 [consumer internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [saga internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [consumer internal] load build context
+#7 transferring context: 308B done
+#7 DONE 0.0s
+
+#8 [consumer 1/5] FROM docker.io/library/python:3.12-slim@sha256:46cb7cc2877e60fbd5e21a9ae6115c30ace7a077b9f8772da879e4590c18c2e3
+#8 resolve docker.io/library/python:3.12-slim@sha256:46cb7cc2877e60fbd5e21a9ae6115c30ace7a077b9f8772da879e4590c18c2e3 0.0s done
+#8 DONE 0.0s
+
+#9 [consumer 2/5] WORKDIR /app
+#9 CACHED
+
+#10 [saga 2/7] WORKDIR /service
+#10 CACHED
+
+#11 [saga internal] load build context
+#11 transferring context: 5.57kB done
+#11 DONE 0.0s
+
+#12 [consumer 3/5] COPY requirements.txt .
+#12 DONE 0.0s
+
+#13 [saga 3/7] COPY saga/requirements.txt saga/
+#13 DONE 0.0s
+
+#14 [saga 4/7] RUN pip install --no-cache-dir -r saga/requirements.txt
+#14 1.981 Collecting pymongo==4.7.2 (from -r saga/requirements.txt (line 1))
+#14 2.312   Downloading pymongo-4.7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (22 kB)
+#14 2.442 Collecting redis==5.0.5 (from -r saga/requirements.txt (line 2))
+#14 2.557   Downloading redis-5.0.5-py3-none-any.whl.metadata (9.3 kB)
+#14 2.757 Collecting psycopg2-binary==2.9.9 (from -r saga/requirements.txt (line 3))
+#14 2.827   Downloading psycopg2_binary-2.9.9-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.4 kB)
+#14 2.882 Collecting dnspython<3.0.0,>=1.16.0 (from pymongo==4.7.2->-r saga/requirements.txt (line 1))
+#14 2.908   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+#14 2.975 Downloading pymongo-4.7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (688 kB)
+#14 3.770    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 689.0/689.0 kB 795.3 kB/s eta 0:00:00
+#14 3.881 Downloading redis-5.0.5-py3-none-any.whl (251 kB)
+#14 4.172 Downloading psycopg2_binary-2.9.9-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (2.9 MB)
+#14 ...
+
+#15 [consumer 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#15 1.991 Collecting pymongo==4.7.2 (from -r requirements.txt (line 1))
+#15 2.326   Downloading pymongo-4.7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (22 kB)
+#15 2.455 Collecting redis==5.0.5 (from -r requirements.txt (line 2))
+#15 2.576   Downloading redis-5.0.5-py3-none-any.whl.metadata (9.3 kB)
+#15 2.771 Collecting psycopg2-binary==2.9.9 (from -r requirements.txt (line 3))
+#15 2.841   Downloading psycopg2_binary-2.9.9-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.4 kB)
+#15 2.880 Collecting dnspython<3.0.0,>=1.16.0 (from pymongo==4.7.2->-r requirements.txt (line 1))
+#15 2.902   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+#15 2.959 Downloading pymongo-4.7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (688 kB)
+#15 3.685    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 689.0/689.0 kB 868.1 kB/s eta 0:00:00
+#15 3.721 Downloading redis-5.0.5-py3-none-any.whl (251 kB)
+#15 4.080 Downloading psycopg2_binary-2.9.9-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (2.9 MB)
+#15 9.093    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.9/2.9 MB 530.9 kB/s eta 0:00:00
+#15 9.130 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+#15 9.293 Installing collected packages: redis, psycopg2-binary, dnspython, pymongo
+#15 ...
+
+#14 [saga 4/7] RUN pip install --no-cache-dir -r saga/requirements.txt
+#14 9.294    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.9/2.9 MB 562.3 kB/s eta 0:00:00
+#14 9.331 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+#14 9.474 Installing collected packages: redis, psycopg2-binary, dnspython, pymongo
+#14 9.795 Successfully installed dnspython-2.8.0 psycopg2-binary-2.9.9 pymongo-4.7.2 redis-5.0.5
+#14 ...
+
+#15 [consumer 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#15 9.643 Successfully installed dnspython-2.8.0 psycopg2-binary-2.9.9 pymongo-4.7.2 redis-5.0.5
+#15 9.643 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#15 9.896 
+#15 9.896 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#15 9.896 [notice] To update, run: pip install --upgrade pip
+#15 DONE 10.0s
+
+#14 [saga 4/7] RUN pip install --no-cache-dir -r saga/requirements.txt
+#14 9.795 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#14 ...
+
+#16 [consumer 5/5] COPY . .
+#16 DONE 0.0s
+
+#14 [saga 4/7] RUN pip install --no-cache-dir -r saga/requirements.txt
+#14 10.10 
+#14 10.10 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#14 10.10 [notice] To update, run: pip install --upgrade pip
+#14 DONE 10.2s
+
+#17 [saga 5/7] COPY write-api/events.py write-api/
+#17 DONE 0.0s
+
+#18 [saga 6/7] COPY saga/ saga/
+#18 DONE 0.0s
+
+#19 [saga 7/7] WORKDIR /service/saga
+#19 DONE 0.0s
+
+#20 [saga] exporting to image
+#20 exporting layers
+#20 exporting layers 0.6s done
+#20 exporting manifest sha256:b44f3c72b26fe53e4c4e6a4e4e633958b3d41724b38135630b9a4842d4c611e2
+#20 ...
+
+#21 [consumer] exporting to image
+#21 exporting layers 0.6s done
+#21 exporting manifest sha256:8035c7d962d3bf3cdd9df84fa6571f3c7010d8305f344939b08cf619ef5cf241 done
+#21 exporting config sha256:56755ff6e3b9e8de9a3ba65ad5bdc33ecc1c9e7a6fe0eecbe947bbb977506936 done
+#21 exporting attestation manifest sha256:afd344838f99d36b915cb731e903b0376d3a7ccfce4de1b0fe05984f9eb5d672 0.1s done
+#21 exporting manifest list sha256:c30a7571c62c5e0e882430936afae229ad86a49c3316983672498e30519d41bb done
+#21 naming to docker.io/library/cqrs-consumer:latest done
+#21 unpacking to docker.io/library/cqrs-consumer:latest 0.1s done
+#21 DONE 0.8s
+
+#22 [consumer] resolving provenance for metadata file
+#22 DONE 0.0s
+
+#20 [saga] exporting to image
+#20 exporting manifest sha256:b44f3c72b26fe53e4c4e6a4e4e633958b3d41724b38135630b9a4842d4c611e2 done
+#20 exporting config sha256:eff861aa036c1478c72ce72510fb6993ffa3e69408f3213e07dda19f5c858929 done
+#20 exporting attestation manifest sha256:c206cdffe679f47d43049e5452a01369172e1106b0a197da2abf09c9bca0f8ae done
+#20 exporting manifest list sha256:57413c4928554a34bb8be9337bf8ac556fd8666a7230411eedb407468a7fe015 done
+#20 naming to docker.io/library/cqrs-saga:latest done
+#20 unpacking to docker.io/library/cqrs-saga:latest
+#20 unpacking to docker.io/library/cqrs-saga:latest 0.2s done
+#20 DONE 0.8s
+
+#23 [saga] resolving provenance for metadata file
+#23 DONE 0.0s
+ cqrs-saga  Built
+ cqrs-consumer  Built
+time="2026-04-26T04:24:41+05:30" level=warning msg="/Users/akankshawattamwar/Desktop/CS315/CQRS/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.42kB done
+#1 DONE 0.0s
+
+#2 [consumer internal] load build definition from Dockerfile
+#2 transferring dockerfile: 186B done
+#2 DONE 0.0s
+
+#3 [write-api internal] load build definition from Dockerfile
+#3 transferring dockerfile: 225B done
+#3 DONE 0.0s
+
+#4 [frontend internal] load build definition from Dockerfile
+#4 transferring dockerfile: 271B done
+#4 DONE 0.0s
+
+#5 [saga internal] load build definition from Dockerfile
+#5 transferring dockerfile: 365B done
+#5 DONE 0.0s
+
+#6 [read-api internal] load build definition from Dockerfile
+#6 transferring dockerfile: 225B done
+#6 DONE 0.0s
+
+#7 [read-api internal] load metadata for docker.io/library/python:3.12-slim
+#7 DONE 0.8s
+
+#8 [write-api internal] load .dockerignore
+#8 transferring context: 2B done
+#8 DONE 0.0s
+
+#9 [read-api internal] load .dockerignore
+#9 transferring context: 2B done
+#9 DONE 0.0s
+
+#10 [saga internal] load .dockerignore
+#10 transferring context: 2B done
+#10 DONE 0.0s
+
+#11 [consumer internal] load .dockerignore
+#11 transferring context: 2B done
+#11 DONE 0.0s
+
+#12 [write-api internal] load build context
+#12 transferring context: 341B done
+#12 DONE 0.0s
+
+#13 [read-api internal] load build context
+#13 transferring context: 258B done
+#13 DONE 0.0s
+
+#14 [consumer internal] load build context
+#14 transferring context: 308B done
+#14 DONE 0.0s
+
+#15 [consumer 1/5] FROM docker.io/library/python:3.12-slim@sha256:46cb7cc2877e60fbd5e21a9ae6115c30ace7a077b9f8772da879e4590c18c2e3
+#15 resolve docker.io/library/python:3.12-slim@sha256:46cb7cc2877e60fbd5e21a9ae6115c30ace7a077b9f8772da879e4590c18c2e3 0.0s done
+#15 DONE 0.0s
+
+#16 [saga internal] load build context
+#16 transferring context: 386B done
+#16 DONE 0.0s
+
+#17 [write-api 3/5] COPY requirements.txt .
+#17 CACHED
+
+#18 [write-api 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#18 CACHED
+
+#19 [write-api 5/5] COPY . .
+#19 CACHED
+
+#20 [consumer 2/5] WORKDIR /app
+#20 CACHED
+
+#21 [consumer 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#21 CACHED
+
+#22 [consumer 3/5] COPY requirements.txt .
+#22 CACHED
+
+#23 [consumer 5/5] COPY . .
+#23 CACHED
+
+#24 [read-api 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#24 CACHED
+
+#25 [read-api 3/5] COPY requirements.txt .
+#25 CACHED
+
+#20 [read-api 2/5] WORKDIR /app
+#20 CACHED
+
+#26 [read-api 5/5] COPY . .
+#26 CACHED
+
+#27 [saga 3/7] COPY saga/requirements.txt saga/
+#27 CACHED
+
+#28 [saga 5/7] COPY write-api/events.py write-api/
+#28 CACHED
+
+#29 [saga 2/7] WORKDIR /service
+#29 CACHED
+
+#30 [saga 4/7] RUN pip install --no-cache-dir -r saga/requirements.txt
+#30 CACHED
+
+#31 [saga 6/7] COPY saga/ saga/
+#31 CACHED
+
+#32 [saga 7/7] WORKDIR /service/saga
+#32 CACHED
+
+#33 [write-api] exporting to image
+#33 exporting layers done
+#33 exporting manifest sha256:92a21a99b40b6531c5801222236f42d6aa7bbf8b65d7634fc566f9392602e764 done
+#33 exporting config sha256:be9fb26fa271ebf0c525960e70f2e967c21bf78a1eb2b7a7dc06e6d3ff4d3f55 done
+#33 exporting attestation manifest sha256:4d64b8bc657355f72505d22017427053bf70c9d2f2348af418b6d0db0e92b755 done
+#33 exporting manifest list sha256:422be6e4620c3f922ca96afa0500d11c9984fc8e522985215185c163f285953f done
+#33 naming to docker.io/library/cqrs-write-api:latest done
+#33 unpacking to docker.io/library/cqrs-write-api:latest done
+#33 DONE 0.1s
+
+#34 [saga] exporting to image
+#34 exporting layers done
+#34 exporting manifest sha256:b44f3c72b26fe53e4c4e6a4e4e633958b3d41724b38135630b9a4842d4c611e2 done
+#34 exporting config sha256:eff861aa036c1478c72ce72510fb6993ffa3e69408f3213e07dda19f5c858929 0.0s done
+#34 exporting attestation manifest sha256:2db5ef8ee152c22fb359c90e9cf5e8fb54bfc5979128c7471ae91f6c2df30499 0.0s done
+#34 exporting manifest list sha256:7514595b652bd4aa6c05f6ece6bdab6315e0801b02d3a18d506252ad877cb880
+#34 exporting manifest list sha256:7514595b652bd4aa6c05f6ece6bdab6315e0801b02d3a18d506252ad877cb880 done
+#34 naming to docker.io/library/cqrs-saga:latest done
+#34 unpacking to docker.io/library/cqrs-saga:latest 0.0s done
+#34 DONE 0.1s
+
+#35 [consumer] exporting to image
+#35 exporting layers done
+#35 exporting manifest sha256:8035c7d962d3bf3cdd9df84fa6571f3c7010d8305f344939b08cf619ef5cf241 done
+#35 exporting config sha256:56755ff6e3b9e8de9a3ba65ad5bdc33ecc1c9e7a6fe0eecbe947bbb977506936 done
+#35 exporting attestation manifest sha256:6ba6edec5ecb3f6235afcb878d31a5c1a52074a55dc97d928acfb8e8146d9bd4 0.0s done
+#35 exporting manifest list sha256:3dc9e89b74302dab3338f6666e445ef51343955fcd5a6edf116c3c9d5b44aef6 0.0s done
+#35 naming to docker.io/library/cqrs-consumer:latest done
+#35 unpacking to docker.io/library/cqrs-consumer:latest 0.0s done
+#35 DONE 0.1s
+
+#36 [read-api] exporting to image
+#36 exporting layers done
+#36 exporting manifest sha256:c63ee61fb06e4bd063e843362129b868354c2f94e2566ad3c11bbd0548881470 done
+#36 exporting config sha256:46bb870cf8127e2823c379c44ac9a3c0d6ee66fd1b3343341206f22ff23f7f62 done
+#36 exporting attestation manifest sha256:cd4ae645cdaa6a0f04e11d50b7bdd5c09287c07c7800f9370da3d890b562da1f 0.0s done
+#36 exporting manifest list sha256:091361592f7696ec21b962ac971991e8a9c4018b652e770da7da8e6ee0cf3694 0.0s done
+#36 naming to docker.io/library/cqrs-read-api:latest done
+#36 unpacking to docker.io/library/cqrs-read-api:latest done
+#36 DONE 0.1s
+
+#37 [write-api] resolving provenance for metadata file
+#37 DONE 0.0s
+
+#38 [consumer] resolving provenance for metadata file
+#38 DONE 0.0s
+
+#39 [read-api] resolving provenance for metadata file
+#39 DONE 0.0s
+
+#40 [saga] resolving provenance for metadata file
+#40 DONE 0.0s
+
+#41 [frontend internal] load metadata for docker.io/library/node:20-alpine
+#41 ...
+
+#42 [frontend internal] load metadata for docker.io/library/nginx:alpine
+#42 DONE 1.6s
+
+#41 [frontend internal] load metadata for docker.io/library/node:20-alpine
+#41 DONE 1.6s
+
+#43 [frontend internal] load .dockerignore
+#43 transferring context: 2B done
+#43 DONE 0.0s
+
+#44 [frontend build 1/6] FROM docker.io/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293
+#44 resolve docker.io/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293 0.0s done
+#44 DONE 0.0s
+
+#45 [frontend stage-1 1/3] FROM docker.io/library/nginx:alpine@sha256:5616878291a2eed594aee8db4dade5878cf7edcb475e59193904b198d9b830de
+#45 resolve docker.io/library/nginx:alpine@sha256:5616878291a2eed594aee8db4dade5878cf7edcb475e59193904b198d9b830de 0.0s done
+#45 DONE 0.0s
+
+#46 [frontend internal] load build context
+#46 transferring context: 185.58kB 0.1s done
+#46 DONE 0.1s
+
+#47 [frontend build 3/6] COPY package.json ./
+#47 CACHED
+
+#48 [frontend build 2/6] WORKDIR /app
+#48 CACHED
+
+#49 [frontend build 6/6] RUN npm run build
+#49 CACHED
+
+#50 [frontend build 4/6] RUN npm install
+#50 CACHED
+
+#51 [frontend build 5/6] COPY . .
+#51 CACHED
+
+#52 [frontend stage-1 2/3] COPY --from=build /app/dist /usr/share/nginx/html
+#52 CACHED
+
+#53 [frontend stage-1 3/3] COPY nginx.conf /etc/nginx/conf.d/default.conf
+#53 CACHED
+
+#54 [frontend] exporting to image
+#54 exporting layers done
+#54 exporting manifest sha256:32782dd8e2053c61118ccbb621867087941de406675097f92803716fedafab00 done
+#54 exporting config sha256:64d46ad231b32d64275256ac207db88e0b5dd078678dcdc752d464f80305d609 done
+#54 exporting attestation manifest sha256:0e52fd4d7b99e1e6346bf02497e7c7f1761d6e23ded20fdd6efac81826e6bca1 done
+#54 exporting manifest list sha256:f5ee1889d0d1f0be6e9391a2649f058715f088970d287e6575926510cb584276 done
+#54 naming to docker.io/library/cqrs-frontend:latest done
+#54 unpacking to docker.io/library/cqrs-frontend:latest done
+#54 DONE 0.0s
+
+#55 [frontend] resolving provenance for metadata file
+#55 DONE 0.0s
+ cqrs-write-api  Built
+ cqrs-read-api  Built
+ cqrs-frontend  Built
+ cqrs-consumer  Built
+ cqrs-saga  Built
+ Network cqrs_default  Creating
+ Network cqrs_default  Created
+ Volume "cqrs_postgres_data"  Creating
+ Volume "cqrs_postgres_data"  Created
+ Volume "cqrs_mongo_data"  Creating
+ Volume "cqrs_mongo_data"  Created
+ Container cqrs-mongodb-1  Creating
+ Container cqrs-redis-stream-1  Creating
+ Container cqrs-redis-cache-1  Creating
+ Container cqrs-postgres-1  Creating
+ Container cqrs-mongodb-1  Created
+ Container cqrs-redis-cache-1  Created
+ Container cqrs-redis-stream-1  Created
+ Container cqrs-write-api-1  Creating
+ Container cqrs-postgres-1  Created
+ Container cqrs-consumer-1  Creating
+ Container cqrs-read-api-1  Creating
+ Container cqrs-saga-1  Creating
+ Container cqrs-consumer-1  Created
+ Container cqrs-write-api-1  Created
+ Container cqrs-read-api-1  Created
+ Container cqrs-frontend-1  Creating
+ Container cqrs-saga-1  Created
+ Container cqrs-frontend-1  Created
+ Container cqrs-redis-stream-1  Starting
+ Container cqrs-postgres-1  Starting
+ Container cqrs-redis-cache-1  Starting
+ Container cqrs-mongodb-1  Starting
+ Container cqrs-redis-stream-1  Started
+ Container cqrs-redis-cache-1  Started
+ Container cqrs-postgres-1  Started
+ Container cqrs-redis-cache-1  Waiting
+ Container cqrs-postgres-1  Waiting
+ Container cqrs-mongodb-1  Started
+ Container cqrs-redis-stream-1  Waiting
+ Container cqrs-postgres-1  Waiting
+ Container cqrs-postgres-1  Waiting
+ Container cqrs-mongodb-1  Waiting
+ Container cqrs-redis-stream-1  Waiting
+ Container cqrs-redis-cache-1  Waiting
+ Container cqrs-mongodb-1  Waiting
+ Container cqrs-redis-stream-1  Waiting
+ Container cqrs-mongodb-1  Waiting
+ Container cqrs-postgres-1  Healthy
+ Container cqrs-redis-cache-1  Healthy
+ Container cqrs-read-api-1  Starting
+ Container cqrs-redis-stream-1  Healthy
+ Container cqrs-redis-stream-1  Healthy
+ Container cqrs-redis-stream-1  Healthy
+ Container cqrs-redis-cache-1  Healthy
+ Container cqrs-postgres-1  Healthy
+ Container cqrs-postgres-1  Healthy
+ Container cqrs-read-api-1  Started
+ Container cqrs-frontend-1  Starting
+ Container cqrs-frontend-1  Started
+ Container cqrs-mongodb-1  Healthy
+ Container cqrs-mongodb-1  Healthy
+ Container cqrs-consumer-1  Starting
+ Container cqrs-saga-1  Starting
+ Container cqrs-mongodb-1  Healthy
+ Container cqrs-write-api-1  Starting
+ Container cqrs-write-api-1  Started
+ Container cqrs-saga-1  Started
+ Container cqrs-consumer-1  Started
+Waiting for APIs to be ready...
+Clearing MongoDB events and sagas...
+time="2026-04-26T04:24:56+05:30" level=warning msg="/Users/akankshawattamwar/Desktop/CS315/CQRS/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+MongoDB cleared
+All services up.
+Logs: docker compose logs -f [write-api|read-api|consumer|saga]
+
+[1m=======================================================[0m
+[1m  EVENTUAL CONSISTENCY DEMO — 1500 orders[0m
+[1m=======================================================[0m
+
+  Write path:  Write API → MongoDB → Redis Stream
+  Read path:   Consumer → PostgreSQL ← Read API
+  Cache:       DISABLED (DISABLE_CACHE set)
+
+[96mOrder 1/1500:[0m
+  [     12ms]  [91mstale[0m    (poll #1)  order=b151cc58
+  [     72ms]  [91mstale[0m    (poll #2)  order=b151cc58
+  [    133ms]  [92mVISIBLE[0m  (poll #3, X-Cache: MISS)  order=b151cc58
+
+[96mOrder 2/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=e6c45b33
+  [     73ms]  [91mstale[0m    (poll #2)  order=e6c45b33
+  [    133ms]  [91mstale[0m    (poll #3)  order=e6c45b33
+  [    193ms]  [91mstale[0m    (poll #4)  order=e6c45b33
+  [    261ms]  [91mstale[0m    (poll #5)  order=e6c45b33
+  [    332ms]  [91mstale[0m    (poll #6)  order=e6c45b33
+  [    403ms]  [91mstale[0m    (poll #7)  order=e6c45b33
+  [    473ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=e6c45b33
+
+[96mOrder 3/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=e6950897
+  [     71ms]  [91mstale[0m    (poll #2)  order=e6950897
+  [    133ms]  [91mstale[0m    (poll #3)  order=e6950897
+  [    192ms]  [91mstale[0m    (poll #4)  order=e6950897
+  [    254ms]  [91mstale[0m    (poll #5)  order=e6950897
+  [    317ms]  [91mstale[0m    (poll #6)  order=e6950897
+  [    384ms]  [91mstale[0m    (poll #7)  order=e6950897
+  [    451ms]  [91mstale[0m    (poll #8)  order=e6950897
+  [    514ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=e6950897
+
+[96mOrder 4/1500:[0m
+  [      6ms]  [91mstale[0m    (poll #1)  order=1474aa50
+  [     70ms]  [91mstale[0m    (poll #2)  order=1474aa50
+  [    164ms]  [91mstale[0m    (poll #3)  order=1474aa50
+  [    228ms]  [91mstale[0m    (poll #4)  order=1474aa50
+  [    289ms]  [91mstale[0m    (poll #5)  order=1474aa50
+  [    356ms]  [91mstale[0m    (poll #6)  order=1474aa50
+  [    434ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=1474aa50
+
+[96mOrder 5/1500:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=4dd1e8d2
+  [     62ms]  [91mstale[0m    (poll #2)  order=4dd1e8d2
+  [    127ms]  [91mstale[0m    (poll #3)  order=4dd1e8d2
+  [    191ms]  [91mstale[0m    (poll #4)  order=4dd1e8d2
+  [    263ms]  [91mstale[0m    (poll #5)  order=4dd1e8d2
+  [    331ms]  [91mstale[0m    (poll #6)  order=4dd1e8d2
+  [    399ms]  [91mstale[0m    (poll #7)  order=4dd1e8d2
+  [    473ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=4dd1e8d2
+
+[96mOrder 6/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=007f3182
+  [     70ms]  [91mstale[0m    (poll #2)  order=007f3182
+  [    134ms]  [91mstale[0m    (poll #3)  order=007f3182
+  [    200ms]  [91mstale[0m    (poll #4)  order=007f3182
+  [    271ms]  [91mstale[0m    (poll #5)  order=007f3182
+  [    345ms]  [91mstale[0m    (poll #6)  order=007f3182
+  [    407ms]  [91mstale[0m    (poll #7)  order=007f3182
+  [    473ms]  [91mstale[0m    (poll #8)  order=007f3182
+  [    542ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=007f3182
+
+[96mOrder 7/1500:[0m
+  [      6ms]  [91mstale[0m    (poll #1)  order=29461e5d
+  [     64ms]  [91mstale[0m    (poll #2)  order=29461e5d
+  [    127ms]  [91mstale[0m    (poll #3)  order=29461e5d
+  [    192ms]  [91mstale[0m    (poll #4)  order=29461e5d
+  [    252ms]  [91mstale[0m    (poll #5)  order=29461e5d
+  [    315ms]  [91mstale[0m    (poll #6)  order=29461e5d
+  [    378ms]  [91mstale[0m    (poll #7)  order=29461e5d
+  [    444ms]  [91mstale[0m    (poll #8)  order=29461e5d
+  [    513ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=29461e5d
+
+[96mOrder 8/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=4949a9cd
+  [     73ms]  [91mstale[0m    (poll #2)  order=4949a9cd
+  [    137ms]  [91mstale[0m    (poll #3)  order=4949a9cd
+  [    202ms]  [91mstale[0m    (poll #4)  order=4949a9cd
+  [    275ms]  [91mstale[0m    (poll #5)  order=4949a9cd
+  [    340ms]  [91mstale[0m    (poll #6)  order=4949a9cd
+  [    411ms]  [91mstale[0m    (poll #7)  order=4949a9cd
+  [    478ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=4949a9cd
+
+[96mOrder 9/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=0bb5f34a
+  [     73ms]  [91mstale[0m    (poll #2)  order=0bb5f34a
+  [    136ms]  [91mstale[0m    (poll #3)  order=0bb5f34a
+  [    201ms]  [91mstale[0m    (poll #4)  order=0bb5f34a
+  [    272ms]  [91mstale[0m    (poll #5)  order=0bb5f34a
+  [    341ms]  [91mstale[0m    (poll #6)  order=0bb5f34a
+  [    412ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=0bb5f34a
+
+[96mOrder 10/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=8239af71
+  [     71ms]  [91mstale[0m    (poll #2)  order=8239af71
+  [    137ms]  [91mstale[0m    (poll #3)  order=8239af71
+  [    201ms]  [91mstale[0m    (poll #4)  order=8239af71
+  [    273ms]  [91mstale[0m    (poll #5)  order=8239af71
+  [    344ms]  [91mstale[0m    (poll #6)  order=8239af71
+  [    417ms]  [91mstale[0m    (poll #7)  order=8239af71
+  [    484ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=8239af71
+
+[96mOrder 11/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=3d7804c3
+  [     69ms]  [91mstale[0m    (poll #2)  order=3d7804c3
+  [    131ms]  [91mstale[0m    (poll #3)  order=3d7804c3
+  [    199ms]  [91mstale[0m    (poll #4)  order=3d7804c3
+  [    268ms]  [91mstale[0m    (poll #5)  order=3d7804c3
+  [    337ms]  [91mstale[0m    (poll #6)  order=3d7804c3
+  [    409ms]  [91mstale[0m    (poll #7)  order=3d7804c3
+  [    476ms]  [91mstale[0m    (poll #8)  order=3d7804c3
+  [    547ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=3d7804c3
+
+[96mOrder 12/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=afc64099
+  [     74ms]  [91mstale[0m    (poll #2)  order=afc64099
+  [    140ms]  [91mstale[0m    (poll #3)  order=afc64099
+  [    201ms]  [91mstale[0m    (poll #4)  order=afc64099
+  [    265ms]  [91mstale[0m    (poll #5)  order=afc64099
+  [    333ms]  [91mstale[0m    (poll #6)  order=afc64099
+  [    404ms]  [91mstale[0m    (poll #7)  order=afc64099
+  [    473ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=afc64099
+
+[96mOrder 13/1500:[0m
+  [     11ms]  [91mstale[0m    (poll #1)  order=068cf1b7
+  [     76ms]  [91mstale[0m    (poll #2)  order=068cf1b7
+  [    138ms]  [91mstale[0m    (poll #3)  order=068cf1b7
+  [    206ms]  [91mstale[0m    (poll #4)  order=068cf1b7
+  [    274ms]  [91mstale[0m    (poll #5)  order=068cf1b7
+  [    345ms]  [91mstale[0m    (poll #6)  order=068cf1b7
+  [    414ms]  [91mstale[0m    (poll #7)  order=068cf1b7
+  [    489ms]  [91mstale[0m    (poll #8)  order=068cf1b7
+  [    556ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=068cf1b7
+
+[96mOrder 14/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=7c2b59d3
+  [     68ms]  [91mstale[0m    (poll #2)  order=7c2b59d3
+  [    131ms]  [91mstale[0m    (poll #3)  order=7c2b59d3
+  [    194ms]  [91mstale[0m    (poll #4)  order=7c2b59d3
+  [    255ms]  [91mstale[0m    (poll #5)  order=7c2b59d3
+  [    314ms]  [91mstale[0m    (poll #6)  order=7c2b59d3
+  [    387ms]  [91mstale[0m    (poll #7)  order=7c2b59d3
+  [    459ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=7c2b59d3
+
+[96mOrder 15/1500:[0m
+  [     11ms]  [91mstale[0m    (poll #1)  order=19cc865e
+  [     76ms]  [91mstale[0m    (poll #2)  order=19cc865e
+  [    139ms]  [91mstale[0m    (poll #3)  order=19cc865e
+  [    210ms]  [91mstale[0m    (poll #4)  order=19cc865e
+  [    281ms]  [91mstale[0m    (poll #5)  order=19cc865e
+  [    352ms]  [91mstale[0m    (poll #6)  order=19cc865e
+  [    422ms]  [91mstale[0m    (poll #7)  order=19cc865e
+  [    492ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=19cc865e
+
+[96mOrder 16/1500:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=5cd7db9e
+  [     65ms]  [91mstale[0m    (poll #2)  order=5cd7db9e
+  [    132ms]  [91mstale[0m    (poll #3)  order=5cd7db9e
+  [    198ms]  [91mstale[0m    (poll #4)  order=5cd7db9e
+  [    266ms]  [91mstale[0m    (poll #5)  order=5cd7db9e
+  [    332ms]  [91mstale[0m    (poll #6)  order=5cd7db9e
+  [    401ms]  [91mstale[0m    (poll #7)  order=5cd7db9e
+  [    470ms]  [91mstale[0m    (poll #8)  order=5cd7db9e
+  [    544ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=5cd7db9e
+
+[96mOrder 17/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=9b3be452
+  [     69ms]  [91mstale[0m    (poll #2)  order=9b3be452
+  [    127ms]  [91mstale[0m    (poll #3)  order=9b3be452
+  [    190ms]  [91mstale[0m    (poll #4)  order=9b3be452
+  [    252ms]  [91mstale[0m    (poll #5)  order=9b3be452
+  [    313ms]  [91mstale[0m    (poll #6)  order=9b3be452
+  [    378ms]  [91mstale[0m    (poll #7)  order=9b3be452
+  [    440ms]  [91mstale[0m    (poll #8)  order=9b3be452
+  [    499ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=9b3be452
+
+[96mOrder 18/1500:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=0132e250
+  [     63ms]  [91mstale[0m    (poll #2)  order=0132e250
+  [    125ms]  [91mstale[0m    (poll #3)  order=0132e250
+  [    190ms]  [91mstale[0m    (poll #4)  order=0132e250
+  [    249ms]  [91mstale[0m    (poll #5)  order=0132e250
+  [    312ms]  [91mstale[0m    (poll #6)  order=0132e250
+  [    372ms]  [91mstale[0m    (poll #7)  order=0132e250
+  [    434ms]  [91mstale[0m    (poll #8)  order=0132e250
+  [    497ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=0132e250
+
+[96mOrder 19/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=e28feae6
+  [     69ms]  [91mstale[0m    (poll #2)  order=e28feae6
+  [    131ms]  [91mstale[0m    (poll #3)  order=e28feae6
+  [    195ms]  [91mstale[0m    (poll #4)  order=e28feae6
+  [    259ms]  [91mstale[0m    (poll #5)  order=e28feae6
+  [    327ms]  [91mstale[0m    (poll #6)  order=e28feae6
+  [    392ms]  [91mstale[0m    (poll #7)  order=e28feae6
+  [    461ms]  [91mstale[0m    (poll #8)  order=e28feae6
+  [    526ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=e28feae6
+
+[96mOrder 20/1500:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=80df085a
+  [     67ms]  [91mstale[0m    (poll #2)  order=80df085a
+  [    127ms]  [91mstale[0m    (poll #3)  order=80df085a
+  [    189ms]  [91mstale[0m    (poll #4)  order=80df085a
+  [    250ms]  [91mstale[0m    (poll #5)  order=80df085a
+  [    310ms]  [91mstale[0m    (poll #6)  order=80df085a
+  [    374ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=80df085a
+
+[96mOrder 21/1500:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=6b1f4dd8
+  [     68ms]  [91mstale[0m    (poll #2)  order=6b1f4dd8
+  [    130ms]  [91mstale[0m    (poll #3)  order=6b1f4dd8
+  [    199ms]  [91mstale[0m    (poll #4)  order=6b1f4dd8
+  [    268ms]  [91mstale[0m    (poll #5)  order=6b1f4dd8
+  [    341ms]  [91mstale[0m    (poll #6)  order=6b1f4dd8
+  [    412ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=6b1f4dd8
+
+[96mOrder 22/1500:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=4d7e2447
+  [     65ms]  [91mstale[0m    (poll #2)  order=4d7e2447
+  [    127ms]  [91mstale[0m    (poll #3)  order=4d7e2447
+  [    190ms]  [91mstale[0m    (poll #4)  order=4d7e2447
+  [    256ms]  [91mstale[0m    (poll #5)  order=4d7e2447
+  [    329ms]  [91mstale[0m    (poll #6)  order=4d7e2447
+  [    398ms]  [91mstale[0m    (poll #7)  order=4d7e2447
+  [    463ms]  [91mstale[0m    (poll #8)  order=4d7e2447
+  [    530ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=4d7e2447
+
+[96mOrder 23/1500:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=973de4a9
+  [     66ms]  [91mstale[0m    (poll #2)  order=973de4a9
+  [    128ms]  [91mstale[0m    (poll #3)  order=973de4a9
+  [    190ms]  [91mstale[0m    (poll #4)  order=973de4a9
+  [    252ms]  [91mstale[0m    (poll #5)  order=973de4a9
+  [    316ms]  [91mstale[0m    (poll #6)  order=973de4a9
+  [    384ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=973de4a9
+
+[96mOrder 24/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=385d9842
+  [     74ms]  [91mstale[0m    (poll #2)  order=385d9842
+  [    136ms]  [91mstale[0m    (poll #3)  order=385d9842
+  [    204ms]  [91mstale[0m    (poll #4)  order=385d9842
+  [    274ms]  [91mstale[0m    (poll #5)  order=385d9842
+  [    341ms]  [91mstale[0m    (poll #6)  order=385d9842
+  [    408ms]  [91mstale[0m    (poll #7)  order=385d9842
+  [    478ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=385d9842
+
+[96mOrder 25/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=da54d1b1
+  [     70ms]  [91mstale[0m    (poll #2)  order=da54d1b1
+  [    133ms]  [91mstale[0m    (poll #3)  order=da54d1b1
+  [    201ms]  [91mstale[0m    (poll #4)  order=da54d1b1
+  [    274ms]  [91mstale[0m    (poll #5)  order=da54d1b1
+  [    340ms]  [91mstale[0m    (poll #6)  order=da54d1b1
+  [    412ms]  [91mstale[0m    (poll #7)  order=da54d1b1
+  [    480ms]  [91mstale[0m    (poll #8)  order=da54d1b1
+  [    551ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=da54d1b1
+
+[96mOrder 26/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=0297d851
+  [     68ms]  [91mstale[0m    (poll #2)  order=0297d851
+  [    133ms]  [91mstale[0m    (poll #3)  order=0297d851
+  [    199ms]  [91mstale[0m    (poll #4)  order=0297d851
+  [    265ms]  [91mstale[0m    (poll #5)  order=0297d851
+  [    331ms]  [91mstale[0m    (poll #6)  order=0297d851
+  [    402ms]  [91mstale[0m    (poll #7)  order=0297d851
+  [    468ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=0297d851
+
+[96mOrder 27/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=1fa21517
+  [     70ms]  [91mstale[0m    (poll #2)  order=1fa21517
+  [    133ms]  [91mstale[0m    (poll #3)  order=1fa21517
+  [    201ms]  [91mstale[0m    (poll #4)  order=1fa21517
+  [    270ms]  [91mstale[0m    (poll #5)  order=1fa21517
+  [    332ms]  [91mstale[0m    (poll #6)  order=1fa21517
+  [    395ms]  [91mstale[0m    (poll #7)  order=1fa21517
+  [    460ms]  [91mstale[0m    (poll #8)  order=1fa21517
+  [    530ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=1fa21517
+
+[96mOrder 28/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=e0544bf0
+  [     72ms]  [91mstale[0m    (poll #2)  order=e0544bf0
+  [    137ms]  [91mstale[0m    (poll #3)  order=e0544bf0
+  [    204ms]  [91mstale[0m    (poll #4)  order=e0544bf0
+  [    277ms]  [91mstale[0m    (poll #5)  order=e0544bf0
+  [    346ms]  [91mstale[0m    (poll #6)  order=e0544bf0
+  [    415ms]  [91mstale[0m    (poll #7)  order=e0544bf0
+  [    481ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=e0544bf0
+
+[96mOrder 29/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=700495b1
+  [     71ms]  [91mstale[0m    (poll #2)  order=700495b1
+  [    137ms]  [91mstale[0m    (poll #3)  order=700495b1
+  [    205ms]  [91mstale[0m    (poll #4)  order=700495b1
+  [    278ms]  [91mstale[0m    (poll #5)  order=700495b1
+  [    347ms]  [91mstale[0m    (poll #6)  order=700495b1
+  [    418ms]  [91mstale[0m    (poll #7)  order=700495b1
+  [    489ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=700495b1
+
+[96mOrder 30/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=8e65737f
+  [     72ms]  [91mstale[0m    (poll #2)  order=8e65737f
+  [    137ms]  [91mstale[0m    (poll #3)  order=8e65737f
+  [    199ms]  [91mstale[0m    (poll #4)  order=8e65737f
+  [    265ms]  [91mstale[0m    (poll #5)  order=8e65737f
+  [    337ms]  [91mstale[0m    (poll #6)  order=8e65737f
+  [    405ms]  [91mstale[0m    (poll #7)  order=8e65737f
+  [    471ms]  [91mstale[0m    (poll #8)  order=8e65737f
+  [    541ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=8e65737f
+
+[96mOrder 31/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=c1e725bc
+  [     73ms]  [91mstale[0m    (poll #2)  order=c1e725bc
+  [    136ms]  [91mstale[0m    (poll #3)  order=c1e725bc
+  [    203ms]  [91mstale[0m    (poll #4)  order=c1e725bc
+  [    273ms]  [91mstale[0m    (poll #5)  order=c1e725bc
+  [    342ms]  [91mstale[0m    (poll #6)  order=c1e725bc
+  [    409ms]  [91mstale[0m    (poll #7)  order=c1e725bc
+  [    476ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=c1e725bc
+
+[96mOrder 32/1500:[0m
+  [     10ms]  [91mstale[0m    (poll #1)  order=05a40736
+  [     72ms]  [91mstale[0m    (poll #2)  order=05a40736
+  [    138ms]  [91mstale[0m    (poll #3)  order=05a40736
+  [    205ms]  [91mstale[0m    (poll #4)  order=05a40736
+  [    276ms]  [91mstale[0m    (poll #5)  order=05a40736
+  [    351ms]  [91mstale[0m    (poll #6)  order=05a40736
+  [    423ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=05a40736
+
+[96mOrder 33/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=76ac347e
+  [     73ms]  [91mstale[0m    (poll #2)  order=76ac347e
+  [    135ms]  [91mstale[0m    (poll #3)  order=76ac347e
+  [    203ms]  [91mstale[0m    (poll #4)  order=76ac347e
+  [    272ms]  [91mstale[0m    (poll #5)  order=76ac347e
+  [    339ms]  [91mstale[0m    (poll #6)  order=76ac347e
+  [    407ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=76ac347e
+
+[96mOrder 34/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=aa5bd772
+  [     73ms]  [91mstale[0m    (poll #2)  order=aa5bd772
+  [    136ms]  [91mstale[0m    (poll #3)  order=aa5bd772
+  [    202ms]  [91mstale[0m    (poll #4)  order=aa5bd772
+  [    270ms]  [91mstale[0m    (poll #5)  order=aa5bd772
+  [    342ms]  [91mstale[0m    (poll #6)  order=aa5bd772
+  [    413ms]  [91mstale[0m    (poll #7)  order=aa5bd772
+  [    484ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=aa5bd772
+
+[96mOrder 35/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=c7ee18a9
+  [     71ms]  [91mstale[0m    (poll #2)  order=c7ee18a9
+  [    135ms]  [91mstale[0m    (poll #3)  order=c7ee18a9
+  [    198ms]  [91mstale[0m    (poll #4)  order=c7ee18a9
+  [    261ms]  [91mstale[0m    (poll #5)  order=c7ee18a9
+  [    327ms]  [91mstale[0m    (poll #6)  order=c7ee18a9
+  [    396ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=c7ee18a9
+
+[96mOrder 36/1500:[0m
+  [     11ms]  [91mstale[0m    (poll #1)  order=df6fd63c
+  [     75ms]  [91mstale[0m    (poll #2)  order=df6fd63c
+  [    139ms]  [91mstale[0m    (poll #3)  order=df6fd63c
+  [    203ms]  [91mstale[0m    (poll #4)  order=df6fd63c
+  [    275ms]  [91mstale[0m    (poll #5)  order=df6fd63c
+  [    340ms]  [91mstale[0m    (poll #6)  order=df6fd63c
+  [    408ms]  [91mstale[0m    (poll #7)  order=df6fd63c
+  [    478ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=df6fd63c
+
+[96mOrder 37/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=18124d77
+  [     73ms]  [91mstale[0m    (poll #2)  order=18124d77
+  [    135ms]  [91mstale[0m    (poll #3)  order=18124d77
+  [    199ms]  [91mstale[0m    (poll #4)  order=18124d77
+  [    266ms]  [91mstale[0m    (poll #5)  order=18124d77
+  [    337ms]  [91mstale[0m    (poll #6)  order=18124d77
+  [    407ms]  [91mstale[0m    (poll #7)  order=18124d77
+  [    468ms]  [91mstale[0m    (poll #8)  order=18124d77
+  [    530ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=18124d77
+
+[96mOrder 38/1500:[0m
+  [     12ms]  [91mstale[0m    (poll #1)  order=3e4b0c19
+  [     74ms]  [91mstale[0m    (poll #2)  order=3e4b0c19
+  [    136ms]  [91mstale[0m    (poll #3)  order=3e4b0c19
+  [    195ms]  [91mstale[0m    (poll #4)  order=3e4b0c19
+  [    258ms]  [91mstale[0m    (poll #5)  order=3e4b0c19
+  [    323ms]  [91mstale[0m    (poll #6)  order=3e4b0c19
+  [    384ms]  [91mstale[0m    (poll #7)  order=3e4b0c19
+  [    451ms]  [91mstale[0m    (poll #8)  order=3e4b0c19
+  [    512ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=3e4b0c19
+
+[96mOrder 39/1500:[0m
+  [      3ms]  [91mstale[0m    (poll #1)  order=da0d9a0d
+  [     62ms]  [91mstale[0m    (poll #2)  order=da0d9a0d
+  [    123ms]  [91mstale[0m    (poll #3)  order=da0d9a0d
+  [    183ms]  [91mstale[0m    (poll #4)  order=da0d9a0d
+  [    241ms]  [91mstale[0m    (poll #5)  order=da0d9a0d
+  [    303ms]  [91mstale[0m    (poll #6)  order=da0d9a0d
+  [    365ms]  [91mstale[0m    (poll #7)  order=da0d9a0d
+  [    426ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=da0d9a0d
+
+[96mOrder 40/1500:[0m
+  [      6ms]  [91mstale[0m    (poll #1)  order=fc00aed7
+  [     64ms]  [91mstale[0m    (poll #2)  order=fc00aed7
+  [    139ms]  [91mstale[0m    (poll #3)  order=fc00aed7
+  [    200ms]  [91mstale[0m    (poll #4)  order=fc00aed7
+  [    256ms]  [91mstale[0m    (poll #5)  order=fc00aed7
+  [    318ms]  [91mstale[0m    (poll #6)  order=fc00aed7
+  [    381ms]  [91mstale[0m    (poll #7)  order=fc00aed7
+  [    453ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=fc00aed7
+
+[96mOrder 41/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=61c664c5
+  [     74ms]  [91mstale[0m    (poll #2)  order=61c664c5
+  [    139ms]  [91mstale[0m    (poll #3)  order=61c664c5
+  [    205ms]  [91mstale[0m    (poll #4)  order=61c664c5
+  [    275ms]  [91mstale[0m    (poll #5)  order=61c664c5
+  [    344ms]  [91mstale[0m    (poll #6)  order=61c664c5
+  [    417ms]  [91mstale[0m    (poll #7)  order=61c664c5
+  [    491ms]  [91mstale[0m    (poll #8)  order=61c664c5
+  [    561ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=61c664c5
+
+[96mOrder 42/1500:[0m
+  [     10ms]  [91mstale[0m    (poll #1)  order=d535070e
+  [     72ms]  [91mstale[0m    (poll #2)  order=d535070e
+  [    134ms]  [91mstale[0m    (poll #3)  order=d535070e
+  [    198ms]  [91mstale[0m    (poll #4)  order=d535070e
+  [    267ms]  [91mstale[0m    (poll #5)  order=d535070e
+  [    341ms]  [92mVISIBLE[0m  (poll #6, X-Cache: MISS)  order=d535070e
+
+[96mOrder 43/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=09cd0e29
+  [     70ms]  [91mstale[0m    (poll #2)  order=09cd0e29
+  [    137ms]  [91mstale[0m    (poll #3)  order=09cd0e29
+  [    201ms]  [91mstale[0m    (poll #4)  order=09cd0e29
+  [    266ms]  [91mstale[0m    (poll #5)  order=09cd0e29
+  [    327ms]  [91mstale[0m    (poll #6)  order=09cd0e29
+  [    387ms]  [91mstale[0m    (poll #7)  order=09cd0e29
+  [    449ms]  [91mstale[0m    (poll #8)  order=09cd0e29
+  [    514ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=09cd0e29
+
+[96mOrder 44/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=b1a97a06
+  [     67ms]  [91mstale[0m    (poll #2)  order=b1a97a06
+  [    130ms]  [91mstale[0m    (poll #3)  order=b1a97a06
+  [    196ms]  [91mstale[0m    (poll #4)  order=b1a97a06
+  [    263ms]  [91mstale[0m    (poll #5)  order=b1a97a06
+  [    335ms]  [91mstale[0m    (poll #6)  order=b1a97a06
+  [    404ms]  [91mstale[0m    (poll #7)  order=b1a97a06
+  [    479ms]  [91mstale[0m    (poll #8)  order=b1a97a06
+  [    546ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=b1a97a06
+
+[96mOrder 45/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=19fcf34d
+  [     71ms]  [91mstale[0m    (poll #2)  order=19fcf34d
+  [    134ms]  [91mstale[0m    (poll #3)  order=19fcf34d
+  [    200ms]  [91mstale[0m    (poll #4)  order=19fcf34d
+  [    271ms]  [91mstale[0m    (poll #5)  order=19fcf34d
+  [    339ms]  [91mstale[0m    (poll #6)  order=19fcf34d
+  [    409ms]  [91mstale[0m    (poll #7)  order=19fcf34d
+  [    483ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=19fcf34d
+
+[96mOrder 46/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=11ddc91d
+  [     67ms]  [91mstale[0m    (poll #2)  order=11ddc91d
+  [    131ms]  [91mstale[0m    (poll #3)  order=11ddc91d
+  [    198ms]  [91mstale[0m    (poll #4)  order=11ddc91d
+  [    271ms]  [91mstale[0m    (poll #5)  order=11ddc91d
+  [    342ms]  [91mstale[0m    (poll #6)  order=11ddc91d
+  [    412ms]  [91mstale[0m    (poll #7)  order=11ddc91d
+  [    482ms]  [91mstale[0m    (poll #8)  order=11ddc91d
+  [    551ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=11ddc91d
+
+[96mOrder 47/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=7967e7e2
+  [     73ms]  [91mstale[0m    (poll #2)  order=7967e7e2
+  [    138ms]  [91mstale[0m    (poll #3)  order=7967e7e2
+  [    203ms]  [91mstale[0m    (poll #4)  order=7967e7e2
+  [    275ms]  [91mstale[0m    (poll #5)  order=7967e7e2
+  [    345ms]  [91mstale[0m    (poll #6)  order=7967e7e2
+  [    412ms]  [91mstale[0m    (poll #7)  order=7967e7e2
+  [    477ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=7967e7e2
+
+[96mOrder 48/1500:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=d3ecaf9a
+  [     64ms]  [91mstale[0m    (poll #2)  order=d3ecaf9a
+  [    127ms]  [91mstale[0m    (poll #3)  order=d3ecaf9a
+  [    191ms]  [91mstale[0m    (poll #4)  order=d3ecaf9a
+  [    258ms]  [91mstale[0m    (poll #5)  order=d3ecaf9a
+  [    325ms]  [91mstale[0m    (poll #6)  order=d3ecaf9a
+  [    394ms]  [91mstale[0m    (poll #7)  order=d3ecaf9a
+  [    470ms]  [91mstale[0m    (poll #8)  order=d3ecaf9a
+  [    537ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=d3ecaf9a
+
+[96mOrder 49/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=5fefdeb4
+  [     73ms]  [91mstale[0m    (poll #2)  order=5fefdeb4
+  [    137ms]  [91mstale[0m    (poll #3)  order=5fefdeb4
+  [    205ms]  [91mstale[0m    (poll #4)  order=5fefdeb4
+  [    274ms]  [91mstale[0m    (poll #5)  order=5fefdeb4
+  [    341ms]  [91mstale[0m    (poll #6)  order=5fefdeb4
+  [    411ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=5fefdeb4
+
+[96mOrder 50/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=bc3e3035
+  [     71ms]  [91mstale[0m    (poll #2)  order=bc3e3035
+  [    132ms]  [91mstale[0m    (poll #3)  order=bc3e3035
+  [    201ms]  [91mstale[0m    (poll #4)  order=bc3e3035
+  [    271ms]  [91mstale[0m    (poll #5)  order=bc3e3035
+  [    343ms]  [91mstale[0m    (poll #6)  order=bc3e3035
+  [    412ms]  [91mstale[0m    (poll #7)  order=bc3e3035
+  [    483ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=bc3e3035
+
+[96mOrder 51/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=a5f6cd72
+  [     68ms]  [91mstale[0m    (poll #2)  order=a5f6cd72
+  [    134ms]  [91mstale[0m    (poll #3)  order=a5f6cd72
+  [    200ms]  [91mstale[0m    (poll #4)  order=a5f6cd72
+  [    272ms]  [91mstale[0m    (poll #5)  order=a5f6cd72
+  [    343ms]  [91mstale[0m    (poll #6)  order=a5f6cd72
+  [    412ms]  [91mstale[0m    (poll #7)  order=a5f6cd72
+  [    481ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=a5f6cd72
+
+[96mOrder 52/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=be4bfaaf
+  [     71ms]  [91mstale[0m    (poll #2)  order=be4bfaaf
+  [    133ms]  [91mstale[0m    (poll #3)  order=be4bfaaf
+  [    196ms]  [91mstale[0m    (poll #4)  order=be4bfaaf
+  [    266ms]  [91mstale[0m    (poll #5)  order=be4bfaaf
+  [    337ms]  [91mstale[0m    (poll #6)  order=be4bfaaf
+  [    406ms]  [91mstale[0m    (poll #7)  order=be4bfaaf
+  [    478ms]  [91mstale[0m    (poll #8)  order=be4bfaaf
+  [    547ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=be4bfaaf
+
+[96mOrder 53/1500:[0m
+  [      6ms]  [91mstale[0m    (poll #1)  order=3ed53413
+  [     70ms]  [91mstale[0m    (poll #2)  order=3ed53413
+  [    135ms]  [91mstale[0m    (poll #3)  order=3ed53413
+  [    203ms]  [91mstale[0m    (poll #4)  order=3ed53413
+  [    270ms]  [91mstale[0m    (poll #5)  order=3ed53413
+  [    339ms]  [91mstale[0m    (poll #6)  order=3ed53413
+  [    410ms]  [91mstale[0m    (poll #7)  order=3ed53413
+  [    480ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=3ed53413
+
+[96mOrder 54/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=36dedda4
+  [     68ms]  [91mstale[0m    (poll #2)  order=36dedda4
+  [    133ms]  [91mstale[0m    (poll #3)  order=36dedda4
+  [    196ms]  [91mstale[0m    (poll #4)  order=36dedda4
+  [    263ms]  [91mstale[0m    (poll #5)  order=36dedda4
+  [    333ms]  [91mstale[0m    (poll #6)  order=36dedda4
+  [    403ms]  [91mstale[0m    (poll #7)  order=36dedda4
+  [    471ms]  [91mstale[0m    (poll #8)  order=36dedda4
+  [    538ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=36dedda4
+
+[96mOrder 55/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=d40ae104
+  [     68ms]  [91mstale[0m    (poll #2)  order=d40ae104
+  [    131ms]  [91mstale[0m    (poll #3)  order=d40ae104
+  [    196ms]  [91mstale[0m    (poll #4)  order=d40ae104
+  [    264ms]  [91mstale[0m    (poll #5)  order=d40ae104
+  [    325ms]  [91mstale[0m    (poll #6)  order=d40ae104
+  [    388ms]  [91mstale[0m    (poll #7)  order=d40ae104
+  [    451ms]  [91mstale[0m    (poll #8)  order=d40ae104
+  [    515ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=d40ae104
+
+[96mOrder 56/1500:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=65467f65
+  [     65ms]  [91mstale[0m    (poll #2)  order=65467f65
+  [    126ms]  [91mstale[0m    (poll #3)  order=65467f65
+  [    191ms]  [91mstale[0m    (poll #4)  order=65467f65
+  [    257ms]  [91mstale[0m    (poll #5)  order=65467f65
+  [    323ms]  [91mstale[0m    (poll #6)  order=65467f65
+  [    395ms]  [91mstale[0m    (poll #7)  order=65467f65
+  [    464ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=65467f65
+
+[96mOrder 57/1500:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=923013cd
+  [     68ms]  [91mstale[0m    (poll #2)  order=923013cd
+  [    134ms]  [91mstale[0m    (poll #3)  order=923013cd
+  [    203ms]  [91mstale[0m    (poll #4)  order=923013cd
+  [    271ms]  [91mstale[0m    (poll #5)  order=923013cd
+  [    329ms]  [91mstale[0m    (poll #6)  order=923013cd
+  [    388ms]  [91mstale[0m    (poll #7)  order=923013cd
+  [    449ms]  [91mstale[0m    (poll #8)  order=923013cd
+  [    509ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=923013cd
+
+[96mOrder 58/1500:[0m
+  [      3ms]  [91mstale[0m    (poll #1)  order=3732124a
+  [     63ms]  [91mstale[0m    (poll #2)  order=3732124a
+  [    121ms]  [91mstale[0m    (poll #3)  order=3732124a
+  [    184ms]  [91mstale[0m    (poll #4)  order=3732124a
+  [    249ms]  [91mstale[0m    (poll #5)  order=3732124a
+  [    314ms]  [91mstale[0m    (poll #6)  order=3732124a
+  [    383ms]  [91mstale[0m    (poll #7)  order=3732124a
+  [    455ms]  [91mstale[0m    (poll #8)  order=3732124a
+  [    524ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=3732124a
+
+[96mOrder 59/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=7ae403fd
+  [     72ms]  [91mstale[0m    (poll #2)  order=7ae403fd
+  [    134ms]  [91mstale[0m    (poll #3)  order=7ae403fd
+  [    194ms]  [91mstale[0m    (poll #4)  order=7ae403fd
+  [    250ms]  [91mstale[0m    (poll #5)  order=7ae403fd
+  [    309ms]  [91mstale[0m    (poll #6)  order=7ae403fd
+  [    371ms]  [91mstale[0m    (poll #7)  order=7ae403fd
+  [    429ms]  [91mstale[0m    (poll #8)  order=7ae403fd
+  [    492ms]  [91mstale[0m    (poll #9)  order=7ae403fd
+  [    556ms]  [92mVISIBLE[0m  (poll #10, X-Cache: MISS)  order=7ae403fd
+
+[96mOrder 60/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=68b8ec30
+  [     72ms]  [91mstale[0m    (poll #2)  order=68b8ec30
+  [    135ms]  [91mstale[0m    (poll #3)  order=68b8ec30
+  [    203ms]  [91mstale[0m    (poll #4)  order=68b8ec30
+  [    273ms]  [91mstale[0m    (poll #5)  order=68b8ec30
+  [    338ms]  [91mstale[0m    (poll #6)  order=68b8ec30
+  [    408ms]  [91mstale[0m    (poll #7)  order=68b8ec30
+  [    474ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=68b8ec30
+
+[96mOrder 61/1500:[0m
+  [      6ms]  [91mstale[0m    (poll #1)  order=faccc1d0
+  [     65ms]  [91mstale[0m    (poll #2)  order=faccc1d0
+  [    128ms]  [91mstale[0m    (poll #3)  order=faccc1d0
+  [    191ms]  [91mstale[0m    (poll #4)  order=faccc1d0
+  [    259ms]  [91mstale[0m    (poll #5)  order=faccc1d0
+  [    324ms]  [91mstale[0m    (poll #6)  order=faccc1d0
+  [    386ms]  [91mstale[0m    (poll #7)  order=faccc1d0
+  [    455ms]  [91mstale[0m    (poll #8)  order=faccc1d0
+  [    521ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=faccc1d0
+
+[96mOrder 62/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=d44bc48f
+  [     74ms]  [91mstale[0m    (poll #2)  order=d44bc48f
+  [    138ms]  [91mstale[0m    (poll #3)  order=d44bc48f
+  [    207ms]  [91mstale[0m    (poll #4)  order=d44bc48f
+  [    276ms]  [91mstale[0m    (poll #5)  order=d44bc48f
+  [    350ms]  [91mstale[0m    (poll #6)  order=d44bc48f
+  [    408ms]  [91mstale[0m    (poll #7)  order=d44bc48f
+  [    465ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=d44bc48f
+
+[96mOrder 63/1500:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=2ea36807
+  [     63ms]  [91mstale[0m    (poll #2)  order=2ea36807
+  [    122ms]  [91mstale[0m    (poll #3)  order=2ea36807
+  [    185ms]  [91mstale[0m    (poll #4)  order=2ea36807
+  [    254ms]  [91mstale[0m    (poll #5)  order=2ea36807
+  [    326ms]  [91mstale[0m    (poll #6)  order=2ea36807
+  [    396ms]  [91mstale[0m    (poll #7)  order=2ea36807
+  [    465ms]  [91mstale[0m    (poll #8)  order=2ea36807
+  [    536ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=2ea36807
+
+[96mOrder 64/1500:[0m
+  [     10ms]  [91mstale[0m    (poll #1)  order=0bbfc9b7
+  [     72ms]  [91mstale[0m    (poll #2)  order=0bbfc9b7
+  [    138ms]  [91mstale[0m    (poll #3)  order=0bbfc9b7
+  [    204ms]  [91mstale[0m    (poll #4)  order=0bbfc9b7
+  [    273ms]  [91mstale[0m    (poll #5)  order=0bbfc9b7
+  [    339ms]  [91mstale[0m    (poll #6)  order=0bbfc9b7
+  [    408ms]  [91mstale[0m    (poll #7)  order=0bbfc9b7
+  [    481ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=0bbfc9b7
+
+[96mOrder 65/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=19282d14
+  [     72ms]  [91mstale[0m    (poll #2)  order=19282d14
+  [    133ms]  [91mstale[0m    (poll #3)  order=19282d14
+  [    201ms]  [91mstale[0m    (poll #4)  order=19282d14
+  [    268ms]  [91mstale[0m    (poll #5)  order=19282d14
+  [    335ms]  [91mstale[0m    (poll #6)  order=19282d14
+  [    407ms]  [91mstale[0m    (poll #7)  order=19282d14
+  [    478ms]  [91mstale[0m    (poll #8)  order=19282d14
+  [    546ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=19282d14
+
+[96mOrder 66/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=1649824f
+  [     69ms]  [91mstale[0m    (poll #2)  order=1649824f
+  [    130ms]  [91mstale[0m    (poll #3)  order=1649824f
+  [    198ms]  [91mstale[0m    (poll #4)  order=1649824f
+  [    264ms]  [91mstale[0m    (poll #5)  order=1649824f
+  [    333ms]  [91mstale[0m    (poll #6)  order=1649824f
+  [    396ms]  [91mstale[0m    (poll #7)  order=1649824f
+  [    466ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=1649824f
+
+[96mOrder 67/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=10b118c7
+  [     73ms]  [91mstale[0m    (poll #2)  order=10b118c7
+  [    135ms]  [91mstale[0m    (poll #3)  order=10b118c7
+  [    200ms]  [91mstale[0m    (poll #4)  order=10b118c7
+  [    259ms]  [91mstale[0m    (poll #5)  order=10b118c7
+  [    321ms]  [91mstale[0m    (poll #6)  order=10b118c7
+  [    385ms]  [91mstale[0m    (poll #7)  order=10b118c7
+  [    451ms]  [91mstale[0m    (poll #8)  order=10b118c7
+  [    523ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=10b118c7
+
+[96mOrder 68/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=7a0e748e
+  [     72ms]  [91mstale[0m    (poll #2)  order=7a0e748e
+  [    138ms]  [91mstale[0m    (poll #3)  order=7a0e748e
+  [    205ms]  [91mstale[0m    (poll #4)  order=7a0e748e
+  [    273ms]  [91mstale[0m    (poll #5)  order=7a0e748e
+  [    340ms]  [91mstale[0m    (poll #6)  order=7a0e748e
+  [    410ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=7a0e748e
+
+[96mOrder 69/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=ae1cdee9
+  [     72ms]  [91mstale[0m    (poll #2)  order=ae1cdee9
+  [    137ms]  [91mstale[0m    (poll #3)  order=ae1cdee9
+  [    205ms]  [91mstale[0m    (poll #4)  order=ae1cdee9
+  [    275ms]  [91mstale[0m    (poll #5)  order=ae1cdee9
+  [    337ms]  [91mstale[0m    (poll #6)  order=ae1cdee9
+  [    405ms]  [91mstale[0m    (poll #7)  order=ae1cdee9
+  [    474ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=ae1cdee9
+
+[96mOrder 70/1500:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=72e74049
+  [     68ms]  [91mstale[0m    (poll #2)  order=72e74049
+  [    131ms]  [91mstale[0m    (poll #3)  order=72e74049
+  [    200ms]  [91mstale[0m    (poll #4)  order=72e74049
+  [    271ms]  [91mstale[0m    (poll #5)  order=72e74049
+  [    344ms]  [91mstale[0m    (poll #6)  order=72e74049
+  [    412ms]  [91mstale[0m    (poll #7)  order=72e74049
+  [    483ms]  [91mstale[0m    (poll #8)  order=72e74049
+  [    555ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=72e74049
+
+[96mOrder 71/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=93f88261
+  [     69ms]  [91mstale[0m    (poll #2)  order=93f88261
+  [    135ms]  [91mstale[0m    (poll #3)  order=93f88261
+  [    202ms]  [91mstale[0m    (poll #4)  order=93f88261
+  [    274ms]  [91mstale[0m    (poll #5)  order=93f88261
+  [    347ms]  [91mstale[0m    (poll #6)  order=93f88261
+  [    422ms]  [91mstale[0m    (poll #7)  order=93f88261
+  [    493ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=93f88261
+
+[96mOrder 72/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=d14f6338
+  [     72ms]  [91mstale[0m    (poll #2)  order=d14f6338
+  [    133ms]  [91mstale[0m    (poll #3)  order=d14f6338
+  [    195ms]  [91mstale[0m    (poll #4)  order=d14f6338
+  [    263ms]  [91mstale[0m    (poll #5)  order=d14f6338
+  [    332ms]  [91mstale[0m    (poll #6)  order=d14f6338
+  [    403ms]  [91mstale[0m    (poll #7)  order=d14f6338
+  [    473ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=d14f6338
+
+[96mOrder 73/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=fce865cf
+  [     74ms]  [91mstale[0m    (poll #2)  order=fce865cf
+  [    135ms]  [91mstale[0m    (poll #3)  order=fce865cf
+  [    200ms]  [91mstale[0m    (poll #4)  order=fce865cf
+  [    267ms]  [91mstale[0m    (poll #5)  order=fce865cf
+  [    333ms]  [91mstale[0m    (poll #6)  order=fce865cf
+  [    402ms]  [91mstale[0m    (poll #7)  order=fce865cf
+  [    475ms]  [91mstale[0m    (poll #8)  order=fce865cf
+  [    549ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=fce865cf
+
+[96mOrder 74/1500:[0m
+  [     10ms]  [91mstale[0m    (poll #1)  order=09510015
+  [     75ms]  [91mstale[0m    (poll #2)  order=09510015
+  [    138ms]  [91mstale[0m    (poll #3)  order=09510015
+  [    205ms]  [91mstale[0m    (poll #4)  order=09510015
+  [    277ms]  [91mstale[0m    (poll #5)  order=09510015
+  [    346ms]  [91mstale[0m    (poll #6)  order=09510015
+  [    417ms]  [91mstale[0m    (poll #7)  order=09510015
+  [    489ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=09510015
+
+[96mOrder 75/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=f87e194b
+  [     69ms]  [91mstale[0m    (poll #2)  order=f87e194b
+  [    131ms]  [91mstale[0m    (poll #3)  order=f87e194b
+  [    194ms]  [91mstale[0m    (poll #4)  order=f87e194b
+  [    261ms]  [91mstale[0m    (poll #5)  order=f87e194b
+  [    327ms]  [91mstale[0m    (poll #6)  order=f87e194b
+  [    394ms]  [91mstale[0m    (poll #7)  order=f87e194b
+  [    465ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=f87e194b
+
+[96mOrder 76/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=3d887797
+  [     69ms]  [91mstale[0m    (poll #2)  order=3d887797
+  [    135ms]  [91mstale[0m    (poll #3)  order=3d887797
+  [    199ms]  [91mstale[0m    (poll #4)  order=3d887797
+  [    264ms]  [91mstale[0m    (poll #5)  order=3d887797
+  [    330ms]  [91mstale[0m    (poll #6)  order=3d887797
+  [    398ms]  [91mstale[0m    (poll #7)  order=3d887797
+  [    468ms]  [91mstale[0m    (poll #8)  order=3d887797
+  [    526ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=3d887797
+
+[96mOrder 77/1500:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=1aa8b0f0
+  [     67ms]  [91mstale[0m    (poll #2)  order=1aa8b0f0
+  [    126ms]  [91mstale[0m    (poll #3)  order=1aa8b0f0
+  [    189ms]  [91mstale[0m    (poll #4)  order=1aa8b0f0
+  [    247ms]  [91mstale[0m    (poll #5)  order=1aa8b0f0
+  [    310ms]  [91mstale[0m    (poll #6)  order=1aa8b0f0
+  [    375ms]  [91mstale[0m    (poll #7)  order=1aa8b0f0
+  [    443ms]  [91mstale[0m    (poll #8)  order=1aa8b0f0
+  [    515ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=1aa8b0f0
+
+[96mOrder 78/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=27ae45a9
+  [     70ms]  [91mstale[0m    (poll #2)  order=27ae45a9
+  [    134ms]  [91mstale[0m    (poll #3)  order=27ae45a9
+  [    200ms]  [91mstale[0m    (poll #4)  order=27ae45a9
+  [    273ms]  [91mstale[0m    (poll #5)  order=27ae45a9
+  [    345ms]  [91mstale[0m    (poll #6)  order=27ae45a9
+  [    414ms]  [91mstale[0m    (poll #7)  order=27ae45a9
+  [    484ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=27ae45a9
+
+[96mOrder 79/1500:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=3285f8d9
+  [     62ms]  [91mstale[0m    (poll #2)  order=3285f8d9
+  [    121ms]  [91mstale[0m    (poll #3)  order=3285f8d9
+  [    179ms]  [91mstale[0m    (poll #4)  order=3285f8d9
+  [    239ms]  [91mstale[0m    (poll #5)  order=3285f8d9
+  [    301ms]  [91mstale[0m    (poll #6)  order=3285f8d9
+  [    363ms]  [91mstale[0m    (poll #7)  order=3285f8d9
+  [    425ms]  [91mstale[0m    (poll #8)  order=3285f8d9
+  [    489ms]  [91mstale[0m    (poll #9)  order=3285f8d9
+  [    559ms]  [92mVISIBLE[0m  (poll #10, X-Cache: MISS)  order=3285f8d9
+
+[96mOrder 80/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=31fedeff
+  [     70ms]  [91mstale[0m    (poll #2)  order=31fedeff
+  [    133ms]  [91mstale[0m    (poll #3)  order=31fedeff
+  [    201ms]  [91mstale[0m    (poll #4)  order=31fedeff
+  [    273ms]  [91mstale[0m    (poll #5)  order=31fedeff
+  [    343ms]  [91mstale[0m    (poll #6)  order=31fedeff
+  [    414ms]  [91mstale[0m    (poll #7)  order=31fedeff
+  [    492ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=31fedeff
+
+[96mOrder 81/1500:[0m
+  [      6ms]  [91mstale[0m    (poll #1)  order=88a669be
+  [     69ms]  [91mstale[0m    (poll #2)  order=88a669be
+  [    128ms]  [91mstale[0m    (poll #3)  order=88a669be
+  [    194ms]  [91mstale[0m    (poll #4)  order=88a669be
+  [    264ms]  [91mstale[0m    (poll #5)  order=88a669be
+  [    333ms]  [91mstale[0m    (poll #6)  order=88a669be
+  [    403ms]  [91mstale[0m    (poll #7)  order=88a669be
+  [    477ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=88a669be
+
+[96mOrder 82/1500:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=1b79025b
+  [     64ms]  [91mstale[0m    (poll #2)  order=1b79025b
+  [    126ms]  [91mstale[0m    (poll #3)  order=1b79025b
+  [    188ms]  [91mstale[0m    (poll #4)  order=1b79025b
+  [    252ms]  [91mstale[0m    (poll #5)  order=1b79025b
+  [    320ms]  [91mstale[0m    (poll #6)  order=1b79025b
+  [    389ms]  [91mstale[0m    (poll #7)  order=1b79025b
+  [    456ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=1b79025b
+
+[96mOrder 83/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=8bc7547d
+  [     71ms]  [91mstale[0m    (poll #2)  order=8bc7547d
+  [    131ms]  [91mstale[0m    (poll #3)  order=8bc7547d
+  [    198ms]  [91mstale[0m    (poll #4)  order=8bc7547d
+  [    270ms]  [91mstale[0m    (poll #5)  order=8bc7547d
+  [    338ms]  [91mstale[0m    (poll #6)  order=8bc7547d
+  [    411ms]  [91mstale[0m    (poll #7)  order=8bc7547d
+  [    483ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=8bc7547d
+
+[96mOrder 84/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=a08bf790
+  [     73ms]  [91mstale[0m    (poll #2)  order=a08bf790
+  [    135ms]  [91mstale[0m    (poll #3)  order=a08bf790
+  [    202ms]  [91mstale[0m    (poll #4)  order=a08bf790
+  [    270ms]  [91mstale[0m    (poll #5)  order=a08bf790
+  [    340ms]  [91mstale[0m    (poll #6)  order=a08bf790
+  [    409ms]  [91mstale[0m    (poll #7)  order=a08bf790
+  [    480ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=a08bf790
+
+[96mOrder 85/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=6db12415
+  [     69ms]  [91mstale[0m    (poll #2)  order=6db12415
+  [    129ms]  [91mstale[0m    (poll #3)  order=6db12415
+  [    194ms]  [91mstale[0m    (poll #4)  order=6db12415
+  [    263ms]  [91mstale[0m    (poll #5)  order=6db12415
+  [    332ms]  [91mstale[0m    (poll #6)  order=6db12415
+  [    401ms]  [91mstale[0m    (poll #7)  order=6db12415
+  [    471ms]  [91mstale[0m    (poll #8)  order=6db12415
+  [    542ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=6db12415
+
+[96mOrder 86/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=4e119cd9
+  [     70ms]  [91mstale[0m    (poll #2)  order=4e119cd9
+  [    136ms]  [91mstale[0m    (poll #3)  order=4e119cd9
+  [    208ms]  [91mstale[0m    (poll #4)  order=4e119cd9
+  [    278ms]  [91mstale[0m    (poll #5)  order=4e119cd9
+  [    347ms]  [91mstale[0m    (poll #6)  order=4e119cd9
+  [    417ms]  [91mstale[0m    (poll #7)  order=4e119cd9
+  [    488ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=4e119cd9
+
+[96mOrder 87/1500:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=bc62b03c
+  [     64ms]  [91mstale[0m    (poll #2)  order=bc62b03c
+  [    132ms]  [91mstale[0m    (poll #3)  order=bc62b03c
+  [    196ms]  [91mstale[0m    (poll #4)  order=bc62b03c
+  [    262ms]  [91mstale[0m    (poll #5)  order=bc62b03c
+  [    330ms]  [91mstale[0m    (poll #6)  order=bc62b03c
+  [    399ms]  [91mstale[0m    (poll #7)  order=bc62b03c
+  [    469ms]  [91mstale[0m    (poll #8)  order=bc62b03c
+  [    538ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=bc62b03c
+
+[96mOrder 88/1500:[0m
+  [     12ms]  [91mstale[0m    (poll #1)  order=be3dbf0a
+  [     76ms]  [91mstale[0m    (poll #2)  order=be3dbf0a
+  [    140ms]  [91mstale[0m    (poll #3)  order=be3dbf0a
+  [    207ms]  [91mstale[0m    (poll #4)  order=be3dbf0a
+  [    275ms]  [91mstale[0m    (poll #5)  order=be3dbf0a
+  [    345ms]  [91mstale[0m    (poll #6)  order=be3dbf0a
+  [    413ms]  [91mstale[0m    (poll #7)  order=be3dbf0a
+  [    482ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=be3dbf0a
+
+[96mOrder 89/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=c99ecf3e
+  [     74ms]  [91mstale[0m    (poll #2)  order=c99ecf3e
+  [    138ms]  [91mstale[0m    (poll #3)  order=c99ecf3e
+  [    204ms]  [91mstale[0m    (poll #4)  order=c99ecf3e
+  [    273ms]  [91mstale[0m    (poll #5)  order=c99ecf3e
+  [    340ms]  [91mstale[0m    (poll #6)  order=c99ecf3e
+  [    408ms]  [91mstale[0m    (poll #7)  order=c99ecf3e
+  [    476ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=c99ecf3e
+
+[96mOrder 90/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=dc0c8189
+  [     71ms]  [91mstale[0m    (poll #2)  order=dc0c8189
+  [    136ms]  [91mstale[0m    (poll #3)  order=dc0c8189
+  [    205ms]  [91mstale[0m    (poll #4)  order=dc0c8189
+  [    275ms]  [91mstale[0m    (poll #5)  order=dc0c8189
+  [    342ms]  [91mstale[0m    (poll #6)  order=dc0c8189
+  [    412ms]  [91mstale[0m    (poll #7)  order=dc0c8189
+  [    481ms]  [91mstale[0m    (poll #8)  order=dc0c8189
+  [    553ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=dc0c8189
+
+[96mOrder 91/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=766f3f59
+  [     75ms]  [91mstale[0m    (poll #2)  order=766f3f59
+  [    139ms]  [91mstale[0m    (poll #3)  order=766f3f59
+  [    207ms]  [91mstale[0m    (poll #4)  order=766f3f59
+  [    275ms]  [91mstale[0m    (poll #5)  order=766f3f59
+  [    343ms]  [91mstale[0m    (poll #6)  order=766f3f59
+  [    411ms]  [91mstale[0m    (poll #7)  order=766f3f59
+  [    482ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=766f3f59
+
+[96mOrder 92/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=6f75ab13
+  [     73ms]  [91mstale[0m    (poll #2)  order=6f75ab13
+  [    137ms]  [91mstale[0m    (poll #3)  order=6f75ab13
+  [    201ms]  [91mstale[0m    (poll #4)  order=6f75ab13
+  [    271ms]  [91mstale[0m    (poll #5)  order=6f75ab13
+  [    341ms]  [91mstale[0m    (poll #6)  order=6f75ab13
+  [    406ms]  [91mstale[0m    (poll #7)  order=6f75ab13
+  [    473ms]  [91mstale[0m    (poll #8)  order=6f75ab13
+  [    543ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=6f75ab13
+
+[96mOrder 93/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=8a5b7851
+  [     73ms]  [91mstale[0m    (poll #2)  order=8a5b7851
+  [    138ms]  [91mstale[0m    (poll #3)  order=8a5b7851
+  [    206ms]  [91mstale[0m    (poll #4)  order=8a5b7851
+  [    280ms]  [91mstale[0m    (poll #5)  order=8a5b7851
+  [    349ms]  [91mstale[0m    (poll #6)  order=8a5b7851
+  [    420ms]  [91mstale[0m    (poll #7)  order=8a5b7851
+  [    490ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=8a5b7851
+
+[96mOrder 94/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=c02ec31c
+  [     68ms]  [91mstale[0m    (poll #2)  order=c02ec31c
+  [    127ms]  [91mstale[0m    (poll #3)  order=c02ec31c
+  [    189ms]  [91mstale[0m    (poll #4)  order=c02ec31c
+  [    250ms]  [91mstale[0m    (poll #5)  order=c02ec31c
+  [    310ms]  [91mstale[0m    (poll #6)  order=c02ec31c
+  [    370ms]  [91mstale[0m    (poll #7)  order=c02ec31c
+  [    431ms]  [91mstale[0m    (poll #8)  order=c02ec31c
+  [    495ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=c02ec31c
+
+[96mOrder 95/1500:[0m
+  [      6ms]  [91mstale[0m    (poll #1)  order=159ba4a3
+  [     66ms]  [91mstale[0m    (poll #2)  order=159ba4a3
+  [    128ms]  [91mstale[0m    (poll #3)  order=159ba4a3
+  [    192ms]  [91mstale[0m    (poll #4)  order=159ba4a3
+  [    253ms]  [91mstale[0m    (poll #5)  order=159ba4a3
+  [    315ms]  [91mstale[0m    (poll #6)  order=159ba4a3
+  [    378ms]  [91mstale[0m    (poll #7)  order=159ba4a3
+  [    446ms]  [91mstale[0m    (poll #8)  order=159ba4a3
+  [    523ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=159ba4a3
+
+[96mOrder 96/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=04d5fff9
+  [     73ms]  [91mstale[0m    (poll #2)  order=04d5fff9
+  [    132ms]  [91mstale[0m    (poll #3)  order=04d5fff9
+  [    194ms]  [91mstale[0m    (poll #4)  order=04d5fff9
+  [    257ms]  [91mstale[0m    (poll #5)  order=04d5fff9
+  [    318ms]  [91mstale[0m    (poll #6)  order=04d5fff9
+  [    380ms]  [91mstale[0m    (poll #7)  order=04d5fff9
+  [    442ms]  [91mstale[0m    (poll #8)  order=04d5fff9
+  [    504ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=04d5fff9
+
+[96mOrder 97/1500:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=cb041f4d
+  [     64ms]  [91mstale[0m    (poll #2)  order=cb041f4d
+  [    126ms]  [91mstale[0m    (poll #3)  order=cb041f4d
+  [    189ms]  [91mstale[0m    (poll #4)  order=cb041f4d
+  [    253ms]  [91mstale[0m    (poll #5)  order=cb041f4d
+  [    323ms]  [91mstale[0m    (poll #6)  order=cb041f4d
+  [    400ms]  [91mstale[0m    (poll #7)  order=cb041f4d
+  [    472ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=cb041f4d
+
+[96mOrder 98/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=86cd599d
+  [     72ms]  [91mstale[0m    (poll #2)  order=86cd599d
+  [    137ms]  [91mstale[0m    (poll #3)  order=86cd599d
+  [    200ms]  [91mstale[0m    (poll #4)  order=86cd599d
+  [    266ms]  [91mstale[0m    (poll #5)  order=86cd599d
+  [    334ms]  [91mstale[0m    (poll #6)  order=86cd599d
+  [    406ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=86cd599d
+
+[96mOrder 99/1500:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=78deb300
+  [     66ms]  [91mstale[0m    (poll #2)  order=78deb300
+  [    129ms]  [91mstale[0m    (poll #3)  order=78deb300
+  [    191ms]  [91mstale[0m    (poll #4)  order=78deb300
+  [    253ms]  [91mstale[0m    (poll #5)  order=78deb300
+  [    314ms]  [91mstale[0m    (poll #6)  order=78deb300
+  [    373ms]  [91mstale[0m    (poll #7)  order=78deb300
+  [    439ms]  [91mstale[0m    (poll #8)  order=78deb300
+  [    506ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=78deb300
+
+[96mOrder 100/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=dc53e39f
+  [     73ms]  [91mstale[0m    (poll #2)  order=dc53e39f
+  [    136ms]  [91mstale[0m    (poll #3)  order=dc53e39f
+  [    201ms]  [91mstale[0m    (poll #4)  order=dc53e39f
+  [    272ms]  [91mstale[0m    (poll #5)  order=dc53e39f
+  [    336ms]  [91mstale[0m    (poll #6)  order=dc53e39f
+  [    404ms]  [91mstale[0m    (poll #7)  order=dc53e39f
+  [    477ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=dc53e39f
+
+[96mOrder 101/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=a84db8bc
+  [     70ms]  [91mstale[0m    (poll #2)  order=a84db8bc
+  [    134ms]  [91mstale[0m    (poll #3)  order=a84db8bc
+  [    201ms]  [91mstale[0m    (poll #4)  order=a84db8bc
+  [    272ms]  [91mstale[0m    (poll #5)  order=a84db8bc
+  [    336ms]  [91mstale[0m    (poll #6)  order=a84db8bc
+  [    394ms]  [91mstale[0m    (poll #7)  order=a84db8bc
+  [    456ms]  [91mstale[0m    (poll #8)  order=a84db8bc
+  [    519ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=a84db8bc
+
+[96mOrder 102/1500:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=8013baeb
+  [     66ms]  [91mstale[0m    (poll #2)  order=8013baeb
+  [    127ms]  [91mstale[0m    (poll #3)  order=8013baeb
+  [    195ms]  [91mstale[0m    (poll #4)  order=8013baeb
+  [    262ms]  [91mstale[0m    (poll #5)  order=8013baeb
+  [    334ms]  [91mstale[0m    (poll #6)  order=8013baeb
+  [    401ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=8013baeb
+
+[96mOrder 103/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=ebb121f3
+  [     69ms]  [91mstale[0m    (poll #2)  order=ebb121f3
+  [    134ms]  [91mstale[0m    (poll #3)  order=ebb121f3
+  [    199ms]  [91mstale[0m    (poll #4)  order=ebb121f3
+  [    265ms]  [91mstale[0m    (poll #5)  order=ebb121f3
+  [    336ms]  [91mstale[0m    (poll #6)  order=ebb121f3
+  [    407ms]  [91mstale[0m    (poll #7)  order=ebb121f3
+  [    478ms]  [91mstale[0m    (poll #8)  order=ebb121f3
+  [    551ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=ebb121f3
+
+[96mOrder 104/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=10e91c70
+  [     70ms]  [91mstale[0m    (poll #2)  order=10e91c70
+  [    135ms]  [91mstale[0m    (poll #3)  order=10e91c70
+  [    199ms]  [91mstale[0m    (poll #4)  order=10e91c70
+  [    267ms]  [91mstale[0m    (poll #5)  order=10e91c70
+  [    335ms]  [91mstale[0m    (poll #6)  order=10e91c70
+  [    403ms]  [91mstale[0m    (poll #7)  order=10e91c70
+  [    475ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=10e91c70
+
+[96mOrder 105/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=9b36f9a4
+  [     71ms]  [91mstale[0m    (poll #2)  order=9b36f9a4
+  [    134ms]  [91mstale[0m    (poll #3)  order=9b36f9a4
+  [    201ms]  [91mstale[0m    (poll #4)  order=9b36f9a4
+  [    271ms]  [91mstale[0m    (poll #5)  order=9b36f9a4
+  [    341ms]  [91mstale[0m    (poll #6)  order=9b36f9a4
+  [    411ms]  [91mstale[0m    (poll #7)  order=9b36f9a4
+  [    480ms]  [91mstale[0m    (poll #8)  order=9b36f9a4
+  [    548ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=9b36f9a4
+
+[96mOrder 106/1500:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=27f31a8d
+  [     67ms]  [91mstale[0m    (poll #2)  order=27f31a8d
+  [    133ms]  [91mstale[0m    (poll #3)  order=27f31a8d
+  [    200ms]  [91mstale[0m    (poll #4)  order=27f31a8d
+  [    272ms]  [91mstale[0m    (poll #5)  order=27f31a8d
+  [    344ms]  [91mstale[0m    (poll #6)  order=27f31a8d
+  [    406ms]  [91mstale[0m    (poll #7)  order=27f31a8d
+  [    470ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=27f31a8d
+
+[96mOrder 107/1500:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=3a3c4627
+  [     66ms]  [91mstale[0m    (poll #2)  order=3a3c4627
+  [    127ms]  [91mstale[0m    (poll #3)  order=3a3c4627
+  [    190ms]  [91mstale[0m    (poll #4)  order=3a3c4627
+  [    255ms]  [91mstale[0m    (poll #5)  order=3a3c4627
+  [    328ms]  [91mstale[0m    (poll #6)  order=3a3c4627
+  [    401ms]  [91mstale[0m    (poll #7)  order=3a3c4627
+  [    471ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=3a3c4627
+
+[96mOrder 108/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=a5786ce0
+  [     73ms]  [91mstale[0m    (poll #2)  order=a5786ce0
+  [    138ms]  [91mstale[0m    (poll #3)  order=a5786ce0
+  [    204ms]  [91mstale[0m    (poll #4)  order=a5786ce0
+  [    274ms]  [91mstale[0m    (poll #5)  order=a5786ce0
+  [    344ms]  [91mstale[0m    (poll #6)  order=a5786ce0
+  [    412ms]  [91mstale[0m    (poll #7)  order=a5786ce0
+  [    481ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=a5786ce0
+
+[96mOrder 109/1500:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=1c508e50
+  [     64ms]  [91mstale[0m    (poll #2)  order=1c508e50
+  [    122ms]  [91mstale[0m    (poll #3)  order=1c508e50
+  [    186ms]  [91mstale[0m    (poll #4)  order=1c508e50
+  [    252ms]  [91mstale[0m    (poll #5)  order=1c508e50
+  [    324ms]  [91mstale[0m    (poll #6)  order=1c508e50
+  [    394ms]  [91mstale[0m    (poll #7)  order=1c508e50
+  [    460ms]  [91mstale[0m    (poll #8)  order=1c508e50
+  [    527ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=1c508e50
+
+[96mOrder 110/1500:[0m
+  [     10ms]  [91mstale[0m    (poll #1)  order=40f1cb07
+  [     76ms]  [91mstale[0m    (poll #2)  order=40f1cb07
+  [    142ms]  [91mstale[0m    (poll #3)  order=40f1cb07
+  [    208ms]  [91mstale[0m    (poll #4)  order=40f1cb07
+  [    274ms]  [91mstale[0m    (poll #5)  order=40f1cb07
+  [    341ms]  [91mstale[0m    (poll #6)  order=40f1cb07
+  [    412ms]  [91mstale[0m    (poll #7)  order=40f1cb07
+  [    484ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=40f1cb07
+
+[96mOrder 111/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=8b2e5c55
+  [     71ms]  [91mstale[0m    (poll #2)  order=8b2e5c55
+  [    137ms]  [91mstale[0m    (poll #3)  order=8b2e5c55
+  [    202ms]  [91mstale[0m    (poll #4)  order=8b2e5c55
+  [    273ms]  [91mstale[0m    (poll #5)  order=8b2e5c55
+  [    342ms]  [91mstale[0m    (poll #6)  order=8b2e5c55
+  [    416ms]  [91mstale[0m    (poll #7)  order=8b2e5c55
+  [    486ms]  [91mstale[0m    (poll #8)  order=8b2e5c55
+  [    556ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=8b2e5c55
+
+[96mOrder 112/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=71972433
+  [     65ms]  [91mstale[0m    (poll #2)  order=71972433
+  [    129ms]  [91mstale[0m    (poll #3)  order=71972433
+  [    197ms]  [91mstale[0m    (poll #4)  order=71972433
+  [    264ms]  [91mstale[0m    (poll #5)  order=71972433
+  [    341ms]  [91mstale[0m    (poll #6)  order=71972433
+  [    410ms]  [91mstale[0m    (poll #7)  order=71972433
+  [    478ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=71972433
+
+[96mOrder 113/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=8f7e98fd
+  [     72ms]  [91mstale[0m    (poll #2)  order=8f7e98fd
+  [    138ms]  [91mstale[0m    (poll #3)  order=8f7e98fd
+  [    202ms]  [91mstale[0m    (poll #4)  order=8f7e98fd
+  [    272ms]  [91mstale[0m    (poll #5)  order=8f7e98fd
+  [    340ms]  [91mstale[0m    (poll #6)  order=8f7e98fd
+  [    414ms]  [91mstale[0m    (poll #7)  order=8f7e98fd
+  [    486ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=8f7e98fd
+
+[96mOrder 114/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=bd6bc948
+  [     72ms]  [91mstale[0m    (poll #2)  order=bd6bc948
+  [    136ms]  [91mstale[0m    (poll #3)  order=bd6bc948
+  [    203ms]  [91mstale[0m    (poll #4)  order=bd6bc948
+  [    275ms]  [91mstale[0m    (poll #5)  order=bd6bc948
+  [    347ms]  [91mstale[0m    (poll #6)  order=bd6bc948
+  [    417ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=bd6bc948
+
+[96mOrder 115/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=9846bee9
+  [     74ms]  [91mstale[0m    (poll #2)  order=9846bee9
+  [    140ms]  [91mstale[0m    (poll #3)  order=9846bee9
+  [    207ms]  [91mstale[0m    (poll #4)  order=9846bee9
+  [    268ms]  [91mstale[0m    (poll #5)  order=9846bee9
+  [    334ms]  [91mstale[0m    (poll #6)  order=9846bee9
+  [    404ms]  [91mstale[0m    (poll #7)  order=9846bee9
+  [    475ms]  [91mstale[0m    (poll #8)  order=9846bee9
+  [    534ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=9846bee9
+
+[96mOrder 116/1500:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=0c8d477a
+  [     60ms]  [91mstale[0m    (poll #2)  order=0c8d477a
+  [    128ms]  [91mstale[0m    (poll #3)  order=0c8d477a
+  [    187ms]  [91mstale[0m    (poll #4)  order=0c8d477a
+  [    250ms]  [91mstale[0m    (poll #5)  order=0c8d477a
+  [    310ms]  [91mstale[0m    (poll #6)  order=0c8d477a
+  [    373ms]  [91mstale[0m    (poll #7)  order=0c8d477a
+  [    435ms]  [91mstale[0m    (poll #8)  order=0c8d477a
+  [    501ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=0c8d477a
+
+[96mOrder 117/1500:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=e85743ee
+  [     66ms]  [91mstale[0m    (poll #2)  order=e85743ee
+  [    129ms]  [91mstale[0m    (poll #3)  order=e85743ee
+  [    196ms]  [91mstale[0m    (poll #4)  order=e85743ee
+  [    259ms]  [91mstale[0m    (poll #5)  order=e85743ee
+  [    328ms]  [91mstale[0m    (poll #6)  order=e85743ee
+  [    397ms]  [91mstale[0m    (poll #7)  order=e85743ee
+  [    463ms]  [91mstale[0m    (poll #8)  order=e85743ee
+  [    531ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=e85743ee
+
+[96mOrder 118/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=d04cd7e0
+  [     73ms]  [91mstale[0m    (poll #2)  order=d04cd7e0
+  [    136ms]  [91mstale[0m    (poll #3)  order=d04cd7e0
+  [    203ms]  [91mstale[0m    (poll #4)  order=d04cd7e0
+  [    273ms]  [91mstale[0m    (poll #5)  order=d04cd7e0
+  [    344ms]  [91mstale[0m    (poll #6)  order=d04cd7e0
+  [    418ms]  [91mstale[0m    (poll #7)  order=d04cd7e0
+  [    487ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=d04cd7e0
+
+[96mOrder 119/1500:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=dacf00e0
+  [     63ms]  [91mstale[0m    (poll #2)  order=dacf00e0
+  [    126ms]  [91mstale[0m    (poll #3)  order=dacf00e0
+  [    188ms]  [91mstale[0m    (poll #4)  order=dacf00e0
+  [    246ms]  [91mstale[0m    (poll #5)  order=dacf00e0
+  [    307ms]  [91mstale[0m    (poll #6)  order=dacf00e0
+  [    366ms]  [91mstale[0m    (poll #7)  order=dacf00e0
+  [    431ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=dacf00e0
+
+[96mOrder 120/1500:[0m
+  [      6ms]  [91mstale[0m    (poll #1)  order=0277ed71
+  [     69ms]  [91mstale[0m    (poll #2)  order=0277ed71
+  [    135ms]  [91mstale[0m    (poll #3)  order=0277ed71
+  [    200ms]  [91mstale[0m    (poll #4)  order=0277ed71
+  [    267ms]  [91mstale[0m    (poll #5)  order=0277ed71
+  [    335ms]  [91mstale[0m    (poll #6)  order=0277ed71
+  [    403ms]  [91mstale[0m    (poll #7)  order=0277ed71
+  [    479ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=0277ed71
+
+[96mOrder 121/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=487c543b
+  [     73ms]  [91mstale[0m    (poll #2)  order=487c543b
+  [    137ms]  [91mstale[0m    (poll #3)  order=487c543b
+  [    198ms]  [91mstale[0m    (poll #4)  order=487c543b
+  [    261ms]  [91mstale[0m    (poll #5)  order=487c543b
+  [    322ms]  [91mstale[0m    (poll #6)  order=487c543b
+  [    383ms]  [91mstale[0m    (poll #7)  order=487c543b
+  [    449ms]  [91mstale[0m    (poll #8)  order=487c543b
+  [    520ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=487c543b
+
+[96mOrder 122/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=ad5c9db7
+  [     71ms]  [91mstale[0m    (poll #2)  order=ad5c9db7
+  [    132ms]  [91mstale[0m    (poll #3)  order=ad5c9db7
+  [    196ms]  [91mstale[0m    (poll #4)  order=ad5c9db7
+  [    267ms]  [91mstale[0m    (poll #5)  order=ad5c9db7
+  [    336ms]  [91mstale[0m    (poll #6)  order=ad5c9db7
+  [    408ms]  [91mstale[0m    (poll #7)  order=ad5c9db7
+  [    483ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=ad5c9db7
+
+[96mOrder 123/1500:[0m
+  [     10ms]  [91mstale[0m    (poll #1)  order=b73498f9
+  [     76ms]  [91mstale[0m    (poll #2)  order=b73498f9
+  [    138ms]  [91mstale[0m    (poll #3)  order=b73498f9
+  [    203ms]  [91mstale[0m    (poll #4)  order=b73498f9
+  [    271ms]  [91mstale[0m    (poll #5)  order=b73498f9
+  [    338ms]  [91mstale[0m    (poll #6)  order=b73498f9
+  [    409ms]  [91mstale[0m    (poll #7)  order=b73498f9
+  [    479ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=b73498f9
+
+[96mOrder 124/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=dcc632e1
+  [     71ms]  [91mstale[0m    (poll #2)  order=dcc632e1
+  [    136ms]  [91mstale[0m    (poll #3)  order=dcc632e1
+  [    203ms]  [91mstale[0m    (poll #4)  order=dcc632e1
+  [    272ms]  [91mstale[0m    (poll #5)  order=dcc632e1
+  [    340ms]  [91mstale[0m    (poll #6)  order=dcc632e1
+  [    412ms]  [91mstale[0m    (poll #7)  order=dcc632e1
+  [    480ms]  [91mstale[0m    (poll #8)  order=dcc632e1
+  [    551ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=dcc632e1
+
+[96mOrder 125/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=2118c105
+  [     74ms]  [91mstale[0m    (poll #2)  order=2118c105
+  [    135ms]  [91mstale[0m    (poll #3)  order=2118c105
+  [    203ms]  [91mstale[0m    (poll #4)  order=2118c105
+  [    274ms]  [91mstale[0m    (poll #5)  order=2118c105
+  [    344ms]  [91mstale[0m    (poll #6)  order=2118c105
+  [    413ms]  [91mstale[0m    (poll #7)  order=2118c105
+  [    483ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=2118c105
+
+[96mOrder 126/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=0053c6af
+  [     69ms]  [91mstale[0m    (poll #2)  order=0053c6af
+  [    134ms]  [91mstale[0m    (poll #3)  order=0053c6af
+  [    199ms]  [91mstale[0m    (poll #4)  order=0053c6af
+  [    260ms]  [91mstale[0m    (poll #5)  order=0053c6af
+  [    323ms]  [91mstale[0m    (poll #6)  order=0053c6af
+  [    383ms]  [91mstale[0m    (poll #7)  order=0053c6af
+  [    454ms]  [91mstale[0m    (poll #8)  order=0053c6af
+  [    528ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=0053c6af
+
+[96mOrder 127/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=9243e06c
+  [     67ms]  [91mstale[0m    (poll #2)  order=9243e06c
+  [    127ms]  [91mstale[0m    (poll #3)  order=9243e06c
+  [    195ms]  [91mstale[0m    (poll #4)  order=9243e06c
+  [    264ms]  [91mstale[0m    (poll #5)  order=9243e06c
+  [    329ms]  [91mstale[0m    (poll #6)  order=9243e06c
+  [    396ms]  [91mstale[0m    (poll #7)  order=9243e06c
+  [    461ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=9243e06c
+
+[96mOrder 128/1500:[0m
+  [      6ms]  [91mstale[0m    (poll #1)  order=5b534d06
+  [     70ms]  [91mstale[0m    (poll #2)  order=5b534d06
+  [    131ms]  [91mstale[0m    (poll #3)  order=5b534d06
+  [    195ms]  [91mstale[0m    (poll #4)  order=5b534d06
+  [    261ms]  [91mstale[0m    (poll #5)  order=5b534d06
+  [    328ms]  [91mstale[0m    (poll #6)  order=5b534d06
+  [    394ms]  [91mstale[0m    (poll #7)  order=5b534d06
+  [    464ms]  [91mstale[0m    (poll #8)  order=5b534d06
+  [    532ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=5b534d06
+
+[96mOrder 129/1500:[0m
+  [     10ms]  [91mstale[0m    (poll #1)  order=2f160513
+  [     74ms]  [91mstale[0m    (poll #2)  order=2f160513
+  [    139ms]  [91mstale[0m    (poll #3)  order=2f160513
+  [    206ms]  [91mstale[0m    (poll #4)  order=2f160513
+  [    274ms]  [91mstale[0m    (poll #5)  order=2f160513
+  [    344ms]  [91mstale[0m    (poll #6)  order=2f160513
+  [    416ms]  [91mstale[0m    (poll #7)  order=2f160513
+  [    486ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=2f160513
+
+[96mOrder 130/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=66e1bd7e
+  [     67ms]  [91mstale[0m    (poll #2)  order=66e1bd7e
+  [    132ms]  [91mstale[0m    (poll #3)  order=66e1bd7e
+  [    198ms]  [91mstale[0m    (poll #4)  order=66e1bd7e
+  [    268ms]  [91mstale[0m    (poll #5)  order=66e1bd7e
+  [    338ms]  [91mstale[0m    (poll #6)  order=66e1bd7e
+  [    411ms]  [91mstale[0m    (poll #7)  order=66e1bd7e
+  [    480ms]  [91mstale[0m    (poll #8)  order=66e1bd7e
+  [    554ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=66e1bd7e
+
+[96mOrder 131/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=217d9c43
+  [     71ms]  [91mstale[0m    (poll #2)  order=217d9c43
+  [    135ms]  [91mstale[0m    (poll #3)  order=217d9c43
+  [    200ms]  [91mstale[0m    (poll #4)  order=217d9c43
+  [    269ms]  [91mstale[0m    (poll #5)  order=217d9c43
+  [    341ms]  [91mstale[0m    (poll #6)  order=217d9c43
+  [    410ms]  [91mstale[0m    (poll #7)  order=217d9c43
+  [    482ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=217d9c43
+
+[96mOrder 132/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=36e2acab
+  [     70ms]  [91mstale[0m    (poll #2)  order=36e2acab
+  [    134ms]  [91mstale[0m    (poll #3)  order=36e2acab
+  [    202ms]  [91mstale[0m    (poll #4)  order=36e2acab
+  [    273ms]  [91mstale[0m    (poll #5)  order=36e2acab
+  [    342ms]  [91mstale[0m    (poll #6)  order=36e2acab
+  [    411ms]  [91mstale[0m    (poll #7)  order=36e2acab
+  [    484ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=36e2acab
+
+[96mOrder 133/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=cd03b571
+  [     73ms]  [91mstale[0m    (poll #2)  order=cd03b571
+  [    140ms]  [91mstale[0m    (poll #3)  order=cd03b571
+  [    209ms]  [91mstale[0m    (poll #4)  order=cd03b571
+  [    279ms]  [91mstale[0m    (poll #5)  order=cd03b571
+  [    351ms]  [91mstale[0m    (poll #6)  order=cd03b571
+  [    422ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=cd03b571
+
+[96mOrder 134/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=e203b2fd
+  [     73ms]  [91mstale[0m    (poll #2)  order=e203b2fd
+  [    137ms]  [91mstale[0m    (poll #3)  order=e203b2fd
+  [    206ms]  [91mstale[0m    (poll #4)  order=e203b2fd
+  [    274ms]  [91mstale[0m    (poll #5)  order=e203b2fd
+  [    343ms]  [91mstale[0m    (poll #6)  order=e203b2fd
+  [    415ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=e203b2fd
+
+[96mOrder 135/1500:[0m
+  [     10ms]  [91mstale[0m    (poll #1)  order=2a028ca5
+  [     74ms]  [91mstale[0m    (poll #2)  order=2a028ca5
+  [    140ms]  [91mstale[0m    (poll #3)  order=2a028ca5
+  [    209ms]  [91mstale[0m    (poll #4)  order=2a028ca5
+  [    277ms]  [91mstale[0m    (poll #5)  order=2a028ca5
+  [    339ms]  [91mstale[0m    (poll #6)  order=2a028ca5
+  [    396ms]  [91mstale[0m    (poll #7)  order=2a028ca5
+  [    460ms]  [91mstale[0m    (poll #8)  order=2a028ca5
+  [    522ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=2a028ca5
+
+[96mOrder 136/1500:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=0fafa7a8
+  [     64ms]  [91mstale[0m    (poll #2)  order=0fafa7a8
+  [    123ms]  [91mstale[0m    (poll #3)  order=0fafa7a8
+  [    184ms]  [91mstale[0m    (poll #4)  order=0fafa7a8
+  [    246ms]  [91mstale[0m    (poll #5)  order=0fafa7a8
+  [    306ms]  [91mstale[0m    (poll #6)  order=0fafa7a8
+  [    371ms]  [91mstale[0m    (poll #7)  order=0fafa7a8
+  [    436ms]  [91mstale[0m    (poll #8)  order=0fafa7a8
+  [    503ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=0fafa7a8
+
+[96mOrder 137/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=ce7303b6
+  [     74ms]  [91mstale[0m    (poll #2)  order=ce7303b6
+  [    139ms]  [91mstale[0m    (poll #3)  order=ce7303b6
+  [    212ms]  [91mstale[0m    (poll #4)  order=ce7303b6
+  [    279ms]  [91mstale[0m    (poll #5)  order=ce7303b6
+  [    348ms]  [91mstale[0m    (poll #6)  order=ce7303b6
+  [    420ms]  [91mstale[0m    (poll #7)  order=ce7303b6
+  [    492ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=ce7303b6
+
+[96mOrder 138/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=301b8d93
+  [     74ms]  [91mstale[0m    (poll #2)  order=301b8d93
+  [    139ms]  [91mstale[0m    (poll #3)  order=301b8d93
+  [    206ms]  [91mstale[0m    (poll #4)  order=301b8d93
+  [    276ms]  [91mstale[0m    (poll #5)  order=301b8d93
+  [    344ms]  [91mstale[0m    (poll #6)  order=301b8d93
+  [    416ms]  [91mstale[0m    (poll #7)  order=301b8d93
+  [    488ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=301b8d93
+
+[96mOrder 139/1500:[0m
+  [     10ms]  [91mstale[0m    (poll #1)  order=eeca650f
+  [     73ms]  [91mstale[0m    (poll #2)  order=eeca650f
+  [    135ms]  [91mstale[0m    (poll #3)  order=eeca650f
+  [    197ms]  [91mstale[0m    (poll #4)  order=eeca650f
+  [    259ms]  [91mstale[0m    (poll #5)  order=eeca650f
+  [    320ms]  [91mstale[0m    (poll #6)  order=eeca650f
+  [    376ms]  [91mstale[0m    (poll #7)  order=eeca650f
+  [    437ms]  [91mstale[0m    (poll #8)  order=eeca650f
+  [    495ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=eeca650f
+
+[96mOrder 140/1500:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=c4fdd441
+  [     65ms]  [91mstale[0m    (poll #2)  order=c4fdd441
+  [    125ms]  [91mstale[0m    (poll #3)  order=c4fdd441
+  [    192ms]  [91mstale[0m    (poll #4)  order=c4fdd441
+  [    263ms]  [91mstale[0m    (poll #5)  order=c4fdd441
+  [    335ms]  [91mstale[0m    (poll #6)  order=c4fdd441
+  [    405ms]  [91mstale[0m    (poll #7)  order=c4fdd441
+  [    465ms]  [91mstale[0m    (poll #8)  order=c4fdd441
+  [    528ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=c4fdd441
+
+[96mOrder 141/1500:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=62b1a71b
+  [     64ms]  [91mstale[0m    (poll #2)  order=62b1a71b
+  [    128ms]  [91mstale[0m    (poll #3)  order=62b1a71b
+  [    198ms]  [91mstale[0m    (poll #4)  order=62b1a71b
+  [    265ms]  [91mstale[0m    (poll #5)  order=62b1a71b
+  [    334ms]  [91mstale[0m    (poll #6)  order=62b1a71b
+  [    404ms]  [91mstale[0m    (poll #7)  order=62b1a71b
+  [    474ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=62b1a71b
+
+[96mOrder 142/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=a702326b
+  [     72ms]  [91mstale[0m    (poll #2)  order=a702326b
+  [    137ms]  [91mstale[0m    (poll #3)  order=a702326b
+  [    205ms]  [91mstale[0m    (poll #4)  order=a702326b
+  [    278ms]  [91mstale[0m    (poll #5)  order=a702326b
+  [    349ms]  [91mstale[0m    (poll #6)  order=a702326b
+  [    419ms]  [91mstale[0m    (poll #7)  order=a702326b
+  [    487ms]  [91mstale[0m    (poll #8)  order=a702326b
+  [    558ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=a702326b
+
+[96mOrder 143/1500:[0m
+  [     10ms]  [91mstale[0m    (poll #1)  order=e34a6d44
+  [     76ms]  [91mstale[0m    (poll #2)  order=e34a6d44
+  [    135ms]  [91mstale[0m    (poll #3)  order=e34a6d44
+  [    199ms]  [91mstale[0m    (poll #4)  order=e34a6d44
+  [    270ms]  [91mstale[0m    (poll #5)  order=e34a6d44
+  [    337ms]  [91mstale[0m    (poll #6)  order=e34a6d44
+  [    407ms]  [91mstale[0m    (poll #7)  order=e34a6d44
+  [    474ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=e34a6d44
+
+[96mOrder 144/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=e697cc56
+  [     70ms]  [91mstale[0m    (poll #2)  order=e697cc56
+  [    136ms]  [91mstale[0m    (poll #3)  order=e697cc56
+  [    200ms]  [91mstale[0m    (poll #4)  order=e697cc56
+  [    270ms]  [91mstale[0m    (poll #5)  order=e697cc56
+  [    338ms]  [91mstale[0m    (poll #6)  order=e697cc56
+  [    406ms]  [91mstale[0m    (poll #7)  order=e697cc56
+  [    477ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=e697cc56
+
+[96mOrder 145/1500:[0m
+  [      6ms]  [91mstale[0m    (poll #1)  order=254173db
+  [     62ms]  [91mstale[0m    (poll #2)  order=254173db
+  [    126ms]  [91mstale[0m    (poll #3)  order=254173db
+  [    193ms]  [91mstale[0m    (poll #4)  order=254173db
+  [    260ms]  [91mstale[0m    (poll #5)  order=254173db
+  [    334ms]  [91mstale[0m    (poll #6)  order=254173db
+  [    402ms]  [91mstale[0m    (poll #7)  order=254173db
+  [    458ms]  [91mstale[0m    (poll #8)  order=254173db
+  [    516ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=254173db
+
+[96mOrder 146/1500:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=9fa80538
+  [     63ms]  [91mstale[0m    (poll #2)  order=9fa80538
+  [    119ms]  [91mstale[0m    (poll #3)  order=9fa80538
+  [    179ms]  [91mstale[0m    (poll #4)  order=9fa80538
+  [    238ms]  [91mstale[0m    (poll #5)  order=9fa80538
+  [    300ms]  [91mstale[0m    (poll #6)  order=9fa80538
+  [    365ms]  [91mstale[0m    (poll #7)  order=9fa80538
+  [    434ms]  [91mstale[0m    (poll #8)  order=9fa80538
+  [    502ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=9fa80538
+
+[96mOrder 147/1500:[0m
+  [     10ms]  [91mstale[0m    (poll #1)  order=1cff6468
+  [     74ms]  [91mstale[0m    (poll #2)  order=1cff6468
+  [    139ms]  [91mstale[0m    (poll #3)  order=1cff6468
+  [    204ms]  [91mstale[0m    (poll #4)  order=1cff6468
+  [    274ms]  [91mstale[0m    (poll #5)  order=1cff6468
+  [    341ms]  [91mstale[0m    (poll #6)  order=1cff6468
+  [    408ms]  [91mstale[0m    (poll #7)  order=1cff6468
+  [    478ms]  [91mstale[0m    (poll #8)  order=1cff6468
+  [    547ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=1cff6468
+
+[96mOrder 148/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=afb2adb0
+  [     73ms]  [91mstale[0m    (poll #2)  order=afb2adb0
+  [    137ms]  [91mstale[0m    (poll #3)  order=afb2adb0
+  [    201ms]  [91mstale[0m    (poll #4)  order=afb2adb0
+  [    273ms]  [91mstale[0m    (poll #5)  order=afb2adb0
+  [    341ms]  [91mstale[0m    (poll #6)  order=afb2adb0
+  [    412ms]  [91mstale[0m    (poll #7)  order=afb2adb0
+  [    482ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=afb2adb0
+
+[96mOrder 149/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=1d4661aa
+  [     73ms]  [91mstale[0m    (poll #2)  order=1d4661aa
+  [    139ms]  [91mstale[0m    (poll #3)  order=1d4661aa
+  [    208ms]  [91mstale[0m    (poll #4)  order=1d4661aa
+  [    279ms]  [91mstale[0m    (poll #5)  order=1d4661aa
+  [    349ms]  [91mstale[0m    (poll #6)  order=1d4661aa
+  [    418ms]  [91mstale[0m    (poll #7)  order=1d4661aa
+  [    487ms]  [91mstale[0m    (poll #8)  order=1d4661aa
+  [    556ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=1d4661aa
+
+[96mOrder 150/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=756abb16
+  [     69ms]  [91mstale[0m    (poll #2)  order=756abb16
+  [    133ms]  [91mstale[0m    (poll #3)  order=756abb16
+  [    196ms]  [91mstale[0m    (poll #4)  order=756abb16
+  [    268ms]  [91mstale[0m    (poll #5)  order=756abb16
+  [    336ms]  [92mVISIBLE[0m  (poll #6, X-Cache: MISS)  order=756abb16
+
+[96mOrder 151/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=ed04d872
+  [     74ms]  [91mstale[0m    (poll #2)  order=ed04d872
+  [    140ms]  [91mstale[0m    (poll #3)  order=ed04d872
+  [    207ms]  [91mstale[0m    (poll #4)  order=ed04d872
+  [    278ms]  [91mstale[0m    (poll #5)  order=ed04d872
+  [    345ms]  [91mstale[0m    (poll #6)  order=ed04d872
+  [    413ms]  [91mstale[0m    (poll #7)  order=ed04d872
+  [    488ms]  [91mstale[0m    (poll #8)  order=ed04d872
+  [    559ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=ed04d872
+
+[96mOrder 152/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=078e5682
+  [     72ms]  [91mstale[0m    (poll #2)  order=078e5682
+  [    138ms]  [91mstale[0m    (poll #3)  order=078e5682
+  [    204ms]  [91mstale[0m    (poll #4)  order=078e5682
+  [    271ms]  [91mstale[0m    (poll #5)  order=078e5682
+  [    342ms]  [91mstale[0m    (poll #6)  order=078e5682
+  [    411ms]  [91mstale[0m    (poll #7)  order=078e5682
+  [    485ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=078e5682
+
+[96mOrder 153/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=d312c823
+  [     70ms]  [91mstale[0m    (poll #2)  order=d312c823
+  [    134ms]  [91mstale[0m    (poll #3)  order=d312c823
+  [    202ms]  [91mstale[0m    (poll #4)  order=d312c823
+  [    270ms]  [91mstale[0m    (poll #5)  order=d312c823
+  [    359ms]  [91mstale[0m    (poll #6)  order=d312c823
+  [    424ms]  [91mstale[0m    (poll #7)  order=d312c823
+  [    490ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=d312c823
+
+[96mOrder 154/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=9205f196
+  [     69ms]  [91mstale[0m    (poll #2)  order=9205f196
+  [    131ms]  [91mstale[0m    (poll #3)  order=9205f196
+  [    195ms]  [91mstale[0m    (poll #4)  order=9205f196
+  [    266ms]  [91mstale[0m    (poll #5)  order=9205f196
+  [    334ms]  [91mstale[0m    (poll #6)  order=9205f196
+  [    404ms]  [91mstale[0m    (poll #7)  order=9205f196
+  [    472ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=9205f196
+
+[96mOrder 155/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=19047196
+  [     69ms]  [91mstale[0m    (poll #2)  order=19047196
+  [    126ms]  [91mstale[0m    (poll #3)  order=19047196
+  [    197ms]  [91mstale[0m    (poll #4)  order=19047196
+  [    262ms]  [91mstale[0m    (poll #5)  order=19047196
+  [    325ms]  [91mstale[0m    (poll #6)  order=19047196
+  [    387ms]  [91mstale[0m    (poll #7)  order=19047196
+  [    453ms]  [91mstale[0m    (poll #8)  order=19047196
+  [    518ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=19047196
+
+[96mOrder 156/1500:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=cea283b8
+  [     62ms]  [91mstale[0m    (poll #2)  order=cea283b8
+  [    122ms]  [91mstale[0m    (poll #3)  order=cea283b8
+  [    186ms]  [91mstale[0m    (poll #4)  order=cea283b8
+  [    248ms]  [91mstale[0m    (poll #5)  order=cea283b8
+  [    317ms]  [91mstale[0m    (poll #6)  order=cea283b8
+  [    391ms]  [91mstale[0m    (poll #7)  order=cea283b8
+  [    462ms]  [91mstale[0m    (poll #8)  order=cea283b8
+  [    533ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=cea283b8
+
+[96mOrder 157/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=8a9830bc
+  [     71ms]  [91mstale[0m    (poll #2)  order=8a9830bc
+  [    136ms]  [91mstale[0m    (poll #3)  order=8a9830bc
+  [    197ms]  [91mstale[0m    (poll #4)  order=8a9830bc
+  [    259ms]  [91mstale[0m    (poll #5)  order=8a9830bc
+  [    322ms]  [91mstale[0m    (poll #6)  order=8a9830bc
+  [    387ms]  [91mstale[0m    (poll #7)  order=8a9830bc
+  [    450ms]  [91mstale[0m    (poll #8)  order=8a9830bc
+  [    516ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=8a9830bc
+
+[96mOrder 158/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=c369a25f
+  [     74ms]  [91mstale[0m    (poll #2)  order=c369a25f
+  [    140ms]  [91mstale[0m    (poll #3)  order=c369a25f
+  [    205ms]  [91mstale[0m    (poll #4)  order=c369a25f
+  [    277ms]  [91mstale[0m    (poll #5)  order=c369a25f
+  [    343ms]  [91mstale[0m    (poll #6)  order=c369a25f
+  [    417ms]  [91mstale[0m    (poll #7)  order=c369a25f
+  [    487ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=c369a25f
+
+[96mOrder 159/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=f08184d7
+  [     68ms]  [91mstale[0m    (poll #2)  order=f08184d7
+  [    128ms]  [91mstale[0m    (poll #3)  order=f08184d7
+  [    190ms]  [91mstale[0m    (poll #4)  order=f08184d7
+  [    246ms]  [91mstale[0m    (poll #5)  order=f08184d7
+  [    308ms]  [91mstale[0m    (poll #6)  order=f08184d7
+  [    372ms]  [91mstale[0m    (poll #7)  order=f08184d7
+  [    434ms]  [91mstale[0m    (poll #8)  order=f08184d7
+  [    500ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=f08184d7
+
+[96mOrder 160/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=f248eddc
+  [     70ms]  [91mstale[0m    (poll #2)  order=f248eddc
+  [    132ms]  [91mstale[0m    (poll #3)  order=f248eddc
+  [    194ms]  [91mstale[0m    (poll #4)  order=f248eddc
+  [    256ms]  [91mstale[0m    (poll #5)  order=f248eddc
+  [    317ms]  [91mstale[0m    (poll #6)  order=f248eddc
+  [    383ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=f248eddc
+
+[96mOrder 161/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=22ba8662
+  [     68ms]  [91mstale[0m    (poll #2)  order=22ba8662
+  [    133ms]  [91mstale[0m    (poll #3)  order=22ba8662
+  [    195ms]  [91mstale[0m    (poll #4)  order=22ba8662
+  [    264ms]  [91mstale[0m    (poll #5)  order=22ba8662
+  [    333ms]  [91mstale[0m    (poll #6)  order=22ba8662
+  [    403ms]  [91mstale[0m    (poll #7)  order=22ba8662
+  [    471ms]  [91mstale[0m    (poll #8)  order=22ba8662
+  [    545ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=22ba8662
+
+[96mOrder 162/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=ca28c149
+  [     72ms]  [91mstale[0m    (poll #2)  order=ca28c149
+  [    136ms]  [91mstale[0m    (poll #3)  order=ca28c149
+  [    202ms]  [91mstale[0m    (poll #4)  order=ca28c149
+  [    274ms]  [91mstale[0m    (poll #5)  order=ca28c149
+  [    345ms]  [91mstale[0m    (poll #6)  order=ca28c149
+  [    418ms]  [91mstale[0m    (poll #7)  order=ca28c149
+  [    494ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=ca28c149
+
+[96mOrder 163/1500:[0m
+  [     10ms]  [91mstale[0m    (poll #1)  order=0e3b1c4b
+  [     74ms]  [91mstale[0m    (poll #2)  order=0e3b1c4b
+  [    139ms]  [91mstale[0m    (poll #3)  order=0e3b1c4b
+  [    204ms]  [91mstale[0m    (poll #4)  order=0e3b1c4b
+  [    271ms]  [91mstale[0m    (poll #5)  order=0e3b1c4b
+  [    339ms]  [91mstale[0m    (poll #6)  order=0e3b1c4b
+  [    409ms]  [91mstale[0m    (poll #7)  order=0e3b1c4b
+  [    476ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=0e3b1c4b
+
+[96mOrder 164/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=c17b58a6
+  [     73ms]  [91mstale[0m    (poll #2)  order=c17b58a6
+  [    138ms]  [91mstale[0m    (poll #3)  order=c17b58a6
+  [    207ms]  [91mstale[0m    (poll #4)  order=c17b58a6
+  [    274ms]  [91mstale[0m    (poll #5)  order=c17b58a6
+  [    342ms]  [91mstale[0m    (poll #6)  order=c17b58a6
+  [    413ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=c17b58a6
+
+[96mOrder 165/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=baa54642
+  [     73ms]  [91mstale[0m    (poll #2)  order=baa54642
+  [    137ms]  [91mstale[0m    (poll #3)  order=baa54642
+  [    201ms]  [91mstale[0m    (poll #4)  order=baa54642
+  [    268ms]  [91mstale[0m    (poll #5)  order=baa54642
+  [    338ms]  [91mstale[0m    (poll #6)  order=baa54642
+  [    409ms]  [91mstale[0m    (poll #7)  order=baa54642
+  [    479ms]  [91mstale[0m    (poll #8)  order=baa54642
+  [    548ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=baa54642
+
+[96mOrder 166/1500:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=c1576a97
+  [     60ms]  [91mstale[0m    (poll #2)  order=c1576a97
+  [    122ms]  [91mstale[0m    (poll #3)  order=c1576a97
+  [    182ms]  [91mstale[0m    (poll #4)  order=c1576a97
+  [    248ms]  [91mstale[0m    (poll #5)  order=c1576a97
+  [    319ms]  [91mstale[0m    (poll #6)  order=c1576a97
+  [    391ms]  [91mstale[0m    (poll #7)  order=c1576a97
+  [    459ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=c1576a97
+
+[96mOrder 167/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=2cef6cc6
+  [     72ms]  [91mstale[0m    (poll #2)  order=2cef6cc6
+  [    133ms]  [91mstale[0m    (poll #3)  order=2cef6cc6
+  [    202ms]  [91mstale[0m    (poll #4)  order=2cef6cc6
+  [    275ms]  [91mstale[0m    (poll #5)  order=2cef6cc6
+  [    346ms]  [91mstale[0m    (poll #6)  order=2cef6cc6
+  [    414ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=2cef6cc6
+
+[96mOrder 168/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=7eac37a1
+  [     70ms]  [91mstale[0m    (poll #2)  order=7eac37a1
+  [    135ms]  [91mstale[0m    (poll #3)  order=7eac37a1
+  [    203ms]  [91mstale[0m    (poll #4)  order=7eac37a1
+  [    274ms]  [91mstale[0m    (poll #5)  order=7eac37a1
+  [    343ms]  [91mstale[0m    (poll #6)  order=7eac37a1
+  [    411ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=7eac37a1
+
+[96mOrder 169/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=d08b20b4
+  [     68ms]  [91mstale[0m    (poll #2)  order=d08b20b4
+  [    134ms]  [91mstale[0m    (poll #3)  order=d08b20b4
+  [    201ms]  [91mstale[0m    (poll #4)  order=d08b20b4
+  [    272ms]  [91mstale[0m    (poll #5)  order=d08b20b4
+  [    341ms]  [91mstale[0m    (poll #6)  order=d08b20b4
+  [    412ms]  [91mstale[0m    (poll #7)  order=d08b20b4
+  [    480ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=d08b20b4
+
+[96mOrder 170/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=1f5da199
+  [     72ms]  [91mstale[0m    (poll #2)  order=1f5da199
+  [    137ms]  [91mstale[0m    (poll #3)  order=1f5da199
+  [    201ms]  [91mstale[0m    (poll #4)  order=1f5da199
+  [    273ms]  [91mstale[0m    (poll #5)  order=1f5da199
+  [    341ms]  [91mstale[0m    (poll #6)  order=1f5da199
+  [    411ms]  [91mstale[0m    (poll #7)  order=1f5da199
+  [    478ms]  [91mstale[0m    (poll #8)  order=1f5da199
+  [    543ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=1f5da199
+
+[96mOrder 171/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=42862a5f
+  [     73ms]  [91mstale[0m    (poll #2)  order=42862a5f
+  [    136ms]  [91mstale[0m    (poll #3)  order=42862a5f
+  [    200ms]  [91mstale[0m    (poll #4)  order=42862a5f
+  [    271ms]  [91mstale[0m    (poll #5)  order=42862a5f
+  [    339ms]  [91mstale[0m    (poll #6)  order=42862a5f
+  [    408ms]  [91mstale[0m    (poll #7)  order=42862a5f
+  [    477ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=42862a5f
+
+[96mOrder 172/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=19700342
+  [     70ms]  [91mstale[0m    (poll #2)  order=19700342
+  [    133ms]  [91mstale[0m    (poll #3)  order=19700342
+  [    198ms]  [91mstale[0m    (poll #4)  order=19700342
+  [    269ms]  [91mstale[0m    (poll #5)  order=19700342
+  [    337ms]  [91mstale[0m    (poll #6)  order=19700342
+  [    405ms]  [91mstale[0m    (poll #7)  order=19700342
+  [    476ms]  [91mstale[0m    (poll #8)  order=19700342
+  [    547ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=19700342
+
+[96mOrder 173/1500:[0m
+  [     10ms]  [91mstale[0m    (poll #1)  order=58814c18
+  [     74ms]  [91mstale[0m    (poll #2)  order=58814c18
+  [    141ms]  [91mstale[0m    (poll #3)  order=58814c18
+  [    205ms]  [91mstale[0m    (poll #4)  order=58814c18
+  [    273ms]  [91mstale[0m    (poll #5)  order=58814c18
+  [    334ms]  [91mstale[0m    (poll #6)  order=58814c18
+  [    399ms]  [91mstale[0m    (poll #7)  order=58814c18
+  [    465ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=58814c18
+
+[96mOrder 174/1500:[0m
+  [      6ms]  [91mstale[0m    (poll #1)  order=0198f0eb
+  [     69ms]  [91mstale[0m    (poll #2)  order=0198f0eb
+  [    129ms]  [91mstale[0m    (poll #3)  order=0198f0eb
+  [    194ms]  [91mstale[0m    (poll #4)  order=0198f0eb
+  [    262ms]  [91mstale[0m    (poll #5)  order=0198f0eb
+  [    333ms]  [91mstale[0m    (poll #6)  order=0198f0eb
+  [    404ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=0198f0eb
+
+[96mOrder 175/1500:[0m
+  [     10ms]  [91mstale[0m    (poll #1)  order=8f171d16
+  [     73ms]  [91mstale[0m    (poll #2)  order=8f171d16
+  [    137ms]  [91mstale[0m    (poll #3)  order=8f171d16
+  [    195ms]  [91mstale[0m    (poll #4)  order=8f171d16
+  [    268ms]  [91mstale[0m    (poll #5)  order=8f171d16
+  [    325ms]  [91mstale[0m    (poll #6)  order=8f171d16
+  [    388ms]  [91mstale[0m    (poll #7)  order=8f171d16
+  [    450ms]  [91mstale[0m    (poll #8)  order=8f171d16
+  [    522ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=8f171d16
+
+[96mOrder 176/1500:[0m
+  [      3ms]  [91mstale[0m    (poll #1)  order=0246a093
+  [     60ms]  [91mstale[0m    (poll #2)  order=0246a093
+  [    116ms]  [91mstale[0m    (poll #3)  order=0246a093
+  [    173ms]  [91mstale[0m    (poll #4)  order=0246a093
+  [    231ms]  [91mstale[0m    (poll #5)  order=0246a093
+  [    293ms]  [91mstale[0m    (poll #6)  order=0246a093
+  [    357ms]  [91mstale[0m    (poll #7)  order=0246a093
+  [    429ms]  [91mstale[0m    (poll #8)  order=0246a093
+  [    495ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=0246a093
+
+[96mOrder 177/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=f6247550
+  [     71ms]  [91mstale[0m    (poll #2)  order=f6247550
+  [    134ms]  [91mstale[0m    (poll #3)  order=f6247550
+  [    200ms]  [91mstale[0m    (poll #4)  order=f6247550
+  [    265ms]  [91mstale[0m    (poll #5)  order=f6247550
+  [    337ms]  [91mstale[0m    (poll #6)  order=f6247550
+  [    403ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=f6247550
+
+[96mOrder 178/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=46f3c0ba
+  [     67ms]  [91mstale[0m    (poll #2)  order=46f3c0ba
+  [    131ms]  [91mstale[0m    (poll #3)  order=46f3c0ba
+  [    197ms]  [91mstale[0m    (poll #4)  order=46f3c0ba
+  [    262ms]  [91mstale[0m    (poll #5)  order=46f3c0ba
+  [    334ms]  [91mstale[0m    (poll #6)  order=46f3c0ba
+  [    407ms]  [91mstale[0m    (poll #7)  order=46f3c0ba
+  [    477ms]  [91mstale[0m    (poll #8)  order=46f3c0ba
+  [    546ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=46f3c0ba
+
+[96mOrder 179/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=0518d191
+  [     68ms]  [91mstale[0m    (poll #2)  order=0518d191
+  [    131ms]  [91mstale[0m    (poll #3)  order=0518d191
+  [    200ms]  [91mstale[0m    (poll #4)  order=0518d191
+  [    264ms]  [91mstale[0m    (poll #5)  order=0518d191
+  [    329ms]  [91mstale[0m    (poll #6)  order=0518d191
+  [    399ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=0518d191
+
+[96mOrder 180/1500:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=414a6459
+  [     64ms]  [91mstale[0m    (poll #2)  order=414a6459
+  [    126ms]  [91mstale[0m    (poll #3)  order=414a6459
+  [    183ms]  [91mstale[0m    (poll #4)  order=414a6459
+  [    241ms]  [91mstale[0m    (poll #5)  order=414a6459
+  [    298ms]  [91mstale[0m    (poll #6)  order=414a6459
+  [    355ms]  [91mstale[0m    (poll #7)  order=414a6459
+  [    416ms]  [91mstale[0m    (poll #8)  order=414a6459
+  [    476ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=414a6459
+
+[96mOrder 181/1500:[0m
+  [      6ms]  [91mstale[0m    (poll #1)  order=d41660fe
+  [     68ms]  [91mstale[0m    (poll #2)  order=d41660fe
+  [    131ms]  [91mstale[0m    (poll #3)  order=d41660fe
+  [    194ms]  [91mstale[0m    (poll #4)  order=d41660fe
+  [    262ms]  [91mstale[0m    (poll #5)  order=d41660fe
+  [    324ms]  [91mstale[0m    (poll #6)  order=d41660fe
+  [    393ms]  [91mstale[0m    (poll #7)  order=d41660fe
+  [    464ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=d41660fe
+
+[96mOrder 182/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=eefc3977
+  [     69ms]  [91mstale[0m    (poll #2)  order=eefc3977
+  [    132ms]  [91mstale[0m    (poll #3)  order=eefc3977
+  [    198ms]  [91mstale[0m    (poll #4)  order=eefc3977
+  [    269ms]  [91mstale[0m    (poll #5)  order=eefc3977
+  [    340ms]  [91mstale[0m    (poll #6)  order=eefc3977
+  [    411ms]  [91mstale[0m    (poll #7)  order=eefc3977
+  [    484ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=eefc3977
+
+[96mOrder 183/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=988e0b49
+  [     74ms]  [91mstale[0m    (poll #2)  order=988e0b49
+  [    139ms]  [91mstale[0m    (poll #3)  order=988e0b49
+  [    206ms]  [91mstale[0m    (poll #4)  order=988e0b49
+  [    274ms]  [91mstale[0m    (poll #5)  order=988e0b49
+  [    335ms]  [91mstale[0m    (poll #6)  order=988e0b49
+  [    401ms]  [91mstale[0m    (poll #7)  order=988e0b49
+  [    470ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=988e0b49
+
+[96mOrder 184/1500:[0m
+  [      6ms]  [91mstale[0m    (poll #1)  order=85d8d461
+  [     69ms]  [91mstale[0m    (poll #2)  order=85d8d461
+  [    135ms]  [91mstale[0m    (poll #3)  order=85d8d461
+  [    201ms]  [91mstale[0m    (poll #4)  order=85d8d461
+  [    269ms]  [91mstale[0m    (poll #5)  order=85d8d461
+  [    339ms]  [91mstale[0m    (poll #6)  order=85d8d461
+  [    411ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=85d8d461
+
+[96mOrder 185/1500:[0m
+  [     10ms]  [91mstale[0m    (poll #1)  order=1c364c20
+  [     75ms]  [91mstale[0m    (poll #2)  order=1c364c20
+  [    137ms]  [91mstale[0m    (poll #3)  order=1c364c20
+  [    203ms]  [91mstale[0m    (poll #4)  order=1c364c20
+  [    273ms]  [91mstale[0m    (poll #5)  order=1c364c20
+  [    343ms]  [91mstale[0m    (poll #6)  order=1c364c20
+  [    415ms]  [91mstale[0m    (poll #7)  order=1c364c20
+  [    484ms]  [91mstale[0m    (poll #8)  order=1c364c20
+  [    553ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=1c364c20
+
+[96mOrder 186/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=b0326ec4
+  [     72ms]  [91mstale[0m    (poll #2)  order=b0326ec4
+  [    137ms]  [91mstale[0m    (poll #3)  order=b0326ec4
+  [    202ms]  [91mstale[0m    (poll #4)  order=b0326ec4
+  [    269ms]  [91mstale[0m    (poll #5)  order=b0326ec4
+  [    340ms]  [91mstale[0m    (poll #6)  order=b0326ec4
+  [    398ms]  [91mstale[0m    (poll #7)  order=b0326ec4
+  [    461ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=b0326ec4
+
+[96mOrder 187/1500:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=769a7e6e
+  [     66ms]  [91mstale[0m    (poll #2)  order=769a7e6e
+  [    130ms]  [91mstale[0m    (poll #3)  order=769a7e6e
+  [    193ms]  [91mstale[0m    (poll #4)  order=769a7e6e
+  [    262ms]  [91mstale[0m    (poll #5)  order=769a7e6e
+  [    332ms]  [91mstale[0m    (poll #6)  order=769a7e6e
+  [    404ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=769a7e6e
+
+[96mOrder 188/1500:[0m
+  [     16ms]  [91mstale[0m    (poll #1)  order=efc2c684
+  [     82ms]  [91mstale[0m    (poll #2)  order=efc2c684
+  [    142ms]  [91mstale[0m    (poll #3)  order=efc2c684
+  [    201ms]  [91mstale[0m    (poll #4)  order=efc2c684
+  [    269ms]  [91mstale[0m    (poll #5)  order=efc2c684
+  [    333ms]  [91mstale[0m    (poll #6)  order=efc2c684
+  [    401ms]  [91mstale[0m    (poll #7)  order=efc2c684
+  [    469ms]  [91mstale[0m    (poll #8)  order=efc2c684
+  [    535ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=efc2c684
+
+[96mOrder 189/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=1fdc23bf
+  [     69ms]  [91mstale[0m    (poll #2)  order=1fdc23bf
+  [    132ms]  [91mstale[0m    (poll #3)  order=1fdc23bf
+  [    200ms]  [91mstale[0m    (poll #4)  order=1fdc23bf
+  [    271ms]  [91mstale[0m    (poll #5)  order=1fdc23bf
+  [    342ms]  [91mstale[0m    (poll #6)  order=1fdc23bf
+  [    413ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=1fdc23bf
+
+[96mOrder 190/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=a1f761ae
+  [     68ms]  [91mstale[0m    (poll #2)  order=a1f761ae
+  [    131ms]  [91mstale[0m    (poll #3)  order=a1f761ae
+  [    198ms]  [91mstale[0m    (poll #4)  order=a1f761ae
+  [    268ms]  [91mstale[0m    (poll #5)  order=a1f761ae
+  [    343ms]  [91mstale[0m    (poll #6)  order=a1f761ae
+  [    409ms]  [91mstale[0m    (poll #7)  order=a1f761ae
+  [    482ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=a1f761ae
+
+[96mOrder 191/1500:[0m
+  [     10ms]  [91mstale[0m    (poll #1)  order=403f0b8f
+  [     77ms]  [91mstale[0m    (poll #2)  order=403f0b8f
+  [    141ms]  [91mstale[0m    (poll #3)  order=403f0b8f
+  [    202ms]  [91mstale[0m    (poll #4)  order=403f0b8f
+  [    265ms]  [91mstale[0m    (poll #5)  order=403f0b8f
+  [    333ms]  [91mstale[0m    (poll #6)  order=403f0b8f
+  [    402ms]  [91mstale[0m    (poll #7)  order=403f0b8f
+  [    469ms]  [91mstale[0m    (poll #8)  order=403f0b8f
+  [    537ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=403f0b8f
+
+[96mOrder 192/1500:[0m
+  [     10ms]  [91mstale[0m    (poll #1)  order=5ac800f4
+  [     68ms]  [91mstale[0m    (poll #2)  order=5ac800f4
+  [    131ms]  [91mstale[0m    (poll #3)  order=5ac800f4
+  [    200ms]  [91mstale[0m    (poll #4)  order=5ac800f4
+  [    270ms]  [91mstale[0m    (poll #5)  order=5ac800f4
+  [    342ms]  [91mstale[0m    (poll #6)  order=5ac800f4
+  [    410ms]  [91mstale[0m    (poll #7)  order=5ac800f4
+  [    480ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=5ac800f4
+
+[96mOrder 193/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=740a7727
+  [     75ms]  [91mstale[0m    (poll #2)  order=740a7727
+  [    140ms]  [91mstale[0m    (poll #3)  order=740a7727
+  [    207ms]  [91mstale[0m    (poll #4)  order=740a7727
+  [    274ms]  [91mstale[0m    (poll #5)  order=740a7727
+  [    345ms]  [91mstale[0m    (poll #6)  order=740a7727
+  [    420ms]  [91mstale[0m    (poll #7)  order=740a7727
+  [    490ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=740a7727
+
+[96mOrder 194/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=1c49d0b1
+  [     75ms]  [91mstale[0m    (poll #2)  order=1c49d0b1
+  [    140ms]  [91mstale[0m    (poll #3)  order=1c49d0b1
+  [    205ms]  [91mstale[0m    (poll #4)  order=1c49d0b1
+  [    275ms]  [91mstale[0m    (poll #5)  order=1c49d0b1
+  [    348ms]  [91mstale[0m    (poll #6)  order=1c49d0b1
+  [    416ms]  [91mstale[0m    (poll #7)  order=1c49d0b1
+  [    483ms]  [91mstale[0m    (poll #8)  order=1c49d0b1
+  [    552ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=1c49d0b1
+
+[96mOrder 195/1500:[0m
+  [     11ms]  [91mstale[0m    (poll #1)  order=849f2f9a
+  [     78ms]  [91mstale[0m    (poll #2)  order=849f2f9a
+  [    136ms]  [91mstale[0m    (poll #3)  order=849f2f9a
+  [    198ms]  [91mstale[0m    (poll #4)  order=849f2f9a
+  [    260ms]  [91mstale[0m    (poll #5)  order=849f2f9a
+  [    315ms]  [91mstale[0m    (poll #6)  order=849f2f9a
+  [    381ms]  [91mstale[0m    (poll #7)  order=849f2f9a
+  [    443ms]  [91mstale[0m    (poll #8)  order=849f2f9a
+  [    501ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=849f2f9a
+
+[96mOrder 196/1500:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=f845a806
+  [     65ms]  [91mstale[0m    (poll #2)  order=f845a806
+  [    127ms]  [91mstale[0m    (poll #3)  order=f845a806
+  [    191ms]  [91mstale[0m    (poll #4)  order=f845a806
+  [    259ms]  [91mstale[0m    (poll #5)  order=f845a806
+  [    327ms]  [91mstale[0m    (poll #6)  order=f845a806
+  [    393ms]  [91mstale[0m    (poll #7)  order=f845a806
+  [    456ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=f845a806
+
+[96mOrder 197/1500:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=a5da7029
+  [     62ms]  [91mstale[0m    (poll #2)  order=a5da7029
+  [    122ms]  [91mstale[0m    (poll #3)  order=a5da7029
+  [    183ms]  [91mstale[0m    (poll #4)  order=a5da7029
+  [    253ms]  [91mstale[0m    (poll #5)  order=a5da7029
+  [    321ms]  [91mstale[0m    (poll #6)  order=a5da7029
+  [    393ms]  [91mstale[0m    (poll #7)  order=a5da7029
+  [    467ms]  [91mstale[0m    (poll #8)  order=a5da7029
+  [    539ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=a5da7029
+
+[96mOrder 198/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=796b1d8a
+  [     74ms]  [91mstale[0m    (poll #2)  order=796b1d8a
+  [    137ms]  [91mstale[0m    (poll #3)  order=796b1d8a
+  [    207ms]  [91mstale[0m    (poll #4)  order=796b1d8a
+  [    273ms]  [91mstale[0m    (poll #5)  order=796b1d8a
+  [    343ms]  [91mstale[0m    (poll #6)  order=796b1d8a
+  [    414ms]  [91mstale[0m    (poll #7)  order=796b1d8a
+  [    479ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=796b1d8a
+
+[96mOrder 199/1500:[0m
+  [     10ms]  [91mstale[0m    (poll #1)  order=80aa23dd
+  [     74ms]  [91mstale[0m    (poll #2)  order=80aa23dd
+  [    140ms]  [91mstale[0m    (poll #3)  order=80aa23dd
+  [    207ms]  [91mstale[0m    (poll #4)  order=80aa23dd
+  [    277ms]  [91mstale[0m    (poll #5)  order=80aa23dd
+  [    345ms]  [91mstale[0m    (poll #6)  order=80aa23dd
+  [    408ms]  [91mstale[0m    (poll #7)  order=80aa23dd
+  [    474ms]  [91mstale[0m    (poll #8)  order=80aa23dd
+  [    540ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=80aa23dd
+
+[96mOrder 200/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=7934d3c1
+  [     66ms]  [91mstale[0m    (poll #2)  order=7934d3c1
+  [    130ms]  [91mstale[0m    (poll #3)  order=7934d3c1
+  [    195ms]  [91mstale[0m    (poll #4)  order=7934d3c1
+  [    258ms]  [91mstale[0m    (poll #5)  order=7934d3c1
+  [    320ms]  [91mstale[0m    (poll #6)  order=7934d3c1
+  [    377ms]  [91mstale[0m    (poll #7)  order=7934d3c1
+  [    439ms]  [91mstale[0m    (poll #8)  order=7934d3c1
+  [    497ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=7934d3c1
+
+[96mOrder 201/1500:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=34595128
+  [     62ms]  [91mstale[0m    (poll #2)  order=34595128
+  [    120ms]  [91mstale[0m    (poll #3)  order=34595128
+  [    182ms]  [91mstale[0m    (poll #4)  order=34595128
+  [    247ms]  [91mstale[0m    (poll #5)  order=34595128
+  [    317ms]  [91mstale[0m    (poll #6)  order=34595128
+  [    393ms]  [91mstale[0m    (poll #7)  order=34595128
+  [    462ms]  [91mstale[0m    (poll #8)  order=34595128
+  [    531ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=34595128
+
+[96mOrder 202/1500:[0m
+  [     10ms]  [91mstale[0m    (poll #1)  order=30cdbd1b
+  [     75ms]  [91mstale[0m    (poll #2)  order=30cdbd1b
+  [    138ms]  [91mstale[0m    (poll #3)  order=30cdbd1b
+  [    204ms]  [91mstale[0m    (poll #4)  order=30cdbd1b
+  [    274ms]  [91mstale[0m    (poll #5)  order=30cdbd1b
+  [    345ms]  [91mstale[0m    (poll #6)  order=30cdbd1b
+  [    420ms]  [91mstale[0m    (poll #7)  order=30cdbd1b
+  [    489ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=30cdbd1b
+
+[96mOrder 203/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=d591148c
+  [     72ms]  [91mstale[0m    (poll #2)  order=d591148c
+  [    135ms]  [91mstale[0m    (poll #3)  order=d591148c
+  [    200ms]  [91mstale[0m    (poll #4)  order=d591148c
+  [    270ms]  [91mstale[0m    (poll #5)  order=d591148c
+  [    335ms]  [91mstale[0m    (poll #6)  order=d591148c
+  [    405ms]  [91mstale[0m    (poll #7)  order=d591148c
+  [    474ms]  [91mstale[0m    (poll #8)  order=d591148c
+  [    546ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=d591148c
+
+[96mOrder 204/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=4939f432
+  [     72ms]  [91mstale[0m    (poll #2)  order=4939f432
+  [    134ms]  [91mstale[0m    (poll #3)  order=4939f432
+  [    195ms]  [91mstale[0m    (poll #4)  order=4939f432
+  [    266ms]  [91mstale[0m    (poll #5)  order=4939f432
+  [    332ms]  [92mVISIBLE[0m  (poll #6, X-Cache: MISS)  order=4939f432
+
+[96mOrder 205/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=26a8ee60
+  [     71ms]  [91mstale[0m    (poll #2)  order=26a8ee60
+  [    132ms]  [91mstale[0m    (poll #3)  order=26a8ee60
+  [    198ms]  [91mstale[0m    (poll #4)  order=26a8ee60
+  [    263ms]  [91mstale[0m    (poll #5)  order=26a8ee60
+  [    332ms]  [91mstale[0m    (poll #6)  order=26a8ee60
+  [    402ms]  [91mstale[0m    (poll #7)  order=26a8ee60
+  [    474ms]  [91mstale[0m    (poll #8)  order=26a8ee60
+  [    548ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=26a8ee60
+
+[96mOrder 206/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=3427b4d3
+  [     74ms]  [91mstale[0m    (poll #2)  order=3427b4d3
+  [    136ms]  [91mstale[0m    (poll #3)  order=3427b4d3
+  [    204ms]  [91mstale[0m    (poll #4)  order=3427b4d3
+  [    274ms]  [91mstale[0m    (poll #5)  order=3427b4d3
+  [    332ms]  [91mstale[0m    (poll #6)  order=3427b4d3
+  [    395ms]  [91mstale[0m    (poll #7)  order=3427b4d3
+  [    455ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=3427b4d3
+
+[96mOrder 207/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=ef8e1889
+  [     70ms]  [91mstale[0m    (poll #2)  order=ef8e1889
+  [    133ms]  [91mstale[0m    (poll #3)  order=ef8e1889
+  [    201ms]  [91mstale[0m    (poll #4)  order=ef8e1889
+  [    270ms]  [91mstale[0m    (poll #5)  order=ef8e1889
+  [    337ms]  [91mstale[0m    (poll #6)  order=ef8e1889
+  [    408ms]  [91mstale[0m    (poll #7)  order=ef8e1889
+  [    474ms]  [91mstale[0m    (poll #8)  order=ef8e1889
+  [    544ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=ef8e1889
+
+[96mOrder 208/1500:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=42e898af
+  [     67ms]  [91mstale[0m    (poll #2)  order=42e898af
+  [    131ms]  [91mstale[0m    (poll #3)  order=42e898af
+  [    194ms]  [91mstale[0m    (poll #4)  order=42e898af
+  [    261ms]  [91mstale[0m    (poll #5)  order=42e898af
+  [    333ms]  [91mstale[0m    (poll #6)  order=42e898af
+  [    403ms]  [91mstale[0m    (poll #7)  order=42e898af
+  [    476ms]  [91mstale[0m    (poll #8)  order=42e898af
+  [    546ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=42e898af
+
+[96mOrder 209/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=7caf538b
+  [     74ms]  [91mstale[0m    (poll #2)  order=7caf538b
+  [    141ms]  [91mstale[0m    (poll #3)  order=7caf538b
+  [    203ms]  [91mstale[0m    (poll #4)  order=7caf538b
+  [    270ms]  [91mstale[0m    (poll #5)  order=7caf538b
+  [    341ms]  [91mstale[0m    (poll #6)  order=7caf538b
+  [    408ms]  [91mstale[0m    (poll #7)  order=7caf538b
+  [    478ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=7caf538b
+
+[96mOrder 210/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=0928afa7
+  [     74ms]  [91mstale[0m    (poll #2)  order=0928afa7
+  [    140ms]  [91mstale[0m    (poll #3)  order=0928afa7
+  [    203ms]  [91mstale[0m    (poll #4)  order=0928afa7
+  [    273ms]  [91mstale[0m    (poll #5)  order=0928afa7
+  [    344ms]  [91mstale[0m    (poll #6)  order=0928afa7
+  [    410ms]  [91mstale[0m    (poll #7)  order=0928afa7
+  [    478ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=0928afa7
+
+[96mOrder 211/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=92897ccb
+  [     71ms]  [91mstale[0m    (poll #2)  order=92897ccb
+  [    135ms]  [91mstale[0m    (poll #3)  order=92897ccb
+  [    203ms]  [91mstale[0m    (poll #4)  order=92897ccb
+  [    265ms]  [91mstale[0m    (poll #5)  order=92897ccb
+  [    328ms]  [91mstale[0m    (poll #6)  order=92897ccb
+  [    397ms]  [91mstale[0m    (poll #7)  order=92897ccb
+  [    468ms]  [91mstale[0m    (poll #8)  order=92897ccb
+  [    542ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=92897ccb
+
+[96mOrder 212/1500:[0m
+  [     10ms]  [91mstale[0m    (poll #1)  order=ed986c9e
+  [     75ms]  [91mstale[0m    (poll #2)  order=ed986c9e
+  [    137ms]  [91mstale[0m    (poll #3)  order=ed986c9e
+  [    205ms]  [91mstale[0m    (poll #4)  order=ed986c9e
+  [    272ms]  [91mstale[0m    (poll #5)  order=ed986c9e
+  [    340ms]  [91mstale[0m    (poll #6)  order=ed986c9e
+  [    407ms]  [91mstale[0m    (poll #7)  order=ed986c9e
+  [    467ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=ed986c9e
+
+[96mOrder 213/1500:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=e9462d7e
+  [     64ms]  [91mstale[0m    (poll #2)  order=e9462d7e
+  [    126ms]  [91mstale[0m    (poll #3)  order=e9462d7e
+  [    186ms]  [91mstale[0m    (poll #4)  order=e9462d7e
+  [    250ms]  [91mstale[0m    (poll #5)  order=e9462d7e
+  [    313ms]  [91mstale[0m    (poll #6)  order=e9462d7e
+  [    381ms]  [91mstale[0m    (poll #7)  order=e9462d7e
+  [    450ms]  [91mstale[0m    (poll #8)  order=e9462d7e
+  [    513ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=e9462d7e
+
+[96mOrder 214/1500:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=548a5d78
+  [     59ms]  [91mstale[0m    (poll #2)  order=548a5d78
+  [    117ms]  [91mstale[0m    (poll #3)  order=548a5d78
+  [    181ms]  [91mstale[0m    (poll #4)  order=548a5d78
+  [    245ms]  [91mstale[0m    (poll #5)  order=548a5d78
+  [    316ms]  [91mstale[0m    (poll #6)  order=548a5d78
+  [    386ms]  [91mstale[0m    (poll #7)  order=548a5d78
+  [    454ms]  [91mstale[0m    (poll #8)  order=548a5d78
+  [    513ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=548a5d78
+
+[96mOrder 215/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=3ba6eb3b
+  [     65ms]  [91mstale[0m    (poll #2)  order=3ba6eb3b
+  [    124ms]  [91mstale[0m    (poll #3)  order=3ba6eb3b
+  [    187ms]  [91mstale[0m    (poll #4)  order=3ba6eb3b
+  [    249ms]  [91mstale[0m    (poll #5)  order=3ba6eb3b
+  [    312ms]  [91mstale[0m    (poll #6)  order=3ba6eb3b
+  [    376ms]  [91mstale[0m    (poll #7)  order=3ba6eb3b
+  [    450ms]  [91mstale[0m    (poll #8)  order=3ba6eb3b
+  [    524ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=3ba6eb3b
+
+[96mOrder 216/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=1381fdce
+  [     74ms]  [91mstale[0m    (poll #2)  order=1381fdce
+  [    134ms]  [91mstale[0m    (poll #3)  order=1381fdce
+  [    192ms]  [91mstale[0m    (poll #4)  order=1381fdce
+  [    256ms]  [91mstale[0m    (poll #5)  order=1381fdce
+  [    320ms]  [91mstale[0m    (poll #6)  order=1381fdce
+  [    384ms]  [91mstale[0m    (poll #7)  order=1381fdce
+  [    456ms]  [91mstale[0m    (poll #8)  order=1381fdce
+  [    526ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=1381fdce
+
+[96mOrder 217/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=d8d52a82
+  [     68ms]  [91mstale[0m    (poll #2)  order=d8d52a82
+  [    132ms]  [91mstale[0m    (poll #3)  order=d8d52a82
+  [    196ms]  [91mstale[0m    (poll #4)  order=d8d52a82
+  [    265ms]  [91mstale[0m    (poll #5)  order=d8d52a82
+  [    335ms]  [91mstale[0m    (poll #6)  order=d8d52a82
+  [    406ms]  [91mstale[0m    (poll #7)  order=d8d52a82
+  [    480ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=d8d52a82
+
+[96mOrder 218/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=6e4302e1
+  [     69ms]  [91mstale[0m    (poll #2)  order=6e4302e1
+  [    135ms]  [91mstale[0m    (poll #3)  order=6e4302e1
+  [    202ms]  [91mstale[0m    (poll #4)  order=6e4302e1
+  [    273ms]  [91mstale[0m    (poll #5)  order=6e4302e1
+  [    343ms]  [91mstale[0m    (poll #6)  order=6e4302e1
+  [    415ms]  [91mstale[0m    (poll #7)  order=6e4302e1
+  [    487ms]  [91mstale[0m    (poll #8)  order=6e4302e1
+  [    559ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=6e4302e1
+
+[96mOrder 219/1500:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=78ed65a0
+  [     66ms]  [91mstale[0m    (poll #2)  order=78ed65a0
+  [    130ms]  [91mstale[0m    (poll #3)  order=78ed65a0
+  [    194ms]  [91mstale[0m    (poll #4)  order=78ed65a0
+  [    264ms]  [91mstale[0m    (poll #5)  order=78ed65a0
+  [    333ms]  [91mstale[0m    (poll #6)  order=78ed65a0
+  [    403ms]  [91mstale[0m    (poll #7)  order=78ed65a0
+  [    477ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=78ed65a0
+
+[96mOrder 220/1500:[0m
+  [      3ms]  [91mstale[0m    (poll #1)  order=d63d816a
+  [     64ms]  [91mstale[0m    (poll #2)  order=d63d816a
+  [    123ms]  [91mstale[0m    (poll #3)  order=d63d816a
+  [    182ms]  [91mstale[0m    (poll #4)  order=d63d816a
+  [    241ms]  [91mstale[0m    (poll #5)  order=d63d816a
+  [    299ms]  [91mstale[0m    (poll #6)  order=d63d816a
+  [    359ms]  [91mstale[0m    (poll #7)  order=d63d816a
+  [    416ms]  [91mstale[0m    (poll #8)  order=d63d816a
+  [    481ms]  [91mstale[0m    (poll #9)  order=d63d816a
+  [    544ms]  [92mVISIBLE[0m  (poll #10, X-Cache: MISS)  order=d63d816a
+
+[96mOrder 221/1500:[0m
+  [      6ms]  [91mstale[0m    (poll #1)  order=724b22b9
+  [     64ms]  [91mstale[0m    (poll #2)  order=724b22b9
+  [    127ms]  [91mstale[0m    (poll #3)  order=724b22b9
+  [    192ms]  [91mstale[0m    (poll #4)  order=724b22b9
+  [    258ms]  [91mstale[0m    (poll #5)  order=724b22b9
+  [    330ms]  [91mstale[0m    (poll #6)  order=724b22b9
+  [    403ms]  [91mstale[0m    (poll #7)  order=724b22b9
+  [    475ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=724b22b9
+
+[96mOrder 222/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=dd0bedd0
+  [     73ms]  [91mstale[0m    (poll #2)  order=dd0bedd0
+  [    139ms]  [91mstale[0m    (poll #3)  order=dd0bedd0
+  [    207ms]  [91mstale[0m    (poll #4)  order=dd0bedd0
+  [    276ms]  [91mstale[0m    (poll #5)  order=dd0bedd0
+  [    346ms]  [91mstale[0m    (poll #6)  order=dd0bedd0
+  [    415ms]  [91mstale[0m    (poll #7)  order=dd0bedd0
+  [    483ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=dd0bedd0
+
+[96mOrder 223/1500:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=b292bc7f
+  [     70ms]  [91mstale[0m    (poll #2)  order=b292bc7f
+  [    133ms]  [91mstale[0m    (poll #3)  order=b292bc7f
+  [    200ms]  [91mstale[0m    (poll #4)  order=b292bc7f
+  [    272ms]  [91mstale[0m    (poll #5)  order=b292bc7f
+  [    344ms]  [91mstale[0m    (poll #6)  order=b292bc7f
+  [    413ms]  [91mstale[0m    (poll #7)  order=b292bc7f
+  [    480ms]  [91mstale[0m    (poll #8)  order=b292bc7f
+  [    554ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=b292bc7f
+
+[96mOrder 224/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=96f76dee
+  [     73ms]  [91mstale[0m    (poll #2)  order=96f76dee
+  [    137ms]  [91mstale[0m    (poll #3)  order=96f76dee
+  [    201ms]  [91mstale[0m    (poll #4)  order=96f76dee
+  [    268ms]  [91mstale[0m    (poll #5)  order=96f76dee
+  [    339ms]  [91mstale[0m    (poll #6)  order=96f76dee
+  [    410ms]  [91mstale[0m    (poll #7)  order=96f76dee
+  [    476ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=96f76dee
+
+[96mOrder 225/1500:[0m
+  [      6ms]  [91mstale[0m    (poll #1)  order=19371d1c
+  [     68ms]  [91mstale[0m    (poll #2)  order=19371d1c
+  [    132ms]  [91mstale[0m    (poll #3)  order=19371d1c
+  [    200ms]  [91mstale[0m    (poll #4)  order=19371d1c
+  [    271ms]  [91mstale[0m    (poll #5)  order=19371d1c
+  [    343ms]  [91mstale[0m    (poll #6)  order=19371d1c
+  [    414ms]  [91mstale[0m    (poll #7)  order=19371d1c
+  [    477ms]  [91mstale[0m    (poll #8)  order=19371d1c
+  [    541ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=19371d1c
+
+[96mOrder 226/1500:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=4e0c7d56
+  [     62ms]  [91mstale[0m    (poll #2)  order=4e0c7d56
+  [    125ms]  [91mstale[0m    (poll #3)  order=4e0c7d56
+  [    191ms]  [91mstale[0m    (poll #4)  order=4e0c7d56
+  [    259ms]  [91mstale[0m    (poll #5)  order=4e0c7d56
+  [    330ms]  [91mstale[0m    (poll #6)  order=4e0c7d56
+  [    402ms]  [91mstale[0m    (poll #7)  order=4e0c7d56
+  [    473ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=4e0c7d56
+
+[96mOrder 227/1500:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=c11d89aa
+  [     72ms]  [91mstale[0m    (poll #2)  order=c11d89aa
+  [    137ms]  [91mstale[0m    (poll #3)  order=c11d89aa
+  [    201ms]  [91mstale[0m    (poll #4)  order=c11d89aa
+  [    269ms]  [91mstale[0m    (poll #5)  order=c11d89aa
+  [    338ms]  [91mstale[0m    (poll #6)  order=c11d89aa
+  [    410ms]  [91mstale[0m    (poll #7)  order=c11d89aa
+  [    480ms]  [91mstale[0m    (poll #8)  order=c11d89aa
+  [    552ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=c11d89aa
+
+[96mOrder 228/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=d92ed6af
+  [     71ms]  [91mstale[0m    (poll #2)  order=d92ed6af
+  [    133ms]  [91mstale[0m    (poll #3)  order=d92ed6af
+  [    197ms]  [91mstale[0m    (poll #4)  order=d92ed6af
+  [    265ms]  [91mstale[0m    (poll #5)  order=d92ed6af
+  [    332ms]  [91mstale[0m    (poll #6)  order=d92ed6af
+  [    398ms]  [91mstale[0m    (poll #7)  order=d92ed6af
+  [    466ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=d92ed6af
+
+[96mOrder 229/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=49836e2b
+  [     69ms]  [91mstale[0m    (poll #2)  order=49836e2b
+  [    135ms]  [91mstale[0m    (poll #3)  order=49836e2b
+  [    201ms]  [91mstale[0m    (poll #4)  order=49836e2b
+  [    272ms]  [91mstale[0m    (poll #5)  order=49836e2b
+  [    340ms]  [91mstale[0m    (poll #6)  order=49836e2b
+  [    412ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=49836e2b
+
+[96mOrder 230/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=5bc90aee
+  [     69ms]  [91mstale[0m    (poll #2)  order=5bc90aee
+  [    135ms]  [91mstale[0m    (poll #3)  order=5bc90aee
+  [    201ms]  [91mstale[0m    (poll #4)  order=5bc90aee
+  [    267ms]  [91mstale[0m    (poll #5)  order=5bc90aee
+  [    339ms]  [91mstale[0m    (poll #6)  order=5bc90aee
+  [    411ms]  [91mstale[0m    (poll #7)  order=5bc90aee
+  [    482ms]  [92mVISIBLE[0m  (poll #8, X-Cache: MISS)  order=5bc90aee
+
+[96mOrder 231/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=ac013725
+  [     73ms]  [91mstale[0m    (poll #2)  order=ac013725
+  [    136ms]  [91mstale[0m    (poll #3)  order=ac013725
+  [    203ms]  [91mstale[0m    (poll #4)  order=ac013725
+  [    272ms]  [91mstale[0m    (poll #5)  order=ac013725
+  [    341ms]  [91mstale[0m    (poll #6)  order=ac013725
+  [    411ms]  [91mstale[0m    (poll #7)  order=ac013725
+  [    482ms]  [91mstale[0m    (poll #8)  order=ac013725
+  [    553ms]  [92mVISIBLE[0m  (poll #9, X-Cache: MISS)  order=ac013725
+
+[96mOrder 232/1500:[0m
+  [      9ms]  [91mstale[0m    (poll #1)  order=19384ce8
+  [     72ms]  [91mstale[0m    (poll #2)  order=19384ce8
+  [    138ms]  [91mstale[0m    (poll #3)  order=19384ce8
+  [    200ms]  [91mstale[0m    (poll #4)  order=19384ce8
+  [    269ms]  [91mstale[0m    (poll #5)  order=19384ce8
+  [    342ms]  [91mstale[0m    (poll #6)  order=19384ce8
+  [    414ms]  [92mVISIBLE[0m  (poll #7, X-Cache: MISS)  order=19384ce8
+
+[96mOrder 233/1500:[0m

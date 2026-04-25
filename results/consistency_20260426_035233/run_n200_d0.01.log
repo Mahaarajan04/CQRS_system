@@ -1,0 +1,1275 @@
+Stopping services and wiping volumes...
+
+  cache:    DISABLED
+  consumer: SLOW (0.01s/event)
+  saga:     fast
+  stream:   redis-stream :6379  (no memory limit)
+
+Starting services...
+time="2026-04-26T03:59:22+05:30" level=warning msg="/Users/akankshawattamwar/Desktop/CS315/CQRS/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.05kB done
+#1 DONE 0.0s
+
+#2 [saga internal] load build definition from Dockerfile
+#2 transferring dockerfile: 365B done
+#2 DONE 0.0s
+
+#3 [consumer internal] load build definition from Dockerfile
+#3 transferring dockerfile: 186B done
+#3 DONE 0.0s
+
+#4 [saga internal] load metadata for docker.io/library/python:3.12-slim
+#4 DONE 1.2s
+
+#5 [consumer internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [saga internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [consumer internal] load build context
+#7 transferring context: 308B done
+#7 DONE 0.0s
+
+#8 [consumer 1/5] FROM docker.io/library/python:3.12-slim@sha256:46cb7cc2877e60fbd5e21a9ae6115c30ace7a077b9f8772da879e4590c18c2e3
+#8 resolve docker.io/library/python:3.12-slim@sha256:46cb7cc2877e60fbd5e21a9ae6115c30ace7a077b9f8772da879e4590c18c2e3 done
+#8 DONE 0.0s
+
+#9 [saga 2/7] WORKDIR /service
+#9 CACHED
+
+#10 [consumer 2/5] WORKDIR /app
+#10 CACHED
+
+#11 [saga internal] load build context
+#11 transferring context: 386B done
+#11 DONE 0.0s
+
+#12 [consumer 3/5] COPY requirements.txt .
+#12 DONE 0.0s
+
+#13 [saga 3/7] COPY saga/requirements.txt saga/
+#13 DONE 0.0s
+
+#14 [saga 4/7] RUN pip install --no-cache-dir -r saga/requirements.txt
+#14 2.303 Collecting pymongo==4.7.2 (from -r saga/requirements.txt (line 1))
+#14 2.373   Downloading pymongo-4.7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (22 kB)
+#14 2.463 Collecting redis==5.0.5 (from -r saga/requirements.txt (line 2))
+#14 2.486   Downloading redis-5.0.5-py3-none-any.whl.metadata (9.3 kB)
+#14 2.569 Collecting psycopg2-binary==2.9.9 (from -r saga/requirements.txt (line 3))
+#14 2.590   Downloading psycopg2_binary-2.9.9-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.4 kB)
+#14 2.618 Collecting dnspython<3.0.0,>=1.16.0 (from pymongo==4.7.2->-r saga/requirements.txt (line 1))
+#14 2.638   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+#14 2.673 Downloading pymongo-4.7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (688 kB)
+#14 2.891    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 689.0/689.0 kB 4.1 MB/s eta 0:00:00
+#14 2.921 Downloading redis-5.0.5-py3-none-any.whl (251 kB)
+#14 3.070 Downloading psycopg2_binary-2.9.9-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (2.9 MB)
+#14 3.958    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.9/2.9 MB 3.2 MB/s eta 0:00:00
+#14 3.977 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+#14 4.024 Installing collected packages: redis, psycopg2-binary, dnspython, pymongo
+#14 ...
+
+#15 [consumer 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#15 2.268 Collecting pymongo==4.7.2 (from -r requirements.txt (line 1))
+#15 2.336   Downloading pymongo-4.7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (22 kB)
+#15 2.401 Collecting redis==5.0.5 (from -r requirements.txt (line 2))
+#15 2.419   Downloading redis-5.0.5-py3-none-any.whl.metadata (9.3 kB)
+#15 2.493 Collecting psycopg2-binary==2.9.9 (from -r requirements.txt (line 3))
+#15 2.511   Downloading psycopg2_binary-2.9.9-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.4 kB)
+#15 2.555 Collecting dnspython<3.0.0,>=1.16.0 (from pymongo==4.7.2->-r requirements.txt (line 1))
+#15 2.574   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+#15 2.599 Downloading pymongo-4.7.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (688 kB)
+#15 2.742    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 689.0/689.0 kB 7.3 MB/s eta 0:00:00
+#15 2.768 Downloading redis-5.0.5-py3-none-any.whl (251 kB)
+#15 2.821 Downloading psycopg2_binary-2.9.9-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (2.9 MB)
+#15 3.714    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.9/2.9 MB 3.0 MB/s eta 0:00:00
+#15 3.756 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+#15 3.881 Installing collected packages: redis, psycopg2-binary, dnspython, pymongo
+#15 4.214 Successfully installed dnspython-2.8.0 psycopg2-binary-2.9.9 pymongo-4.7.2 redis-5.0.5
+#15 4.214 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#15 4.336 
+#15 4.336 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#15 4.336 [notice] To update, run: pip install --upgrade pip
+#15 DONE 4.5s
+
+#14 [saga 4/7] RUN pip install --no-cache-dir -r saga/requirements.txt
+#14 4.339 Successfully installed dnspython-2.8.0 psycopg2-binary-2.9.9 pymongo-4.7.2 redis-5.0.5
+#14 4.339 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#14 4.469 
+#14 4.469 [notice] A new release of pip is available: 25.0.1 -> 26.0.1
+#14 4.469 [notice] To update, run: pip install --upgrade pip
+#14 DONE 4.5s
+
+#16 [consumer 5/5] COPY . .
+#16 DONE 0.0s
+
+#17 [saga 5/7] COPY write-api/events.py write-api/
+#17 DONE 0.0s
+
+#18 [saga 6/7] COPY saga/ saga/
+#18 DONE 0.0s
+
+#19 [saga 7/7] WORKDIR /service/saga
+#19 DONE 0.0s
+
+#20 [consumer] exporting to image
+#20 exporting layers
+#20 exporting layers 0.5s done
+#20 exporting manifest sha256:c5f626d64bad10a436559aab41fd432f253c2e3d8c213af64c18894823ac1ba6
+#20 exporting manifest sha256:c5f626d64bad10a436559aab41fd432f253c2e3d8c213af64c18894823ac1ba6 done
+#20 exporting config sha256:4c9b1bf91fa57304f8d90882de3a2a5fa81abe85dd3dcff14715f63a23ceeb8b done
+#20 exporting attestation manifest sha256:c480c6c2415ea59bb7acb91bfc78cfba0bf139de8f3185ad47079086710d2373 done
+#20 exporting manifest list sha256:d399f7c13d27bbbf5003fb92a72a2b005bc9eb251c7c6ff1fc69a73ab89f895c done
+#20 naming to docker.io/library/cqrs-consumer:latest done
+#20 unpacking to docker.io/library/cqrs-consumer:latest 0.1s done
+#20 DONE 0.7s
+
+#21 [consumer] resolving provenance for metadata file
+#21 DONE 0.0s
+
+#22 [saga] exporting to image
+#22 exporting layers 0.5s done
+#22 exporting manifest sha256:96621fce4b50fcfff10ee0e67d5b47512d6ea7b9ec8a67997f474b6275d34713 done
+#22 exporting config sha256:ea27d8a69ea7e376a56c9246892e7ce8be6d6077b459eb1be1553429e400c3ae done
+#22 exporting attestation manifest sha256:9812870d80f00eaf82804ed73da8bac934af9ae7b0644f01392bccc042971329 done
+#22 exporting manifest list sha256:5360b3a181a07899edb2276fcc4139b9e539083bb44f0df4145ea77aba219afa done
+#22 naming to docker.io/library/cqrs-saga:latest done
+#22 unpacking to docker.io/library/cqrs-saga:latest 0.2s done
+#22 DONE 0.8s
+
+#23 [saga] resolving provenance for metadata file
+#23 DONE 0.0s
+ cqrs-consumer  Built
+ cqrs-saga  Built
+time="2026-04-26T03:59:30+05:30" level=warning msg="/Users/akankshawattamwar/Desktop/CS315/CQRS/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.42kB done
+#1 DONE 0.0s
+
+#2 [saga internal] load build definition from Dockerfile
+#2 transferring dockerfile: 365B done
+#2 DONE 0.0s
+
+#3 [write-api internal] load build definition from Dockerfile
+#3 transferring dockerfile: 225B done
+#3 DONE 0.0s
+
+#4 [read-api internal] load build definition from Dockerfile
+#4 transferring dockerfile: 225B done
+#4 DONE 0.0s
+
+#5 [consumer internal] load build definition from Dockerfile
+#5 transferring dockerfile: 186B done
+#5 DONE 0.0s
+
+#6 [frontend internal] load build definition from Dockerfile
+#6 transferring dockerfile: 271B done
+#6 DONE 0.0s
+
+#7 [read-api internal] load metadata for docker.io/library/python:3.12-slim
+#7 DONE 0.4s
+
+#8 [read-api internal] load .dockerignore
+#8 transferring context: 2B done
+#8 DONE 0.0s
+
+#9 [write-api internal] load .dockerignore
+#9 transferring context: 2B done
+#9 DONE 0.0s
+
+#10 [saga internal] load .dockerignore
+#10 transferring context: 2B done
+#10 DONE 0.0s
+
+#11 [consumer internal] load .dockerignore
+#11 transferring context: 2B done
+#11 DONE 0.0s
+
+#12 [read-api internal] load build context
+#12 transferring context: 258B done
+#12 DONE 0.0s
+
+#13 [write-api internal] load build context
+#13 transferring context: 341B done
+#13 DONE 0.0s
+
+#14 [consumer internal] load build context
+#14 transferring context: 308B done
+#14 DONE 0.0s
+
+#15 [read-api 1/5] FROM docker.io/library/python:3.12-slim@sha256:46cb7cc2877e60fbd5e21a9ae6115c30ace7a077b9f8772da879e4590c18c2e3
+#15 resolve docker.io/library/python:3.12-slim@sha256:46cb7cc2877e60fbd5e21a9ae6115c30ace7a077b9f8772da879e4590c18c2e3 0.0s done
+#15 DONE 0.0s
+
+#16 [saga internal] load build context
+#16 transferring context: 386B done
+#16 DONE 0.0s
+
+#17 [read-api 3/5] COPY requirements.txt .
+#17 CACHED
+
+#18 [read-api 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#18 CACHED
+
+#19 [read-api 5/5] COPY . .
+#19 CACHED
+
+#20 [write-api 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#20 CACHED
+
+#21 [write-api 3/5] COPY requirements.txt .
+#21 CACHED
+
+#22 [write-api 5/5] COPY . .
+#22 CACHED
+
+#23 [write-api 2/5] WORKDIR /app
+#23 CACHED
+
+#24 [consumer 3/5] COPY requirements.txt .
+#24 CACHED
+
+#25 [consumer 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#25 CACHED
+
+#26 [consumer 5/5] COPY . .
+#26 CACHED
+
+#27 [read-api] exporting to image
+#27 exporting layers done
+#27 exporting manifest sha256:c63ee61fb06e4bd063e843362129b868354c2f94e2566ad3c11bbd0548881470 done
+#27 exporting config sha256:46bb870cf8127e2823c379c44ac9a3c0d6ee66fd1b3343341206f22ff23f7f62 done
+#27 exporting attestation manifest sha256:cf7ce561e7f7fc941bfc2c12040350abc015e39f131dc92738a4cf032f475753
+#27 exporting attestation manifest sha256:cf7ce561e7f7fc941bfc2c12040350abc015e39f131dc92738a4cf032f475753 done
+#27 exporting manifest list sha256:aacba6a79a05ccd65ae6a9f1336bf8f64ed58401466a9a0aeb67989949c98ac9 done
+#27 naming to docker.io/library/cqrs-read-api:latest done
+#27 unpacking to docker.io/library/cqrs-read-api:latest done
+#27 DONE 0.1s
+
+#28 [consumer] exporting to image
+#28 exporting layers done
+#28 exporting manifest sha256:c5f626d64bad10a436559aab41fd432f253c2e3d8c213af64c18894823ac1ba6 done
+#28 exporting config sha256:4c9b1bf91fa57304f8d90882de3a2a5fa81abe85dd3dcff14715f63a23ceeb8b done
+#28 exporting attestation manifest sha256:cc944cae58c08b6b4f1f0b094d3f192bbee2bb776ed9b2c813b6c937f0585062 0.0s done
+#28 exporting manifest list sha256:4483b975cc5ab0c4d14b09adc77948fd8c82aecb30a924ff16bedcfc45393790 done
+#28 naming to docker.io/library/cqrs-consumer:latest done
+#28 unpacking to docker.io/library/cqrs-consumer:latest 0.0s done
+#28 DONE 0.1s
+
+#29 [write-api] exporting to image
+#29 exporting layers done
+#29 exporting manifest sha256:92a21a99b40b6531c5801222236f42d6aa7bbf8b65d7634fc566f9392602e764 done
+#29 exporting config sha256:be9fb26fa271ebf0c525960e70f2e967c21bf78a1eb2b7a7dc06e6d3ff4d3f55 done
+#29 exporting attestation manifest sha256:49e017edbc036540bbc578f998466bf31311749fa6aba2917499366c5986a8b3 0.0s done
+#29 exporting manifest list sha256:44974c40aaa30ddf17be082a3c9457767ab6dd724dad023c4c1c6ba2e013e501 done
+#29 naming to docker.io/library/cqrs-write-api:latest done
+#29 unpacking to docker.io/library/cqrs-write-api:latest done
+#29 DONE 0.1s
+
+#30 [read-api] resolving provenance for metadata file
+#30 DONE 0.0s
+
+#31 [saga 5/7] COPY write-api/events.py write-api/
+#31 CACHED
+
+#32 [saga 2/7] WORKDIR /service
+#32 CACHED
+
+#33 [saga 3/7] COPY saga/requirements.txt saga/
+#33 CACHED
+
+#34 [saga 4/7] RUN pip install --no-cache-dir -r saga/requirements.txt
+#34 CACHED
+
+#35 [saga 6/7] COPY saga/ saga/
+#35 CACHED
+
+#36 [saga 7/7] WORKDIR /service/saga
+#36 CACHED
+
+#37 [write-api] resolving provenance for metadata file
+#37 DONE 0.0s
+
+#38 [consumer] resolving provenance for metadata file
+#38 DONE 0.0s
+
+#39 [saga] exporting to image
+#39 exporting layers done
+#39 exporting manifest sha256:96621fce4b50fcfff10ee0e67d5b47512d6ea7b9ec8a67997f474b6275d34713 done
+#39 exporting config sha256:ea27d8a69ea7e376a56c9246892e7ce8be6d6077b459eb1be1553429e400c3ae done
+#39 exporting attestation manifest sha256:75f34eed8b5ce4eb71f52084dfff047e26708d788e5d3b60a44fc3348c200333 done
+#39 exporting manifest list sha256:92f5bb8dc74bb15f33a20d0d40e77bf304d9c3ea11b5317b6380ac9f00f9dd8b done
+#39 naming to docker.io/library/cqrs-saga:latest done
+#39 unpacking to docker.io/library/cqrs-saga:latest done
+#39 DONE 0.0s
+
+#40 [saga] resolving provenance for metadata file
+#40 DONE 0.0s
+
+#41 [frontend internal] load metadata for docker.io/library/nginx:alpine
+#41 DONE 0.9s
+
+#42 [frontend internal] load metadata for docker.io/library/node:20-alpine
+#42 DONE 0.9s
+
+#43 [frontend internal] load .dockerignore
+#43 transferring context: 2B done
+#43 DONE 0.0s
+
+#44 [frontend stage-1 1/3] FROM docker.io/library/nginx:alpine@sha256:5616878291a2eed594aee8db4dade5878cf7edcb475e59193904b198d9b830de
+#44 resolve docker.io/library/nginx:alpine@sha256:5616878291a2eed594aee8db4dade5878cf7edcb475e59193904b198d9b830de done
+#44 DONE 0.0s
+
+#45 [frontend build 1/6] FROM docker.io/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293
+#45 resolve docker.io/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293 done
+#45 DONE 0.0s
+
+#46 [frontend internal] load build context
+#46 transferring context: 185.58kB 0.1s done
+#46 DONE 0.1s
+
+#47 [frontend build 3/6] COPY package.json ./
+#47 CACHED
+
+#48 [frontend build 5/6] COPY . .
+#48 CACHED
+
+#49 [frontend build 4/6] RUN npm install
+#49 CACHED
+
+#50 [frontend build 6/6] RUN npm run build
+#50 CACHED
+
+#51 [frontend build 2/6] WORKDIR /app
+#51 CACHED
+
+#52 [frontend stage-1 2/3] COPY --from=build /app/dist /usr/share/nginx/html
+#52 CACHED
+
+#53 [frontend stage-1 3/3] COPY nginx.conf /etc/nginx/conf.d/default.conf
+#53 CACHED
+
+#54 [frontend] exporting to image
+#54 exporting layers done
+#54 exporting manifest sha256:32782dd8e2053c61118ccbb621867087941de406675097f92803716fedafab00 done
+#54 exporting config sha256:64d46ad231b32d64275256ac207db88e0b5dd078678dcdc752d464f80305d609 done
+#54 exporting attestation manifest sha256:ef2831e1756fec5035482e5cd8c61130ae9427670d2cc1bf26670aa252e3e717 done
+#54 exporting manifest list sha256:ec14860beefa2c9260540e985885bc8c6a2ff0c1a08156cfdc0f86d9999f7d1f done
+#54 naming to docker.io/library/cqrs-frontend:latest done
+#54 unpacking to docker.io/library/cqrs-frontend:latest done
+#54 DONE 0.0s
+
+#55 [frontend] resolving provenance for metadata file
+#55 DONE 0.0s
+ cqrs-write-api  Built
+ cqrs-saga  Built
+ cqrs-read-api  Built
+ cqrs-frontend  Built
+ cqrs-consumer  Built
+ Network cqrs_default  Creating
+ Network cqrs_default  Created
+ Volume "cqrs_postgres_data"  Creating
+ Volume "cqrs_postgres_data"  Created
+ Volume "cqrs_mongo_data"  Creating
+ Volume "cqrs_mongo_data"  Created
+ Container cqrs-redis-cache-1  Creating
+ Container cqrs-postgres-1  Creating
+ Container cqrs-mongodb-1  Creating
+ Container cqrs-redis-stream-1  Creating
+ Container cqrs-mongodb-1  Created
+ Container cqrs-redis-stream-1  Created
+ Container cqrs-redis-cache-1  Created
+ Container cqrs-write-api-1  Creating
+ Container cqrs-postgres-1  Created
+ Container cqrs-saga-1  Creating
+ Container cqrs-read-api-1  Creating
+ Container cqrs-consumer-1  Creating
+ Container cqrs-write-api-1  Created
+ Container cqrs-consumer-1  Created
+ Container cqrs-read-api-1  Created
+ Container cqrs-frontend-1  Creating
+ Container cqrs-saga-1  Created
+ Container cqrs-frontend-1  Created
+ Container cqrs-mongodb-1  Starting
+ Container cqrs-redis-cache-1  Starting
+ Container cqrs-postgres-1  Starting
+ Container cqrs-redis-stream-1  Starting
+ Container cqrs-mongodb-1  Started
+ Container cqrs-redis-stream-1  Started
+ Container cqrs-redis-cache-1  Started
+ Container cqrs-redis-cache-1  Waiting
+ Container cqrs-mongodb-1  Waiting
+ Container cqrs-redis-stream-1  Waiting
+ Container cqrs-postgres-1  Started
+ Container cqrs-postgres-1  Waiting
+ Container cqrs-mongodb-1  Waiting
+ Container cqrs-mongodb-1  Waiting
+ Container cqrs-redis-cache-1  Waiting
+ Container cqrs-redis-stream-1  Waiting
+ Container cqrs-redis-stream-1  Waiting
+ Container cqrs-postgres-1  Waiting
+ Container cqrs-postgres-1  Waiting
+ Container cqrs-redis-cache-1  Healthy
+ Container cqrs-redis-stream-1  Healthy
+ Container cqrs-postgres-1  Healthy
+ Container cqrs-redis-cache-1  Healthy
+ Container cqrs-read-api-1  Starting
+ Container cqrs-postgres-1  Healthy
+ Container cqrs-redis-stream-1  Healthy
+ Container cqrs-redis-stream-1  Healthy
+ Container cqrs-postgres-1  Healthy
+ Container cqrs-read-api-1  Started
+ Container cqrs-frontend-1  Starting
+ Container cqrs-frontend-1  Started
+ Container cqrs-mongodb-1  Healthy
+ Container cqrs-write-api-1  Starting
+ Container cqrs-mongodb-1  Healthy
+ Container cqrs-consumer-1  Starting
+ Container cqrs-mongodb-1  Healthy
+ Container cqrs-saga-1  Starting
+ Container cqrs-write-api-1  Started
+ Container cqrs-consumer-1  Started
+ Container cqrs-saga-1  Started
+Waiting for APIs to be ready...
+Clearing MongoDB events and sagas...
+time="2026-04-26T03:59:44+05:30" level=warning msg="/Users/akankshawattamwar/Desktop/CS315/CQRS/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+MongoDB cleared
+All services up.
+Logs: docker compose logs -f [write-api|read-api|consumer|saga]
+
+[1m=======================================================[0m
+[1m  EVENTUAL CONSISTENCY DEMO — 200 orders[0m
+[1m=======================================================[0m
+
+  Write path:  Write API → MongoDB → Redis Stream
+  Read path:   Consumer → PostgreSQL ← Read API
+  Cache:       DISABLED (DISABLE_CACHE set)
+
+[96mOrder 1/200:[0m
+  [     14ms]  [91mstale[0m    (poll #1)  order=71fab489
+  [     71ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=71fab489
+
+[96mOrder 2/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=b90048a2
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=b90048a2
+
+[96mOrder 3/200:[0m
+  [      3ms]  [91mstale[0m    (poll #1)  order=1ea07015
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=1ea07015
+
+[96mOrder 4/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=667c5318
+  [     60ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=667c5318
+
+[96mOrder 5/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=7cc529c0
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=7cc529c0
+
+[96mOrder 6/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=6228aaed
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=6228aaed
+
+[96mOrder 7/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=e4cf206d
+  [     69ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=e4cf206d
+
+[96mOrder 8/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=7fb24f73
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=7fb24f73
+
+[96mOrder 9/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=94298191
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=94298191
+
+[96mOrder 10/200:[0m
+  [      3ms]  [91mstale[0m    (poll #1)  order=6e6a2683
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=6e6a2683
+
+[96mOrder 11/200:[0m
+  [      3ms]  [91mstale[0m    (poll #1)  order=aa7cac03
+  [     59ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=aa7cac03
+
+[96mOrder 12/200:[0m
+  [      3ms]  [91mstale[0m    (poll #1)  order=8b1d95ff
+  [     60ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=8b1d95ff
+
+[96mOrder 13/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=39142e0f
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=39142e0f
+
+[96mOrder 14/200:[0m
+  [      3ms]  [91mstale[0m    (poll #1)  order=d997f595
+  [     60ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=d997f595
+
+[96mOrder 15/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=8a82089b
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=8a82089b
+
+[96mOrder 16/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=26026f0d
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=26026f0d
+
+[96mOrder 17/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=02272c38
+  [     60ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=02272c38
+
+[96mOrder 18/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=cd6f200b
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=cd6f200b
+
+[96mOrder 19/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=e0505e5c
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=e0505e5c
+
+[96mOrder 20/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=20cf2413
+  [     66ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=20cf2413
+
+[96mOrder 21/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=63785986
+  [     61ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=63785986
+
+[96mOrder 22/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=82d2b640
+  [     67ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=82d2b640
+
+[96mOrder 23/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=7e92e135
+  [     60ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=7e92e135
+
+[96mOrder 24/200:[0m
+  [      7ms]  [91mstale[0m    (poll #1)  order=de8b0f2b
+  [     72ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=de8b0f2b
+
+[96mOrder 25/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=0cd9c0fd
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=0cd9c0fd
+
+[96mOrder 26/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=1b79a922
+  [     66ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=1b79a922
+
+[96mOrder 27/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=2c57c90e
+  [     61ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=2c57c90e
+
+[96mOrder 28/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=2a18da7e
+  [     67ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=2a18da7e
+
+[96mOrder 29/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=4e5f2a97
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=4e5f2a97
+
+[96mOrder 30/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=e8246024
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=e8246024
+
+[96mOrder 31/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=aad8fcc6
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=aad8fcc6
+
+[96mOrder 32/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=8f2fa24d
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=8f2fa24d
+
+[96mOrder 33/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=9683e12c
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=9683e12c
+
+[96mOrder 34/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=2a6d27e0
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=2a6d27e0
+
+[96mOrder 35/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=f6359fb4
+  [     66ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=f6359fb4
+
+[96mOrder 36/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=b295987b
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=b295987b
+
+[96mOrder 37/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=6a2721d4
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=6a2721d4
+
+[96mOrder 38/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=32d38854
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=32d38854
+
+[96mOrder 39/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=659206fb
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=659206fb
+
+[96mOrder 40/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=8daba787
+  [     67ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=8daba787
+
+[96mOrder 41/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=1b58c169
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=1b58c169
+
+[96mOrder 42/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=c9ca2b3f
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=c9ca2b3f
+
+[96mOrder 43/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=5bbdbd53
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=5bbdbd53
+
+[96mOrder 44/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=bc7f7979
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=bc7f7979
+
+[96mOrder 45/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=11f25acf
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=11f25acf
+
+[96mOrder 46/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=9528e006
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=9528e006
+
+[96mOrder 47/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=37341300
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=37341300
+
+[96mOrder 48/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=cf166440
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=cf166440
+
+[96mOrder 49/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=0fd9e9ff
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=0fd9e9ff
+
+[96mOrder 50/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=06a99691
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=06a99691
+
+[96mOrder 51/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=5a0ef542
+  [     61ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=5a0ef542
+
+[96mOrder 52/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=3cfd5417
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=3cfd5417
+
+[96mOrder 53/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=7d9f7646
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=7d9f7646
+
+[96mOrder 54/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=3e38e14d
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=3e38e14d
+
+[96mOrder 55/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=eee42c97
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=eee42c97
+
+[96mOrder 56/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=fcc78561
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=fcc78561
+
+[96mOrder 57/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=870464f4
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=870464f4
+
+[96mOrder 58/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=cd31a376
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=cd31a376
+
+[96mOrder 59/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=37d27024
+  [     68ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=37d27024
+
+[96mOrder 60/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=ebab3506
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=ebab3506
+
+[96mOrder 61/200:[0m
+  [     11ms]  [91mstale[0m    (poll #1)  order=c0d43262
+  [     72ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=c0d43262
+
+[96mOrder 62/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=429b91ee
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=429b91ee
+
+[96mOrder 63/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=7e604ab4
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=7e604ab4
+
+[96mOrder 64/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=204582e6
+  [     61ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=204582e6
+
+[96mOrder 65/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=7597a7fe
+  [     61ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=7597a7fe
+
+[96mOrder 66/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=ea02c1d5
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=ea02c1d5
+
+[96mOrder 67/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=9554a8f3
+  [     60ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=9554a8f3
+
+[96mOrder 68/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=8df3914a
+  [     60ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=8df3914a
+
+[96mOrder 69/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=be759b3d
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=be759b3d
+
+[96mOrder 70/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=1f1dcdc3
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=1f1dcdc3
+
+[96mOrder 71/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=f3a09518
+  [     61ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=f3a09518
+
+[96mOrder 72/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=b9dfdd3d
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=b9dfdd3d
+
+[96mOrder 73/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=8bc741dd
+  [     61ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=8bc741dd
+
+[96mOrder 74/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=a05d8759
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=a05d8759
+
+[96mOrder 75/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=5300d395
+  [     66ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=5300d395
+
+[96mOrder 76/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=e27cabde
+  [     61ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=e27cabde
+
+[96mOrder 77/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=49146423
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=49146423
+
+[96mOrder 78/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=85eaba0c
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=85eaba0c
+
+[96mOrder 79/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=003accaf
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=003accaf
+
+[96mOrder 80/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=365d130b
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=365d130b
+
+[96mOrder 81/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=a038c5f1
+  [     66ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=a038c5f1
+
+[96mOrder 82/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=6f722804
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=6f722804
+
+[96mOrder 83/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=b528a5b1
+  [     61ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=b528a5b1
+
+[96mOrder 84/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=5db4172b
+  [     66ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=5db4172b
+
+[96mOrder 85/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=62f77b3d
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=62f77b3d
+
+[96mOrder 86/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=6c70b6c5
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=6c70b6c5
+
+[96mOrder 87/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=761a1eaa
+  [     66ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=761a1eaa
+
+[96mOrder 88/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=8ae91043
+  [     66ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=8ae91043
+
+[96mOrder 89/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=8bbd9508
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=8bbd9508
+
+[96mOrder 90/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=b5f581f9
+  [     67ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=b5f581f9
+
+[96mOrder 91/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=9691f4a3
+  [     61ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=9691f4a3
+
+[96mOrder 92/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=df4f5700
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=df4f5700
+
+[96mOrder 93/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=7af0568a
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=7af0568a
+
+[96mOrder 94/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=19c1bd10
+  [     59ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=19c1bd10
+
+[96mOrder 95/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=31c6f770
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=31c6f770
+
+[96mOrder 96/200:[0m
+  [      8ms]  [91mstale[0m    (poll #1)  order=2ce1c1d6
+  [     70ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=2ce1c1d6
+
+[96mOrder 97/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=1c625492
+  [     67ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=1c625492
+
+[96mOrder 98/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=b090a3a1
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=b090a3a1
+
+[96mOrder 99/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=ed2e44f2
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=ed2e44f2
+
+[96mOrder 100/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=8f83f698
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=8f83f698
+
+[96mOrder 101/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=c0747b2b
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=c0747b2b
+
+[96mOrder 102/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=6d228080
+  [     67ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=6d228080
+
+[96mOrder 103/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=6cabaf2e
+  [     66ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=6cabaf2e
+
+[96mOrder 104/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=66fc5c32
+  [     66ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=66fc5c32
+
+[96mOrder 105/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=d6c8624b
+  [     66ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=d6c8624b
+
+[96mOrder 106/200:[0m
+  [      6ms]  [91mstale[0m    (poll #1)  order=621cb7a5
+  [     67ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=621cb7a5
+
+[96mOrder 107/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=ef3291c5
+  [     66ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=ef3291c5
+
+[96mOrder 108/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=f9959892
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=f9959892
+
+[96mOrder 109/200:[0m
+  [      6ms]  [91mstale[0m    (poll #1)  order=9554acae
+  [     67ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=9554acae
+
+[96mOrder 110/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=d5628717
+  [     68ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=d5628717
+
+[96mOrder 111/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=27a75019
+  [     61ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=27a75019
+
+[96mOrder 112/200:[0m
+  [      6ms]  [91mstale[0m    (poll #1)  order=2a9e7a98
+  [     67ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=2a9e7a98
+
+[96mOrder 113/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=f0457256
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=f0457256
+
+[96mOrder 114/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=79cdc43c
+  [     66ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=79cdc43c
+
+[96mOrder 115/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=0ba8d181
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=0ba8d181
+
+[96mOrder 116/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=ab56e489
+  [     60ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=ab56e489
+
+[96mOrder 117/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=b4546128
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=b4546128
+
+[96mOrder 118/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=a4d71a33
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=a4d71a33
+
+[96mOrder 119/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=6635ade7
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=6635ade7
+
+[96mOrder 120/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=fa3b79d5
+  [     60ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=fa3b79d5
+
+[96mOrder 121/200:[0m
+  [      3ms]  [91mstale[0m    (poll #1)  order=2c77cb52
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=2c77cb52
+
+[96mOrder 122/200:[0m
+  [      3ms]  [91mstale[0m    (poll #1)  order=975bf52a
+  [     67ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=975bf52a
+
+[96mOrder 123/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=73511626
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=73511626
+
+[96mOrder 124/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=1554d729
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=1554d729
+
+[96mOrder 125/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=07943489
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=07943489
+
+[96mOrder 126/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=22cbaa5c
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=22cbaa5c
+
+[96mOrder 127/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=cd3aab68
+  [     66ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=cd3aab68
+
+[96mOrder 128/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=fe47649d
+  [     66ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=fe47649d
+
+[96mOrder 129/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=0fc213ef
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=0fc213ef
+
+[96mOrder 130/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=945b44a4
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=945b44a4
+
+[96mOrder 131/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=0f9f3c64
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=0f9f3c64
+
+[96mOrder 132/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=fa922bc5
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=fa922bc5
+
+[96mOrder 133/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=8433533b
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=8433533b
+
+[96mOrder 134/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=4424a2c9
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=4424a2c9
+
+[96mOrder 135/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=83e8065b
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=83e8065b
+
+[96mOrder 136/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=42144f6f
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=42144f6f
+
+[96mOrder 137/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=f9f097fd
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=f9f097fd
+
+[96mOrder 138/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=3242471c
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=3242471c
+
+[96mOrder 139/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=d8b995de
+  [     61ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=d8b995de
+
+[96mOrder 140/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=9f33c9c2
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=9f33c9c2
+
+[96mOrder 141/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=675a2ec7
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=675a2ec7
+
+[96mOrder 142/200:[0m
+  [      3ms]  [91mstale[0m    (poll #1)  order=c2b87882
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=c2b87882
+
+[96mOrder 143/200:[0m
+  [      3ms]  [91mstale[0m    (poll #1)  order=e42851b1
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=e42851b1
+
+[96mOrder 144/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=7b0b08ec
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=7b0b08ec
+
+[96mOrder 145/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=9443fa07
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=9443fa07
+
+[96mOrder 146/200:[0m
+  [      3ms]  [91mstale[0m    (poll #1)  order=7b63b598
+  [     59ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=7b63b598
+
+[96mOrder 147/200:[0m
+  [      3ms]  [91mstale[0m    (poll #1)  order=ad4a183d
+  [     58ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=ad4a183d
+
+[96mOrder 148/200:[0m
+  [      3ms]  [91mstale[0m    (poll #1)  order=77723bac
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=77723bac
+
+[96mOrder 149/200:[0m
+  [      3ms]  [91mstale[0m    (poll #1)  order=ec641504
+  [     60ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=ec641504
+
+[96mOrder 150/200:[0m
+  [      3ms]  [91mstale[0m    (poll #1)  order=f04bd7b6
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=f04bd7b6
+
+[96mOrder 151/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=008e0a8b
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=008e0a8b
+
+[96mOrder 152/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=ce0c84f7
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=ce0c84f7
+
+[96mOrder 153/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=3e6ff2c2
+  [     60ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=3e6ff2c2
+
+[96mOrder 154/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=74b22b44
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=74b22b44
+
+[96mOrder 155/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=887e3150
+  [     60ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=887e3150
+
+[96mOrder 156/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=ebaa6b25
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=ebaa6b25
+
+[96mOrder 157/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=728614a0
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=728614a0
+
+[96mOrder 158/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=f6f31c63
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=f6f31c63
+
+[96mOrder 159/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=6895c483
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=6895c483
+
+[96mOrder 160/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=2fd00ad6
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=2fd00ad6
+
+[96mOrder 161/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=0d69b82d
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=0d69b82d
+
+[96mOrder 162/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=dc340eb4
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=dc340eb4
+
+[96mOrder 163/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=97e256a1
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=97e256a1
+
+[96mOrder 164/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=b13c1587
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=b13c1587
+
+[96mOrder 165/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=3bf8f5c9
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=3bf8f5c9
+
+[96mOrder 166/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=b3a9b272
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=b3a9b272
+
+[96mOrder 167/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=fd85ff0e
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=fd85ff0e
+
+[96mOrder 168/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=48f257c4
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=48f257c4
+
+[96mOrder 169/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=2e92fc12
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=2e92fc12
+
+[96mOrder 170/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=0a0b928e
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=0a0b928e
+
+[96mOrder 171/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=cf452387
+  [     66ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=cf452387
+
+[96mOrder 172/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=9e12ca1b
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=9e12ca1b
+
+[96mOrder 173/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=9dbd2226
+  [     60ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=9dbd2226
+
+[96mOrder 174/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=4ab34953
+  [     66ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=4ab34953
+
+[96mOrder 175/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=a54ed26b
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=a54ed26b
+
+[96mOrder 176/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=639919d0
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=639919d0
+
+[96mOrder 177/200:[0m
+  [      3ms]  [91mstale[0m    (poll #1)  order=a7467d5f
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=a7467d5f
+
+[96mOrder 178/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=7b449992
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=7b449992
+
+[96mOrder 179/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=a96a2433
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=a96a2433
+
+[96mOrder 180/200:[0m
+  [      3ms]  [91mstale[0m    (poll #1)  order=f21f1c4e
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=f21f1c4e
+
+[96mOrder 181/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=364b2125
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=364b2125
+
+[96mOrder 182/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=e450945f
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=e450945f
+
+[96mOrder 183/200:[0m
+  [      3ms]  [91mstale[0m    (poll #1)  order=36ed0a1c
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=36ed0a1c
+
+[96mOrder 184/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=aeae269d
+  [     61ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=aeae269d
+
+[96mOrder 185/200:[0m
+  [      3ms]  [91mstale[0m    (poll #1)  order=543c05b4
+  [     60ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=543c05b4
+
+[96mOrder 186/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=ea785210
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=ea785210
+
+[96mOrder 187/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=88425bc5
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=88425bc5
+
+[96mOrder 188/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=d38edd27
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=d38edd27
+
+[96mOrder 189/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=f5aee9de
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=f5aee9de
+
+[96mOrder 190/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=133a75cf
+  [     67ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=133a75cf
+
+[96mOrder 191/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=17856e99
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=17856e99
+
+[96mOrder 192/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=d091f0c3
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=d091f0c3
+
+[96mOrder 193/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=1ebe10b8
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=1ebe10b8
+
+[96mOrder 194/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=a2447341
+  [     64ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=a2447341
+
+[96mOrder 195/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=5335281c
+  [     67ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=5335281c
+
+[96mOrder 196/200:[0m
+  [      5ms]  [91mstale[0m    (poll #1)  order=4afa966e
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=4afa966e
+
+[96mOrder 197/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=10c4979c
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=10c4979c
+
+[96mOrder 198/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=ce988ba2
+  [     62ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=ce988ba2
+
+[96mOrder 199/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=1f4d3473
+  [     63ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=1f4d3473
+
+[96mOrder 200/200:[0m
+  [      4ms]  [91mstale[0m    (poll #1)  order=f40740b1
+  [     65ms]  [92mVISIBLE[0m  (poll #2, X-Cache: MISS)  order=f40740b1
+
+[1m=======================================================[0m
+[1m  RESULTS  (N=200)[0m
+[1m=======================================================[0m
+
+  metric                    value
+  --------------------------------
+  consistency lag ms  
+    p50                     63.9
+    p95                     67.1
+    p99                     71.5
+    min                     58.4
+    max                     72.0
+  avg polls/read             2.0
+
+  [93mWhat this means:[0m
+  A user who placed an order and immediately refreshed
+  would have seen no order for up to 72ms.
+  During this window the read side is STALE — MongoDB has
+  the event, but PostgreSQL has not projected it yet.
+
+  [92mThe RYW cache fixes this:[0m
+    bash restart.sh --delay 2   # same consumer lag, cache ON
+    python scripts/consistency_demo.py
+  → Every read returns in ~1ms (cache HIT, no PG needed).
+

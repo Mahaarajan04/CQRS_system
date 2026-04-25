@@ -40,7 +40,7 @@ ORDER_PAYLOAD = {
     "customer_id":    "cust_demo",
     "customer_name":  "Demo User",
     "customer_email": "demo@example.com",
-    "region":         "US-WEST",
+    "region":         "Mumbai",
     "items": [
         {"product_id": "p1", "name": "Laptop", "quantity": 1, "price": 999.99}
     ],

@@ -29,10 +29,10 @@ BOLD   = "\033[1m"
 RESET  = "\033[0m"
 
 CUSTOMERS = [
-    ("cust_alice", "Alice Smith",  "alice@example.com",  "US-WEST"),
-    ("cust_bob",   "Bob Jones",    "bob@example.com",    "EU"),
-    ("cust_carol", "Carol White",  "carol@example.com",  "US-EAST"),
-    ("cust_dave",  "Dave Kumar",   "dave@example.com",   "APAC"),
+    ("cust_alice", "Alice Smith",  "alice@example.com",  "Mumbai"),
+    ("cust_bob",   "Bob Jones",    "bob@example.com",    "Chennai"),
+    ("cust_carol", "Carol White",  "carol@example.com",  "Delhi"),
+    ("cust_dave",  "Dave Kumar",   "dave@example.com",   "Bangalore"),
 ]
 PRODUCTS = [
     {"product_id": "p1", "name": "Laptop",   "price": 999.99},
@@ -329,7 +329,7 @@ if "--saga" in sys.argv:
 
     order_id = place_order({
         "customer_id": "cust_alice", "customer_name": "Alice Smith",
-        "customer_email": "alice@example.com", "region": "US-WEST",
+        "customer_email": "alice@example.com", "region": "Mumbai",
         "items": [
             {"product_id": "p2", "name": "Mouse",    "quantity": 1, "price": 29.99},
             {"product_id": "p3", "name": "Keyboard", "quantity": 1, "price": 79.99},
@@ -356,7 +356,7 @@ if "--saga" in sys.argv:
 
     order_id2 = place_order({
         "customer_id": "cust_bob", "customer_name": "Bob Jones",
-        "customer_email": "bob@example.com", "region": "EU",
+        "customer_email": "bob@example.com", "region": "Chennai",
         "items": [
             {"product_id": "p1", "name": "Laptop", "quantity": 99, "price": 999.99},
         ],
@@ -382,7 +382,7 @@ if "--saga" in sys.argv:
 
     order_id3 = place_order({
         "customer_id": "cust_carol", "customer_name": "Carol White",
-        "customer_email": "carol@example.com", "region": "US-EAST",
+        "customer_email": "carol@example.com", "region": "Delhi",
         "items": [
             {"product_id": "p4", "name": "Monitor", "quantity": 1, "price": 349.99},
         ],
@@ -498,7 +498,7 @@ payload = {
     "customer_id":    "cust_alice",
     "customer_name":  "Alice Smith",
     "customer_email": "alice@example.com",
-    "region":         "US-WEST",
+    "region":         "Mumbai",
     "items": [
         {"product_id": "p1", "name": "Laptop",   "quantity": 1, "price": 999.99},
         {"product_id": "p3", "name": "Keyboard", "quantity": 2, "price": 79.99},
@@ -601,7 +601,7 @@ r = requests.post(f"{WRITE}/orders", json={
     "customer_id":    "cust_bob",
     "customer_name":  "Bob Jones",
     "customer_email": "bob@example.com",
-    "region":         "EU",
+    "region":         "Chennai",
     "items": [{"product_id": "p4", "name": "Monitor", "quantity": 1, "price": 349.99}],
 })
 order2_id = r.json()["order_id"]
